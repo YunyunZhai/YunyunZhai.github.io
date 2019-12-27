@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('http://yelog.org').hostname,
+    hostname: new URL('https://yunyunzhai.github.io').hostname,
     root: '/',
     scheme: 'Pisces',
     version: '7.6.0',
@@ -48,13 +48,13 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="翟云云的博客">
-<meta property="og:url" content="http://yelog.org/index.html">
+<meta property="og:url" content="https://yunyunzhai.github.io/index.html">
 <meta property="og:site_name" content="翟云云的博客">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="翟云云">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yelog.org/">
+<link rel="canonical" href="https://yunyunzhai.github.io/">
 
 
 <script id="page-configurations">
@@ -175,7 +175,208 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/es6%E5%9F%BA%E7%A1%80/">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/27/git%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/27/git%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">git基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-27 14:59:39 / 修改时间：16:41:46" itemprop="dateCreated datePublished" datetime="2019-12-27T14:59:39+08:00">2019-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" itemprop="url" rel="index">
+                    <span itemprop="name">项目管理</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/27/git%E5%9F%BA%E7%A1%80/" class="post-meta-item leancloud_visitors" data-flag-title="git基础" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2019/12/27/git%E5%9F%BA%E7%A1%80/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/27/git%E5%9F%BA%E7%A1%80/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ol>
+<li>工作区（working tree）</li>
+<li>暂存区（stage, 或 index）</li>
+<li>仓库（repository）</li>
+</ol>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><ol>
+<li><p>创建仓库<br>git init<br>git clone</p>
+</li>
+<li><p>工作区 &lt;—&gt; 暂存区<br>git add: 在工作区添加文件或者修改文件后，执行 git add 将更新 暂存区<br>git rm –cached <file>： 从暂存区删除文件，工作区不变<br>git checkout – <file>： 用暂存区的文件覆盖工作区文件，危险</p>
+</li>
+<li><p>暂存区 &lt;—&gt; 仓库<br>git commit： 暂存区里的改动提交到本地的版本库<br>git reset HEAD – <file>： 暂存区被仓库中的覆盖，工作区不变</p>
+</li>
+<li><p>工作区 &lt;— 仓库<br>git checkout HEAD <file>: 仓库中的文件替换暂存区和工作区</p>
+</li>
+<li><p>本地仓库 &lt;—&gt; 远程仓库<br>git push origin master: 本地仓库到远程仓库<br>git fetch origin master: 远程 origin 的 master 替换到本地仓库，工作区不变<br>git merge origin/master: 合并内容到本地 master 分支<br>git pull: 远程仓库到本地仓库和本地工作区</p>
+</li>
+<li><p>比较不同<br>git diff: 比较工作区和暂存区<br>git diff –staged: 比较暂存区和仓库<br>git diff HEAD: 比较工作区和仓库区别</p>
+</li>
+<li><p>查看状态<br>git status -s: 文件状态的简写（M - 修改， A - 添加， D - 删除， R - 重命名，?? - 未追踪）</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/26/mongodb%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/26/mongodb%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">mongodb基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-26 19:55:47 / 修改时间：19:56:44" itemprop="dateCreated datePublished" datetime="2019-12-26T19:55:47+08:00">2019-12-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/26/mongodb%E5%9F%BA%E7%A1%80/" class="post-meta-item leancloud_visitors" data-flag-title="mongodb基础" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2019/12/26/mongodb%E5%9F%BA%E7%A1%80/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/26/mongodb%E5%9F%BA%E7%A1%80/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/es6%E5%9F%BA%E7%A1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -198,10 +399,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-25 20:01:55 / 修改时间：20:02:27" itemprop="dateCreated datePublished" datetime="2019-12-25T20:01:55+08:00">2019-12-25</time>
+              <time title="创建时间：2019-12-25 20:01:55" itemprop="dateCreated datePublished" datetime="2019-12-25T20:01:55+08:00">2019-12-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:11" itemprop="dateModified" datetime="2019-12-27T16:38:11+08:00">2019-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -270,7 +477,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/javascript%E6%A6%82%E8%BF%B0/">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/javascript%E6%A6%82%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -293,10 +500,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-25 19:53:20 / 修改时间：20:01:17" itemprop="dateCreated datePublished" datetime="2019-12-25T19:53:20+08:00">2019-12-25</time>
+              <time title="创建时间：2019-12-25 19:53:20" itemprop="dateCreated datePublished" datetime="2019-12-25T19:53:20+08:00">2019-12-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:18" itemprop="dateModified" datetime="2019-12-27T16:38:18+08:00">2019-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -377,7 +590,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -400,10 +613,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-25 19:30:14 / 修改时间：19:52:47" itemprop="dateCreated datePublished" datetime="2019-12-25T19:30:14+08:00">2019-12-25</time>
+              <time title="创建时间：2019-12-25 19:30:14" itemprop="dateCreated datePublished" datetime="2019-12-25T19:30:14+08:00">2019-12-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:23" itemprop="dateModified" datetime="2019-12-27T16:38:23+08:00">2019-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1422,7 +1641,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1445,10 +1664,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-25 19:28:56 / 修改时间：19:29:20" itemprop="dateCreated datePublished" datetime="2019-12-25T19:28:56+08:00">2019-12-25</time>
+              <time title="创建时间：2019-12-25 19:28:56" itemprop="dateCreated datePublished" datetime="2019-12-25T19:28:56+08:00">2019-12-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:42" itemprop="dateModified" datetime="2019-12-27T16:38:42+08:00">2019-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1514,7 +1739,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/SQL/">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/SQL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1537,10 +1762,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-25 19:27:59 / 修改时间：19:28:20" itemprop="dateCreated datePublished" datetime="2019-12-25T19:27:59+08:00">2019-12-25</time>
+              <time title="创建时间：2019-12-25 19:27:59" itemprop="dateCreated datePublished" datetime="2019-12-25T19:27:59+08:00">2019-12-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:29" itemprop="dateModified" datetime="2019-12-27T16:38:29+08:00">2019-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1606,7 +1837,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1629,10 +1860,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-25 19:06:32 / 修改时间：19:26:19" itemprop="dateCreated datePublished" datetime="2019-12-25T19:06:32+08:00">2019-12-25</time>
+              <time title="创建时间：2019-12-25 19:06:32" itemprop="dateCreated datePublished" datetime="2019-12-25T19:06:32+08:00">2019-12-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:33" itemprop="dateModified" datetime="2019-12-27T16:38:33+08:00">2019-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1721,7 +1958,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/cpp%E6%A0%87%E5%87%86%E5%BA%93/">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/cpp%E6%A0%87%E5%87%86%E5%BA%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1744,10 +1981,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-25 18:59:37 / 修改时间：19:00:13" itemprop="dateCreated datePublished" datetime="2019-12-25T18:59:37+08:00">2019-12-25</time>
+              <time title="创建时间：2019-12-25 18:59:37" itemprop="dateCreated datePublished" datetime="2019-12-25T18:59:37+08:00">2019-12-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:01" itemprop="dateModified" datetime="2019-12-27T16:38:01+08:00">2019-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1812,7 +2055,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/c%E8%AF%AD%E8%A8%80%E6%A0%87%E5%87%86%E5%BA%93/">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/c%E8%AF%AD%E8%A8%80%E6%A0%87%E5%87%86%E5%BA%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1835,10 +2078,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-25 18:57:01 / 修改时间：18:58:32" itemprop="dateCreated datePublished" datetime="2019-12-25T18:57:01+08:00">2019-12-25</time>
+              <time title="创建时间：2019-12-25 18:57:01" itemprop="dateCreated datePublished" datetime="2019-12-25T18:57:01+08:00">2019-12-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:06" itemprop="dateModified" datetime="2019-12-27T16:38:06+08:00">2019-12-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1899,233 +2148,12 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/c-cpp%E6%A6%82%E8%BF%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/25/c-cpp%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">c_cpp 概述</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-12-25 17:40:45 / 修改时间：18:56:12" itemprop="dateCreated datePublished" datetime="2019-12-25T17:40:45+08:00">2019-12-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
-                    <span itemprop="name">c语言</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/12/25/c-cpp%E6%A6%82%E8%BF%B0/" class="post-meta-item leancloud_visitors" data-flag-title="c_cpp 概述" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2019/12/25/c-cpp%E6%A6%82%E8%BF%B0/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/25/c-cpp%E6%A6%82%E8%BF%B0/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>c/c++的学习分为两个部分</p>
-<h3 id="一、语言标准"><a href="#一、语言标准" class="headerlink" title="一、语言标准"></a>一、语言标准</h3><p>语言标准定义了功能特性和标准库两部分。<br>功能特性由编译器负责具体实现，比如 linux 下 gcc，windows 下 Visual Studio<br>标准库实现依赖于具体平台，比如 linux 下 c 标准库是 glibc，windows 下的 MSVCRT.DLL。</p>
-<p>c/c++是有国际标准化组织 ISO 制定标准，网址为：<a href="https://www.iso.org" target="_blank" rel="noopener">https://www.iso.org</a></p>
-<p>c11 标准参考：<a href="https://www.iso.org/standard/57853.html" target="_blank" rel="noopener">https://www.iso.org/standard/57853.html</a></p>
-<p>c++2017 参考：<a href="https://www.iso.org/standard/68564.html" target="_blank" rel="noopener">https://www.iso.org/standard/68564.html</a></p>
-<p>以上是需要收费才能下载，我的百度网盘中可下载：<a href="https://pan.baidu.com/s/1Dc6lyRPryC9ShbPsZ1U5uQ，提取码：c8kw" target="_blank" rel="noopener">https://pan.baidu.com/s/1Dc6lyRPryC9ShbPsZ1U5uQ，提取码：c8kw</a></p>
-<p>其他可以免费查看的网站：</p>
-<p>各种语言或软件 API 文档：<a href="https://tool.oschina.net/apidocs" target="_blank" rel="noopener">https://tool.oschina.net/apidocs</a></p>
-<p>c/c++语言参考：<a href="https://zh.cppreference.com" target="_blank" rel="noopener">https://zh.cppreference.com</a></p>
-<p>除了参考语言标准，也可对照具体实现进行学习</p>
-<p>glibc 官方文档：<a href="https://www.gnu.org/software/libc/manual/html_node/index.html" target="_blank" rel="noopener">https://www.gnu.org/software/libc/manual/html_node/index.html</a></p>
-<h3 id="二、运行环境"><a href="#二、运行环境" class="headerlink" title="二、运行环境"></a>二、运行环境</h3><p>c/c++程序生成的可执行程序，由操作系统加载运行。因此这部分的学习主要学会使用操作系统相关 API，比如文件操作，进程线程相关，网络通信等。</p>
-<p>应用程序可通过系统调用与操作系统进行交互。系统调用需要操作寄存器等，所以 glibc 封装了这部分操作，提供了简单的 c 语言接口</p>
-<p>linux 下系统调用在内核代码中 sys_call_table 定义。</p>
-<p>windows 下有 kernel32.dll、user32.dll、gdi32.dll 实现了系统 API。</p>
-<p><strong>总结：</strong></p>
-<p>学习 c/c++除了学习基本语法，标准库和系统 API 的学习将是重点。</p>
-<p>linux 系统调用列表官方列表：<a href="http://man7.org/linux/man-pages/dir_section_2.html" target="_blank" rel="noopener">http://man7.org/linux/man-pages/dir_section_2.html</a></p>
-<p><a href="https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part1/appendix.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part1/appendix.html</a></p>
-<p>部分内容参考自：<a href="https://www.cnblogs.com/findumars/p/9000371.html" target="_blank" rel="noopener">https://www.cnblogs.com/findumars/p/9000371.html</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yelog.org/2019/12/25/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E6%80%9D%E8%80%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/25/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">编程语言的思考</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-12-25 17:27:56 / 修改时间：18:53:41" itemprop="dateCreated datePublished" datetime="2019-12-25T17:27:56+08:00">2019-12-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index">
-                    <span itemprop="name">编程思考</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/12/25/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E6%80%9D%E8%80%83/" class="post-meta-item leancloud_visitors" data-flag-title="编程语言的思考" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2019/12/25/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E6%80%9D%E8%80%83/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/25/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E6%80%9D%E8%80%83/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>工作几年，先后接触 c/c++，python，lua，dart，JavaScript，java 各种语言，记录下对于一个编程语言的理解，对一个编程语言的理解，应该关注两个方面</p>
-<h3 id="一、语言特性"><a href="#一、语言特性" class="headerlink" title="一、语言特性"></a>一、语言特性</h3><p>语言特性由编译器具体实现，具体包括：</p>
-<ol>
-<li><p>强类型 vs 弱类型<br>强类型就是类型很硬，不太接受转换<br>比如 c++就是强类型，不同类型转换需要各种 cast<br>JavaScript 就是弱类型，一个变量，一会数字，一会字符串，一会对象都没问题</p>
-</li>
-<li><p>静态类型 vs 动态类型<br>静态类型：程序运行前确定变量类型，需事先声明或者由编译器推导<br>动态类型，程序运行时才进行类型绑定和检查</p>
-</li>
-<li><p>静态语言 vs 动态语言<br>程序在运行时可以更改代码结构，比如 JavaScript 随时给一个对象添加成员或者添加函数</p>
-</li>
-<li><p>值类型 vs 引用数据类型<br>JavaScript 中除了基本数据类型外，其他都是引用类型，所以变量赋值后其实指向的是同一对象</p>
-</li>
-</ol>
-<p><strong>总结：</strong><br>变量声明时是否需要指定类型-&gt;静态类型 vs 动态类型<br>声明后的类型能否相互转换-&gt;强类型 vs 弱类型<br>程序运行时，能否改变对象内部结构-&gt;动态语言 vs 静态语言</p>
-<p>但，对于 dart 语言，所有这些都不算数，<br>既可以编译成二进制，AOT，又可以解释运行<br>变量声明既可以指定类型，也可以 dynamic 声明不指定类型<br>不支持反射，所以是静态语言<br>类型不可随意转换，是强类型语言</p>
-<h3 id="二、运行环境"><a href="#二、运行环境" class="headerlink" title="二、运行环境"></a>二、运行环境</h3><p>运行环境就是 runtime，包括虚拟机或者真实的操作系统，需要注意的有</p>
-<ol>
-<li><p>编译运行 vs 解释执行<br>编译型：源代码-&gt;编译器-&gt;可执行代码<br>解释型：解释器读取源代码，编译，然后运行。<br>区别仅仅是源代码翻译成目标代码的时机不同。<br>c/c++是编译型，各源文件编译成 obj，后经过连接器链接为可执行文件，后操作系统加载执行<br>js，python 是解释型，先编译为字节码，后由虚拟机加载执行。<br>要注意编译单位：c/c++是以文件为单位，nodejs 和 python 同样，但网页中 js 是以代码块独立翻译，执行，但各代码块共享变量</p>
-</li>
-<li><p>异步编程模型<br>nodejs 是单线程异步模型，异步模型导致回调地狱问题，后出现 await，async，以同步编程方式来编写异步代码。更好维护</p>
-</li>
-<li><p>垃圾回收<br>只管使用，不用操心内存释放。<br>越高级语言，开发者越不需要关心底层，c/c++，不需要关心汇编指令，但是需要负责内存的申请和释放，而 java，js，dart 等现代化语言，开发者不需要关心内存问题，这是语言发展的必然。</p>
-</li>
-</ol>
-<p>个人理解，欢迎留言讨论</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -2192,7 +2220,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2205,7 +2233,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
