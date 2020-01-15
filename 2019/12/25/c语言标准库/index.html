@@ -46,15 +46,15 @@
   };
 </script>
 
-  <meta name="description" content="C 标准库头文件&lt;stdio.h&gt; 输入&#x2F;输出&lt;stdlib.h&gt; 基础工具：内存管理、程序工具、字符串转换、随机数&lt;threads.h&gt; 线程库&lt;wchar.h&gt; (C95 起)&lt;wctype.h&gt; (C95 起) 宽字符相关">
+  <meta name="description" content="类型相关 基本类型：char、short、int、long数值极限头文件&lt;limits.h&gt;和&lt;float.h&gt;   CHAR_MIN、CHAR_MAX：char 类型极限 INT_MIN、INT_MAX：int 类型极限 FLT_MIN、FLT_MAX：float 类型极限   附加基本类型：size_t、ptrdiff_t、NULL 等，定义于&lt;stddef.h&amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="c语言标准库">
 <meta property="og:url" content="https://yunyunzhai.github.io/2019/12/25/c%E8%AF%AD%E8%A8%80%E6%A0%87%E5%87%86%E5%BA%93/index.html">
 <meta property="og:site_name" content="翟云云的博客">
-<meta property="og:description" content="C 标准库头文件&lt;stdio.h&gt; 输入&#x2F;输出&lt;stdlib.h&gt; 基础工具：内存管理、程序工具、字符串转换、随机数&lt;threads.h&gt; 线程库&lt;wchar.h&gt; (C95 起)&lt;wctype.h&gt; (C95 起) 宽字符相关">
+<meta property="og:description" content="类型相关 基本类型：char、short、int、long数值极限头文件&lt;limits.h&gt;和&lt;float.h&gt;   CHAR_MIN、CHAR_MAX：char 类型极限 INT_MIN、INT_MAX：int 类型极限 FLT_MIN、FLT_MAX：float 类型极限   附加基本类型：size_t、ptrdiff_t、NULL 等，定义于&lt;stddef.h&amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-12-25T10:57:01.000Z">
-<meta property="article:modified_time" content="2019-12-27T08:38:06.884Z">
+<meta property="article:modified_time" content="2020-01-11T09:47:35.810Z">
 <meta property="article:author" content="翟云云">
 <meta property="article:tag" content="c">
 <meta name="twitter:card" content="summary">
@@ -210,7 +210,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-27 16:38:06" itemprop="dateModified" datetime="2019-12-27T16:38:06+08:00">2019-12-27</time>
+                <time title="修改时间：2020-01-11 17:47:35" itemprop="dateModified" datetime="2020-01-11T17:47:35+08:00">2020-01-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,7 +256,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>C 标准库头文件<br>&lt;stdio.h&gt; 输入/输出<br>&lt;stdlib.h&gt; 基础工具：内存管理、程序工具、字符串转换、随机数<br>&lt;threads.h&gt; 线程库<br>&lt;wchar.h&gt; (C95 起)&lt;wctype.h&gt; (C95 起) 宽字符相关</p>
+        <h3 id="类型相关"><a href="#类型相关" class="headerlink" title="类型相关"></a>类型相关</h3><ol>
+<li>基本类型：char、short、int、long<br>数值极限头文件&lt;limits.h&gt;和&lt;float.h&gt;</li>
+</ol>
+<ul>
+<li>CHAR_MIN、CHAR_MAX：char 类型极限</li>
+<li>INT_MIN、INT_MAX：int 类型极限</li>
+<li>FLT_MIN、FLT_MAX：float 类型极限</li>
+</ul>
+<ol start="2">
+<li>附加基本类型：size_t、ptrdiff_t、NULL 等，定义于&lt;stddef.h&gt;<br>极限头文件：&lt;stdint.h&gt;</li>
+</ol>
+<ul>
+<li>SIZE_MAX：size_t 类型对象的最大值</li>
+</ul>
+<ol start="3">
+<li>定宽整数类型：定义于头文件&lt;stdint.h&gt;</li>
+</ol>
+<ul>
+<li>int8_t：8 位有符号整数类型</li>
+<li>uint8_t：8 位无符号整数类型</li>
+<li>INT8_MIN：int8_t 类型最小值</li>
+<li>INT8_MAX：int8_t 类型最大值</li>
+</ul>
+<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">malloc</span><span class="params">( <span class="keyword">size_t</span> <span class="built_in">size</span> )</span></span>;</span><br><span class="line"><span class="comment">// 分配size个字节的未初始化的内存，失败返回空指针</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">calloc</span><span class="params">( <span class="keyword">size_t</span> num, <span class="keyword">size_t</span> <span class="built_in">size</span> )</span></span>;</span><br><span class="line"><span class="comment">// 分配num*size个字节的内存，并初始化为0，失败返回空指针</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">realloc</span><span class="params">( <span class="keyword">void</span> *ptr, <span class="keyword">size_t</span> new_size )</span></span>;</span><br><span class="line"><span class="comment">// 如果ptr=NULL，size不为0，相当于malloc</span></span><br><span class="line"><span class="comment">// 如果ptr不为NULL，size=0，相当于free</span></span><br><span class="line"><span class="comment">// size比原内存大，返回结果有2种情况，1.返回结果与ptr相等，2.返回新地址，ptr被释放</span></span><br><span class="line"><span class="comment">// size比原内存小，原内存内容被截断，返回原地址</span></span><br><span class="line"><span class="comment">// 失败时返回空指针，原地址ptr保持有效</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="keyword">if</span>(!p)&#123;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> *q = <span class="built_in">realloc</span>(p, <span class="number">5</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="keyword">if</span>(q)&#123;</span><br><span class="line">  <span class="keyword">if</span>(p != q)&#123;</span><br><span class="line">    <span class="comment">// p 已经被释放</span></span><br><span class="line">    p = <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">free</span>(q);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">free</span>(p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free</span><span class="params">( <span class="keyword">void</span>* ptr )</span></span>;</span><br><span class="line"><span class="comment">// ptr = NULL 时，无操作</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串库"><a href="#字符串库" class="headerlink" title="字符串库"></a>字符串库</h3><p>可参考我的文章：字符集和编码</p>
+<p>宽字符串：每个字符的字节数固定的，通常是 Unicode 编码，也就是 Unicode 字节集中的序号<br>窄字符串：也叫多字节字符串，每个字符占用的字节个数不同，比如 UTF-8、GB2312、GBK 等；</p>
+<p>宽字符和窄字符相互转换：<br>由于宽字符串是 Unicode 编码，所以跟环境无关<br>窄字符串的编码是可变的，比如 UTF-8、GB2312、GBK 等<br>所以窄字符串和宽字符串在转换过程中，会根据当前活动的 locale 的字符编码来识别窄字符串，然后进行转换</p>
+<p>C 语言字符串操作函数分为 3 类：单字节字符串、多字节字符串和宽字符串</p>
+<h3 id="输入输出库"><a href="#输入输出库" class="headerlink" title="输入输出库"></a>输入输出库</h3><p>将字符串打印到控制台时，字符串的编码格式需要跟终端的一致</p>
 
     </div>
 
@@ -342,6 +371,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#类型相关"><span class="nav-number">1.</span> <span class="nav-text">类型相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理"><span class="nav-number">2.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串库"><span class="nav-number">3.</span> <span class="nav-text">字符串库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入输出库"><span class="nav-number">4.</span> <span class="nav-text">输入输出库</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -357,7 +387,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -370,7 +400,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
