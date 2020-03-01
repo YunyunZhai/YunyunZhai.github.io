@@ -175,6 +175,1607 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/25/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">linux系统编程（一）概述</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-25 19:30:14" itemprop="dateCreated datePublished" datetime="2019-12-25T19:30:14+08:00">2019-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:23" itemprop="dateModified" datetime="2019-12-27T16:38:23+08:00">2019-12-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">linux系统编程</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/25/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" class="post-meta-item leancloud_visitors" data-flag-title="linux系统编程（一）概述" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2019/12/25/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/25/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>glibc 库封装了 linux 系统调用，并提供 c 语言接口<br>所以学习 linux 系统编程，主要参考 glibc 库系统调用相关 api</p>
+<h3 id="一、进程控制"><a href="#一、进程控制" class="headerlink" title="一、进程控制"></a>一、进程控制</h3><table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">fork</td>
+<td align="left">创建一个新进程</td>
+</tr>
+<tr>
+<td align="left">clone</td>
+<td align="left">按指定条件创建子进程</td>
+</tr>
+<tr>
+<td align="left">execve</td>
+<td align="left">运行可执行文件</td>
+</tr>
+<tr>
+<td align="left">exit</td>
+<td align="left">中止进程</td>
+</tr>
+<tr>
+<td align="left">_exit</td>
+<td align="left">立即中止当前进程</td>
+</tr>
+<tr>
+<td align="left">getdtablesize</td>
+<td align="left">进程所能打开的最大文件数</td>
+</tr>
+<tr>
+<td align="left">getpgid</td>
+<td align="left">获取指定进程组标识号</td>
+</tr>
+<tr>
+<td align="left">setpgid</td>
+<td align="left">设置指定进程组标志号</td>
+</tr>
+<tr>
+<td align="left">getpgrp</td>
+<td align="left">获取当前进程组标识号</td>
+</tr>
+<tr>
+<td align="left">setpgrp</td>
+<td align="left">设置当前进程组标志号</td>
+</tr>
+<tr>
+<td align="left">getpid</td>
+<td align="left">获取进程标识号</td>
+</tr>
+<tr>
+<td align="left">getppid</td>
+<td align="left">获取父进程标识号</td>
+</tr>
+<tr>
+<td align="left">getpriority</td>
+<td align="left">获取调度优先级</td>
+</tr>
+<tr>
+<td align="left">setpriority</td>
+<td align="left">设置调度优先级</td>
+</tr>
+<tr>
+<td align="left">modify_ldt</td>
+<td align="left">读写进程的本地描述表</td>
+</tr>
+<tr>
+<td align="left">nanosleep</td>
+<td align="left">使进程睡眠指定的时间</td>
+</tr>
+<tr>
+<td align="left">nice</td>
+<td align="left">改变分时进程的优先级</td>
+</tr>
+<tr>
+<td align="left">pause</td>
+<td align="left">挂起进程，等待信号</td>
+</tr>
+<tr>
+<td align="left">personality</td>
+<td align="left">设置进程运行域</td>
+</tr>
+<tr>
+<td align="left">prctl</td>
+<td align="left">对进程进行特定操作</td>
+</tr>
+<tr>
+<td align="left">ptrace</td>
+<td align="left">进程跟踪</td>
+</tr>
+<tr>
+<td align="left">sched_get_priority_max</td>
+<td align="left">取得静态优先级的上限</td>
+</tr>
+<tr>
+<td align="left">sched_get_priority_min</td>
+<td align="left">取得静态优先级的下限</td>
+</tr>
+<tr>
+<td align="left">sched_getparam</td>
+<td align="left">取得进程的调度参数</td>
+</tr>
+<tr>
+<td align="left">sched_getscheduler</td>
+<td align="left">取得指定进程的调度策略</td>
+</tr>
+<tr>
+<td align="left">sched_rr_get_interval</td>
+<td align="left">取得按 RR 算法调度的实时进程的时间片长度</td>
+</tr>
+<tr>
+<td align="left">sched_setparam</td>
+<td align="left">设置进程的调度参数</td>
+</tr>
+<tr>
+<td align="left">sched_setscheduler</td>
+<td align="left">设置指定进程的调度策略和参数</td>
+</tr>
+<tr>
+<td align="left">sched_yield</td>
+<td align="left">进程主动让出处理器,并将自己等候调度队列队尾</td>
+</tr>
+<tr>
+<td align="left">vfork</td>
+<td align="left">创建一个子进程，以供执行新程序，常与 execve 等同时使用</td>
+</tr>
+<tr>
+<td align="left">wait</td>
+<td align="left">等待子进程终止</td>
+</tr>
+<tr>
+<td align="left">wait3</td>
+<td align="left">参见 wait</td>
+</tr>
+<tr>
+<td align="left">waitpid</td>
+<td align="left">等待指定子进程终止</td>
+</tr>
+<tr>
+<td align="left">wait4</td>
+<td align="left">参见 waitpid</td>
+</tr>
+<tr>
+<td align="left">capget</td>
+<td align="left">获取进程权限</td>
+</tr>
+<tr>
+<td align="left">capset</td>
+<td align="left">设置进程权限</td>
+</tr>
+<tr>
+<td align="left">getsid</td>
+<td align="left">获取会晤标识号</td>
+</tr>
+<tr>
+<td align="left">setsid</td>
+<td align="left">设置会晤标识号</td>
+</tr>
+</tbody></table>
+<h3 id="二、文件系统控制"><a href="#二、文件系统控制" class="headerlink" title="二、文件系统控制"></a>二、文件系统控制</h3><p>1、文件读写操作</p>
+<table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">fcntl</td>
+<td align="left">文件控制</td>
+</tr>
+<tr>
+<td align="left">open</td>
+<td align="left">打开文件</td>
+</tr>
+<tr>
+<td align="left">creat</td>
+<td align="left">创建新文件</td>
+</tr>
+<tr>
+<td align="left">close</td>
+<td align="left">关闭文件描述字</td>
+</tr>
+<tr>
+<td align="left">read</td>
+<td align="left">读文件</td>
+</tr>
+<tr>
+<td align="left">write</td>
+<td align="left">写文件</td>
+</tr>
+<tr>
+<td align="left">readv</td>
+<td align="left">从文件读入数据到缓冲数组中</td>
+</tr>
+<tr>
+<td align="left">writev</td>
+<td align="left">将缓冲数组里的数据写入文件</td>
+</tr>
+<tr>
+<td align="left">pread</td>
+<td align="left">对文件随机读</td>
+</tr>
+<tr>
+<td align="left">pwrite</td>
+<td align="left">对文件随机写</td>
+</tr>
+<tr>
+<td align="left">lseek</td>
+<td align="left">移动文件指针</td>
+</tr>
+<tr>
+<td align="left">_llseek</td>
+<td align="left">在 64 位地址空间里移动文件指针</td>
+</tr>
+<tr>
+<td align="left">dup</td>
+<td align="left">复制已打开的文件描述字</td>
+</tr>
+<tr>
+<td align="left">dup2</td>
+<td align="left">按指定条件复制文件描述字</td>
+</tr>
+<tr>
+<td align="left">flock</td>
+<td align="left">文件加/解锁</td>
+</tr>
+<tr>
+<td align="left">poll</td>
+<td align="left">I/O 多路转换</td>
+</tr>
+<tr>
+<td align="left">truncate</td>
+<td align="left">截断文件</td>
+</tr>
+<tr>
+<td align="left">ftruncate</td>
+<td align="left">参见 truncate</td>
+</tr>
+<tr>
+<td align="left">umask</td>
+<td align="left">设置文件权限掩码</td>
+</tr>
+<tr>
+<td align="left">fsync</td>
+<td align="left">把文件在内存中的部分写回磁盘</td>
+</tr>
+</tbody></table>
+<p>2、文件系统操作</p>
+<table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">access</td>
+<td align="left">确定文件的可存取性</td>
+</tr>
+<tr>
+<td align="left">chdir</td>
+<td align="left">改变当前工作目录</td>
+</tr>
+<tr>
+<td align="left">fchdir</td>
+<td align="left">参见 chdir</td>
+</tr>
+<tr>
+<td align="left">chmod</td>
+<td align="left">改变文件方式</td>
+</tr>
+<tr>
+<td align="left">fchmod</td>
+<td align="left">参见 chmod</td>
+</tr>
+<tr>
+<td align="left">chown</td>
+<td align="left">改变文件的属主或用户组</td>
+</tr>
+<tr>
+<td align="left">fchown</td>
+<td align="left">参见 chown</td>
+</tr>
+<tr>
+<td align="left">lchown</td>
+<td align="left">参见 chown</td>
+</tr>
+<tr>
+<td align="left">chroot</td>
+<td align="left">改变根目录</td>
+</tr>
+<tr>
+<td align="left">stat</td>
+<td align="left">取文件状态信息</td>
+</tr>
+<tr>
+<td align="left">lstat</td>
+<td align="left">参见 stat</td>
+</tr>
+<tr>
+<td align="left">fstat</td>
+<td align="left">参见 stat</td>
+</tr>
+<tr>
+<td align="left">statfs</td>
+<td align="left">取文件系统信息</td>
+</tr>
+<tr>
+<td align="left">fstatfs</td>
+<td align="left">参见 statfs</td>
+</tr>
+<tr>
+<td align="left">readdir</td>
+<td align="left">读取目录项</td>
+</tr>
+<tr>
+<td align="left">getdents</td>
+<td align="left">读取目录项</td>
+</tr>
+<tr>
+<td align="left">mkdir</td>
+<td align="left">创建目录</td>
+</tr>
+<tr>
+<td align="left">mknod</td>
+<td align="left">创建索引节点</td>
+</tr>
+<tr>
+<td align="left">rmdir</td>
+<td align="left">删除目录</td>
+</tr>
+<tr>
+<td align="left">rename</td>
+<td align="left">文件改名</td>
+</tr>
+<tr>
+<td align="left">link</td>
+<td align="left">创建链接</td>
+</tr>
+<tr>
+<td align="left">symlink</td>
+<td align="left">创建符号链接</td>
+</tr>
+<tr>
+<td align="left">unlink</td>
+<td align="left">删除链接</td>
+</tr>
+<tr>
+<td align="left">readlink</td>
+<td align="left">读符号链接的值</td>
+</tr>
+<tr>
+<td align="left">mount</td>
+<td align="left">安装文件系统</td>
+</tr>
+<tr>
+<td align="left">umount</td>
+<td align="left">卸下文件系统</td>
+</tr>
+<tr>
+<td align="left">ustat</td>
+<td align="left">取文件系统信息</td>
+</tr>
+<tr>
+<td align="left">utime</td>
+<td align="left">改变文件的访问修改时间</td>
+</tr>
+<tr>
+<td align="left">utimes</td>
+<td align="left">参见 utime</td>
+</tr>
+<tr>
+<td align="left">quotactl</td>
+<td align="left">控制磁盘配额</td>
+</tr>
+</tbody></table>
+<h3 id="三、系统控制"><a href="#三、系统控制" class="headerlink" title="三、系统控制"></a>三、系统控制</h3><table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ioctl</td>
+<td align="left">I/O 总控制函数</td>
+</tr>
+<tr>
+<td align="left">_sysctl</td>
+<td align="left">读/写系统参数</td>
+</tr>
+<tr>
+<td align="left">acct</td>
+<td align="left">启用或禁止进程记账</td>
+</tr>
+<tr>
+<td align="left">getrlimit</td>
+<td align="left">获取系统资源上限</td>
+</tr>
+<tr>
+<td align="left">setrlimit</td>
+<td align="left">设置系统资源上限</td>
+</tr>
+<tr>
+<td align="left">getrusage</td>
+<td align="left">获取系统资源使用情况</td>
+</tr>
+<tr>
+<td align="left">uselib</td>
+<td align="left">选择要使用的二进制函数库</td>
+</tr>
+<tr>
+<td align="left">ioperm</td>
+<td align="left">设置端口 I/O 权限</td>
+</tr>
+<tr>
+<td align="left">iopl</td>
+<td align="left">改变进程 I/O 权限级别</td>
+</tr>
+<tr>
+<td align="left">outb</td>
+<td align="left">低级端口操作</td>
+</tr>
+<tr>
+<td align="left">reboot</td>
+<td align="left">重新启动</td>
+</tr>
+<tr>
+<td align="left">swapon</td>
+<td align="left">打开交换文件和设备</td>
+</tr>
+<tr>
+<td align="left">swapoff</td>
+<td align="left">关闭交换文件和设备</td>
+</tr>
+<tr>
+<td align="left">bdflush</td>
+<td align="left">控制 bdflush 守护进程</td>
+</tr>
+<tr>
+<td align="left">sysfs</td>
+<td align="left">取核心支持的文件系统类型</td>
+</tr>
+<tr>
+<td align="left">sysinfo</td>
+<td align="left">取得系统信息</td>
+</tr>
+<tr>
+<td align="left">adjtimex</td>
+<td align="left">调整系统时钟</td>
+</tr>
+<tr>
+<td align="left">alarm</td>
+<td align="left">设置进程的闹钟</td>
+</tr>
+<tr>
+<td align="left">getitimer</td>
+<td align="left">获取计时器值</td>
+</tr>
+<tr>
+<td align="left">setitimer</td>
+<td align="left">设置计时器值</td>
+</tr>
+<tr>
+<td align="left">gettimeofday</td>
+<td align="left">取时间和时区</td>
+</tr>
+<tr>
+<td align="left">settimeofday</td>
+<td align="left">设置时间和时区</td>
+</tr>
+<tr>
+<td align="left">stime</td>
+<td align="left">设置系统日期和时间</td>
+</tr>
+<tr>
+<td align="left">time</td>
+<td align="left">取得系统时间</td>
+</tr>
+<tr>
+<td align="left">times</td>
+<td align="left">取进程运行时间</td>
+</tr>
+<tr>
+<td align="left">uname</td>
+<td align="left">获取当前 UNIX 系统的名称、版本和主机等信息</td>
+</tr>
+<tr>
+<td align="left">vhangup</td>
+<td align="left">挂起当前终端</td>
+</tr>
+<tr>
+<td align="left">nfsservctl</td>
+<td align="left">对 NFS 守护进程进行控制</td>
+</tr>
+<tr>
+<td align="left">vm86</td>
+<td align="left">进入模拟 8086 模式</td>
+</tr>
+<tr>
+<td align="left">create_module</td>
+<td align="left">创建可装载的模块项</td>
+</tr>
+<tr>
+<td align="left">delete_module</td>
+<td align="left">删除可装载的模块项</td>
+</tr>
+<tr>
+<td align="left">init_module</td>
+<td align="left">初始化模块</td>
+</tr>
+<tr>
+<td align="left">query_module</td>
+<td align="left">查询模块信息</td>
+</tr>
+<tr>
+<td align="left">*get_kernel_syms</td>
+<td align="left">取得核心符号,已被 query_module 代替</td>
+</tr>
+</tbody></table>
+<h3 id="四、内存管理"><a href="#四、内存管理" class="headerlink" title="四、内存管理"></a>四、内存管理</h3><table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">brk</td>
+<td align="left">改变数据段空间的分配</td>
+</tr>
+<tr>
+<td align="left">sbrk</td>
+<td align="left">参见 brk</td>
+</tr>
+<tr>
+<td align="left">mlock</td>
+<td align="left">内存页面加锁</td>
+</tr>
+<tr>
+<td align="left">munlock</td>
+<td align="left">内存页面解锁</td>
+</tr>
+<tr>
+<td align="left">mlockall</td>
+<td align="left">调用进程所有内存页面加锁</td>
+</tr>
+<tr>
+<td align="left">munlockall</td>
+<td align="left">调用进程所有内存页面解锁</td>
+</tr>
+<tr>
+<td align="left">mmap</td>
+<td align="left">映射虚拟内存页</td>
+</tr>
+<tr>
+<td align="left">munmap</td>
+<td align="left">去除内存页映射</td>
+</tr>
+<tr>
+<td align="left">mremap</td>
+<td align="left">重新映射虚拟内存地址</td>
+</tr>
+<tr>
+<td align="left">msync</td>
+<td align="left">将映射内存中的数据写回磁盘</td>
+</tr>
+<tr>
+<td align="left">mprotect</td>
+<td align="left">设置内存映像保护</td>
+</tr>
+<tr>
+<td align="left">getpagesize</td>
+<td align="left">获取页面大小</td>
+</tr>
+<tr>
+<td align="left">sync</td>
+<td align="left">将内存缓冲区数据写回硬盘</td>
+</tr>
+<tr>
+<td align="left">cacheflush</td>
+<td align="left">将指定缓冲区中的内容写回磁盘</td>
+</tr>
+</tbody></table>
+<h3 id="五、网络管理"><a href="#五、网络管理" class="headerlink" title="五、网络管理"></a>五、网络管理</h3><table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">getdomainname</td>
+<td align="left">取域名</td>
+</tr>
+<tr>
+<td align="left">setdomainname</td>
+<td align="left">设置域名</td>
+</tr>
+<tr>
+<td align="left">gethostid</td>
+<td align="left">获取主机标识号</td>
+</tr>
+<tr>
+<td align="left">sethostid</td>
+<td align="left">设置主机标识号</td>
+</tr>
+<tr>
+<td align="left">gethostname</td>
+<td align="left">获取本主机名称</td>
+</tr>
+<tr>
+<td align="left">sethostname</td>
+<td align="left">设置主机名称</td>
+</tr>
+</tbody></table>
+<h3 id="六、socket-控制"><a href="#六、socket-控制" class="headerlink" title="六、socket 控制"></a>六、socket 控制</h3><table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">socketcall</td>
+<td align="left">socket 系统调用</td>
+</tr>
+<tr>
+<td align="left">socket</td>
+<td align="left">建立 socket</td>
+</tr>
+<tr>
+<td align="left">bind</td>
+<td align="left">绑定 socket 到端口</td>
+</tr>
+<tr>
+<td align="left">connect</td>
+<td align="left">连接远程主机</td>
+</tr>
+<tr>
+<td align="left">accept</td>
+<td align="left">响应 socket 连接请求</td>
+</tr>
+<tr>
+<td align="left">send</td>
+<td align="left">通过 socket 发送信息</td>
+</tr>
+<tr>
+<td align="left">sendto</td>
+<td align="left">发送 UDP 信息</td>
+</tr>
+<tr>
+<td align="left">sendmsg</td>
+<td align="left">参见 send</td>
+</tr>
+<tr>
+<td align="left">recv</td>
+<td align="left">通过 socket 接收信息</td>
+</tr>
+<tr>
+<td align="left">recvfrom</td>
+<td align="left">接收 UDP 信息</td>
+</tr>
+<tr>
+<td align="left">recvmsg</td>
+<td align="left">参见 recv</td>
+</tr>
+<tr>
+<td align="left">listen</td>
+<td align="left">监听 socket 端口</td>
+</tr>
+<tr>
+<td align="left">select</td>
+<td align="left">对多路同步 I/O 进行轮询</td>
+</tr>
+<tr>
+<td align="left">shutdown</td>
+<td align="left">关闭 socket 上的连接</td>
+</tr>
+<tr>
+<td align="left">getsockname</td>
+<td align="left">取得本地 socket 名字</td>
+</tr>
+<tr>
+<td align="left">getpeername</td>
+<td align="left">获取通信对方的 socket 名字</td>
+</tr>
+<tr>
+<td align="left">getsockopt</td>
+<td align="left">取端口设置</td>
+</tr>
+<tr>
+<td align="left">setsockopt</td>
+<td align="left">设置端口参数</td>
+</tr>
+<tr>
+<td align="left">sendfile</td>
+<td align="left">在文件或端口间传输数据</td>
+</tr>
+<tr>
+<td align="left">socketpair</td>
+<td align="left">创建一对已联接的无名 socket</td>
+</tr>
+</tbody></table>
+<h3 id="七、用户管理"><a href="#七、用户管理" class="headerlink" title="七、用户管理"></a>七、用户管理</h3><table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">getuid</td>
+<td align="left">获取用户标识号</td>
+</tr>
+<tr>
+<td align="left">setuid</td>
+<td align="left">设置用户标志号</td>
+</tr>
+<tr>
+<td align="left">getgid</td>
+<td align="left">获取组标识号</td>
+</tr>
+<tr>
+<td align="left">setgid</td>
+<td align="left">设置组标志号</td>
+</tr>
+<tr>
+<td align="left">getegid</td>
+<td align="left">获取有效组标识号</td>
+</tr>
+<tr>
+<td align="left">setegid</td>
+<td align="left">设置有效组标识号</td>
+</tr>
+<tr>
+<td align="left">geteuid</td>
+<td align="left">获取有效用户标识号</td>
+</tr>
+<tr>
+<td align="left">seteuid</td>
+<td align="left">设置有效用户标识号</td>
+</tr>
+<tr>
+<td align="left">setregid</td>
+<td align="left">分别设置真实和有效的的组标识号</td>
+</tr>
+<tr>
+<td align="left">setreuid</td>
+<td align="left">分别设置真实和有效的用户标识号</td>
+</tr>
+<tr>
+<td align="left">getresgid</td>
+<td align="left">分别获取真实的,有效的和保存过的组标识号</td>
+</tr>
+<tr>
+<td align="left">setresgid</td>
+<td align="left">分别设置真实的,有效的和保存过的组标识号</td>
+</tr>
+<tr>
+<td align="left">getresuid</td>
+<td align="left">分别获取真实的,有效的和保存过的用户标识号</td>
+</tr>
+<tr>
+<td align="left">setresuid</td>
+<td align="left">分别设置真实的,有效的和保存过的用户标识号</td>
+</tr>
+<tr>
+<td align="left">setfsgid</td>
+<td align="left">设置文件系统检查时使用的组标识号</td>
+</tr>
+<tr>
+<td align="left">setfsuid</td>
+<td align="left">设置文件系统检查时使用的用户标识号</td>
+</tr>
+<tr>
+<td align="left">getgroups</td>
+<td align="left">获取后补组标志清单</td>
+</tr>
+<tr>
+<td align="left">setgroups</td>
+<td align="left">设置后补组标志清单</td>
+</tr>
+</tbody></table>
+<h3 id="八、进程间通信"><a href="#八、进程间通信" class="headerlink" title="八、进程间通信"></a>八、进程间通信</h3><table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ipc</td>
+<td align="left">进程间通信总控制调用</td>
+</tr>
+</tbody></table>
+<p>1、信号</p>
+<table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">sigaction</td>
+<td align="left">设置对指定信号的处理方法</td>
+</tr>
+<tr>
+<td align="left">sigprocmask</td>
+<td align="left">根据参数对信号集中的信号执行阻塞/解除阻塞等操作</td>
+</tr>
+<tr>
+<td align="left">sigpending</td>
+<td align="left">为指定的被阻塞信号设置队列</td>
+</tr>
+<tr>
+<td align="left">sigsuspend</td>
+<td align="left">挂起进程等待特定信号</td>
+</tr>
+<tr>
+<td align="left">signal</td>
+<td align="left">参见 signal</td>
+</tr>
+<tr>
+<td align="left">kill</td>
+<td align="left">向进程或进程组发信号</td>
+</tr>
+<tr>
+<td align="left">*sigblock</td>
+<td align="left">向被阻塞信号掩码中添加信号,已被 sigprocmask 代替</td>
+</tr>
+<tr>
+<td align="left">*siggetmask</td>
+<td align="left">取得现有阻塞信号掩码,已被 sigprocmask 代替</td>
+</tr>
+<tr>
+<td align="left">*sigsetmask</td>
+<td align="left">用给定信号掩码替换现有阻塞信号掩码,已被 sigprocmask 代替</td>
+</tr>
+<tr>
+<td align="left">*sigmask</td>
+<td align="left">将给定的信号转化为掩码,已被 sigprocmask 代替</td>
+</tr>
+<tr>
+<td align="left">*sigpause</td>
+<td align="left">作用同 sigsuspend,已被 sigsuspend 代替</td>
+</tr>
+<tr>
+<td align="left">sigvec</td>
+<td align="left">为兼容 BSD 而设的信号处理函数,作用类似 sigaction</td>
+</tr>
+<tr>
+<td align="left">ssetmask</td>
+<td align="left">ANSI C 的信号处理函数,作用类似 sigaction</td>
+</tr>
+</tbody></table>
+<p>2、消息</p>
+<table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">msgctl</td>
+<td align="left">消息控制操作</td>
+</tr>
+<tr>
+<td align="left">msgget</td>
+<td align="left">获取消息队列</td>
+</tr>
+<tr>
+<td align="left">msgsnd</td>
+<td align="left">发消息</td>
+</tr>
+<tr>
+<td align="left">msgrcv</td>
+<td align="left">取消息</td>
+</tr>
+</tbody></table>
+<p>3、管道</p>
+<table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">pipe</td>
+<td align="left">创建管道</td>
+</tr>
+</tbody></table>
+<p>4、信号量</p>
+<table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">semctl</td>
+<td align="left">信号量控制</td>
+</tr>
+<tr>
+<td align="left">semget</td>
+<td align="left">获取一组信号量</td>
+</tr>
+<tr>
+<td align="left">semop</td>
+<td align="left">信号量操作</td>
+</tr>
+</tbody></table>
+<p>5、共享内存</p>
+<table>
+<thead>
+<tr>
+<th align="left">api</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">shmctl</td>
+<td align="left">控制共享内存</td>
+</tr>
+<tr>
+<td align="left">shmget</td>
+<td align="left">获取共享内存</td>
+</tr>
+<tr>
+<td align="left">shmat</td>
+<td align="left">连接共享内存</td>
+</tr>
+<tr>
+<td align="left">shmdt</td>
+<td align="left">拆卸共享内存</td>
+</tr>
+</tbody></table>
+<p>文档参考：</p>
+<ol>
+<li><p>glibc 库的官方手册：标准库和系统调用都有讲解，地址：<a href="https://www.gnu.org/software/libc/manual/html_mono/libc.html" target="_blank" rel="noopener">https://www.gnu.org/software/libc/manual/html_mono/libc.html</a></p>
+</li>
+<li><p>linux man page：第 2 节是系统调用，第 3 节是 glibc 库函数，地址：<a href="https://www.kernel.org/doc/man-pages/" target="_blank" rel="noopener">https://www.kernel.org/doc/man-pages/</a></p>
+</li>
+<li><p>相关书籍：unix 环境高级编程，The Linux Programming Interface（作者是 linux kernel man page 维护者）</p>
+</li>
+</ol>
+<p>引用备注：</p>
+<p>以上分类来自于 ibm 社区：<a href="https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part1/appendix.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/linux/kernel/syscall/part1/appendix.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/25/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">项目管理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-25 19:28:56" itemprop="dateCreated datePublished" datetime="2019-12-25T19:28:56+08:00">2019-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-15 17:50:15" itemprop="dateModified" datetime="2020-01-15T17:50:15+08:00">2020-01-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" itemprop="url" rel="index">
+                    <span itemprop="name">项目管理</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/25/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="post-meta-item leancloud_visitors" data-flag-title="项目管理" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2019/12/25/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/25/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>软件工程之美：<br><a href="https://blog.csdn.net/EllieYaYa/article/details/90692766" target="_blank" rel="noopener">https://blog.csdn.net/EllieYaYa/article/details/90692766</a></p>
+<p><strong>待完成</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/SQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/25/SQL/" class="post-title-link" itemprop="url">SQL</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-25 19:27:59" itemprop="dateCreated datePublished" datetime="2019-12-25T19:27:59+08:00">2019-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-27 16:38:29" itemprop="dateModified" datetime="2019-12-27T16:38:29+08:00">2019-12-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/25/SQL/" class="post-meta-item leancloud_visitors" data-flag-title="SQL" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2019/12/25/SQL/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/25/SQL/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在线 sql 学习网站</p>
+<p><a href="https://mp.weixin.qq.com/s/UJ4A44TjghGtbl5E6bL7Tg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/UJ4A44TjghGtbl5E6bL7Tg</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">数据结构和算法（一）概述</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-25 19:06:32" itemprop="dateCreated datePublished" datetime="2019-12-25T19:06:32+08:00">2019-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-30 19:21:48" itemprop="dateModified" datetime="2019-12-30T19:21:48+08:00">2019-12-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构与算法</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" class="post-meta-item leancloud_visitors" data-flag-title="数据结构和算法（一）概述" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2019/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/25/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>数据结构，用来描述数据间的关系</p>
+<p>算法，指解决某一特定问题的步骤</p>
+<p>数据结构为算法服务，算法是特定问题下的解决办法，故没有通用性算法，应具体问题具体分析</p>
+<h3 id="一、数据结构"><a href="#一、数据结构" class="headerlink" title="一、数据结构"></a>一、数据结构</h3><p><img src="/images/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt="数据结构"><br>以上为数据结构的逻辑结构，在计算机内部的物理存储结构有：顺序结构，链式结构、索引结构和散列结构。</p>
+<h3 id="二、算法"><a href="#二、算法" class="headerlink" title="二、算法"></a>二、算法</h3><p><img src="/images/%E7%AE%97%E6%B3%95.png" alt="算法"></p>
+<h3 id="三、学习目标"><a href="#三、学习目标" class="headerlink" title="三、学习目标"></a>三、学习目标</h3><p>数据结构，熟悉各数据结构特点，掌握增删改查的操作方法。</p>
+<p>算法学习，理解各算法所解决问题的定义，掌握算法复杂度分析方法，体会各算法的基本思想</p>
+<h3 id="四、学习途径"><a href="#四、学习途径" class="headerlink" title="四、学习途径"></a>四、学习途径</h3><ol>
+<li><p>在线课程<br>斯坦福大学算法，<a href="https://www.coursera.org/specializations/algorithms#courses" target="_blank" rel="noopener">https://www.coursera.org/specializations/algorithms#courses</a></p>
+</li>
+<li><p>可视化平台<br><a href="https://algorithm-visualizer.org/，特点：对算法有分类" target="_blank" rel="noopener">https://algorithm-visualizer.org/，特点：对算法有分类</a><br><a href="https://visualgo.net/zh，特点：有中文，有练习题目" target="_blank" rel="noopener">https://visualgo.net/zh，特点：有中文，有练习题目</a><br><a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html，特点：可以输入可操作" target="_blank" rel="noopener">https://www.cs.usfca.edu/~galles/visualization/Algorithms.html，特点：可以输入可操作</a></p>
+</li>
+<li><p>在线练题<br>leetcode： <a href="https://leetcode.com/" target="_blank" rel="noopener">https://leetcode.com/</a><br>hihocoder： <a href="http://hihocoder.com/hiho" target="_blank" rel="noopener">http://hihocoder.com/hiho</a><br>lintcode： <a href="https://www.lintcode.com/" target="_blank" rel="noopener">https://www.lintcode.com/</a><br><a href="https://pintia.cn/problem-sets?tab=0" target="_blank" rel="noopener">https://pintia.cn/problem-sets?tab=0</a></p>
+</li>
+<li><p>一些博客<br><a href="https://www.cnblogs.com/skywang12345/p/3603935.html" target="_blank" rel="noopener">https://www.cnblogs.com/skywang12345/p/3603935.html</a></p>
+</li>
+</ol>
+<p>引用列表：</p>
+<p>算法思想总结：<br><a href="https://zhuanlan.zhihu.com/p/36903717" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/36903717</a><br><a href="https://blog.csdn.net/m0_37872090/article/details/80819788" target="_blank" rel="noopener">https://blog.csdn.net/m0_37872090/article/details/80819788</a></p>
+<p>排序算法：<br><a href="http://ddrv.cn/docs/SortingAlgorithm/" target="_blank" rel="noopener">http://ddrv.cn/docs/SortingAlgorithm/</a></p>
+<p>查找算法：<br><a href="https://blog.csdn.net/weixin_39241397/article/details/79344179" target="_blank" rel="noopener">https://blog.csdn.net/weixin_39241397/article/details/79344179</a></p>
+<p>数据结构和算法概述</p>
+<p><a href="https://zhuanlan.zhihu.com/p/93928797" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/93928797</a></p>
+<p><a href="https://blog.csdn.net/EllieYaYa/article/details/82852743" target="_blank" rel="noopener">https://blog.csdn.net/EllieYaYa/article/details/82852743</a></p>
+<p><a href="https://www.zhihu.com/question/21318658" target="_blank" rel="noopener">https://www.zhihu.com/question/21318658</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/cpp%E6%A0%87%E5%87%86%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/25/cpp%E6%A0%87%E5%87%86%E5%BA%93/" class="post-title-link" itemprop="url">cpp标准库</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-25 18:59:37" itemprop="dateCreated datePublished" datetime="2019-12-25T18:59:37+08:00">2019-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-01 09:14:03" itemprop="dateModified" datetime="2020-03-01T09:14:03+08:00">2020-03-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index">
+                    <span itemprop="name">c++</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/25/cpp%E6%A0%87%E5%87%86%E5%BA%93/" class="post-meta-item leancloud_visitors" data-flag-title="cpp标准库" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2019/12/25/cpp%E6%A0%87%E5%87%86%E5%BA%93/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/25/cpp%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h3><p>标准库提供了常见数据结构和常用算法<br>static_cast：基本类型之间，基类指针和子类指针（向下转换没有 dynamic_cast 安全）<br>reinterpret_cast：指针类型之间，整数和指针类型之间<br>dynamic_cast：类指针或引用的相互转换，需要虚函数表支持，有运行时类型检查，所以可以在类层次中向上和向下安全转换<br>const_cast：去除常量指针或引用的 const 属性</p>
+<h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><p>智能指针是类，利用栈退出时临时变量自动销毁的原理，在析构函数中释放资源，避免内存泄漏</p>
+<ol>
+<li>unique_ptr：没有复制和赋值构造函数，同一时间只有一个智能指针指向对象</li>
+<li>shared_ptr：采用引用计数，当计数为 0，销毁</li>
+<li>weak_ptr：解决 shared_ptr 循环引用导致资源泄漏，weak_ptr 由 shared_ptr 创建，但是不影响引用计数</li>
+<li>auto_ptr(C++17 中移除)</li>
+</ol>
+<h3 id="数据结构和算法"><a href="#数据结构和算法" class="headerlink" title="数据结构和算法"></a>数据结构和算法</h3><p>array：固定大小的数组，底层是数组<br>vector：可以改变大小的数组，底层是数组<br>deque：</p>
+<p>算法：</p>
+<p><a href="https://github.com/huihut/interview/tree/master/STL#array" target="_blank" rel="noopener">https://github.com/huihut/interview/tree/master/STL#array</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/c%E8%AF%AD%E8%A8%80%E6%A0%87%E5%87%86%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/25/c%E8%AF%AD%E8%A8%80%E6%A0%87%E5%87%86%E5%BA%93/" class="post-title-link" itemprop="url">c语言标准库</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-25 18:57:01" itemprop="dateCreated datePublished" datetime="2019-12-25T18:57:01+08:00">2019-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-11 17:47:35" itemprop="dateModified" datetime="2020-01-11T17:47:35+08:00">2020-01-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">c语言</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/25/c%E8%AF%AD%E8%A8%80%E6%A0%87%E5%87%86%E5%BA%93/" class="post-meta-item leancloud_visitors" data-flag-title="c语言标准库" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2019/12/25/c%E8%AF%AD%E8%A8%80%E6%A0%87%E5%87%86%E5%BA%93/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/25/c%E8%AF%AD%E8%A8%80%E6%A0%87%E5%87%86%E5%BA%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="类型相关"><a href="#类型相关" class="headerlink" title="类型相关"></a>类型相关</h3><ol>
+<li>基本类型：char、short、int、long<br>数值极限头文件&lt;limits.h&gt;和&lt;float.h&gt;</li>
+</ol>
+<ul>
+<li>CHAR_MIN、CHAR_MAX：char 类型极限</li>
+<li>INT_MIN、INT_MAX：int 类型极限</li>
+<li>FLT_MIN、FLT_MAX：float 类型极限</li>
+</ul>
+<ol start="2">
+<li>附加基本类型：size_t、ptrdiff_t、NULL 等，定义于&lt;stddef.h&gt;<br>极限头文件：&lt;stdint.h&gt;</li>
+</ol>
+<ul>
+<li>SIZE_MAX：size_t 类型对象的最大值</li>
+</ul>
+<ol start="3">
+<li>定宽整数类型：定义于头文件&lt;stdint.h&gt;</li>
+</ol>
+<ul>
+<li>int8_t：8 位有符号整数类型</li>
+<li>uint8_t：8 位无符号整数类型</li>
+<li>INT8_MIN：int8_t 类型最小值</li>
+<li>INT8_MAX：int8_t 类型最大值</li>
+</ul>
+<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">malloc</span><span class="params">( <span class="keyword">size_t</span> <span class="built_in">size</span> )</span></span>;</span><br><span class="line"><span class="comment">// 分配size个字节的未初始化的内存，失败返回空指针</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">calloc</span><span class="params">( <span class="keyword">size_t</span> num, <span class="keyword">size_t</span> <span class="built_in">size</span> )</span></span>;</span><br><span class="line"><span class="comment">// 分配num*size个字节的内存，并初始化为0，失败返回空指针</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">realloc</span><span class="params">( <span class="keyword">void</span> *ptr, <span class="keyword">size_t</span> new_size )</span></span>;</span><br><span class="line"><span class="comment">// 如果ptr=NULL，size不为0，相当于malloc</span></span><br><span class="line"><span class="comment">// 如果ptr不为NULL，size=0，相当于free</span></span><br><span class="line"><span class="comment">// size比原内存大，返回结果有2种情况，1.返回结果与ptr相等，2.返回新地址，ptr被释放</span></span><br><span class="line"><span class="comment">// size比原内存小，原内存内容被截断，返回原地址</span></span><br><span class="line"><span class="comment">// 失败时返回空指针，原地址ptr保持有效</span></span><br><span class="line"><span class="keyword">int</span> *p = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="keyword">if</span>(!p)&#123;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> *q = <span class="built_in">realloc</span>(p, <span class="number">5</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line"><span class="keyword">if</span>(q)&#123;</span><br><span class="line">  <span class="keyword">if</span>(p != q)&#123;</span><br><span class="line">    <span class="comment">// p 已经被释放</span></span><br><span class="line">    p = <span class="literal">NULL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">free</span>(q);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">free</span>(p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free</span><span class="params">( <span class="keyword">void</span>* ptr )</span></span>;</span><br><span class="line"><span class="comment">// ptr = NULL 时，无操作</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串库"><a href="#字符串库" class="headerlink" title="字符串库"></a>字符串库</h3><p>可参考我的文章：字符集和编码</p>
+<p>宽字符串：每个字符的字节数固定的，通常是 Unicode 编码，也就是 Unicode 字节集中的序号<br>窄字符串：也叫多字节字符串，每个字符占用的字节个数不同，比如 UTF-8、GB2312、GBK 等；</p>
+<p>宽字符和窄字符相互转换：<br>由于宽字符串是 Unicode 编码，所以跟环境无关<br>窄字符串的编码是可变的，比如 UTF-8、GB2312、GBK 等<br>所以窄字符串和宽字符串在转换过程中，会根据当前活动的 locale 的字符编码来识别窄字符串，然后进行转换</p>
+<p>C 语言字符串操作函数分为 3 类：单字节字符串、多字节字符串和宽字符串</p>
+<h3 id="输入输出库"><a href="#输入输出库" class="headerlink" title="输入输出库"></a>输入输出库</h3><p>将字符串打印到控制台时，字符串的编码格式需要跟终端的一致</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2019/12/25/c-cpp%E6%A6%82%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -479,20 +2080,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

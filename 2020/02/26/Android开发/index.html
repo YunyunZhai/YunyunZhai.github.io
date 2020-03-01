@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://yunyunzhai.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="安卓系统架构官网介绍：https:&#x2F;&#x2F;developer.android.google.cn&#x2F;guide&#x2F;platform  linux 内核，主要是内存管理，进程管理，驱动管理等 HAL，硬件抽象层，由于 linux 开源许可的原因，各个厂家的驱动不希望开源，所以提供 HAL 各个厂家实现自己的驱动 android 运行层，包括 c&#x2F;c++的各种库和 java 虚拟机 davlik 以及 jav">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android">
+<meta property="og:url" content="https://yunyunzhai.github.io/2020/02/26/Android%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="翟云云的博客">
+<meta property="og:description" content="安卓系统架构官网介绍：https:&#x2F;&#x2F;developer.android.google.cn&#x2F;guide&#x2F;platform  linux 内核，主要是内存管理，进程管理，驱动管理等 HAL，硬件抽象层，由于 linux 开源许可的原因，各个厂家的驱动不希望开源，所以提供 HAL 各个厂家实现自己的驱动 android 运行层，包括 c&#x2F;c++的各种库和 java 虚拟机 davlik 以及 jav">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-26T08:27:59.000Z">
+<meta property="article:modified_time" content="2020-03-01T01:13:38.780Z">
+<meta property="article:author" content="翟云云">
+<meta property="article:tag" content="Android开发">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yunyunzhai.github.io/2020/02/26/Android%E5%BC%80%E5%8F%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Android | 翟云云的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">翟云云的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/02/26/Android%E5%BC%80%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-26 16:27:59" itemprop="dateCreated datePublished" datetime="2020-02-26T16:27:59+08:00">2020-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-01 09:13:38" itemprop="dateModified" datetime="2020-03-01T09:13:38+08:00">2020-03-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
+                    <span itemprop="name">Android开发</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/02/26/Android%E5%BC%80%E5%8F%91/" class="post-meta-item leancloud_visitors" data-flag-title="Android" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/02/26/Android%E5%BC%80%E5%8F%91/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/26/Android%E5%BC%80%E5%8F%91/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="安卓系统架构"><a href="#安卓系统架构" class="headerlink" title="安卓系统架构"></a>安卓系统架构</h3><p>官网介绍：<a href="https://developer.android.google.cn/guide/platform" target="_blank" rel="noopener">https://developer.android.google.cn/guide/platform</a></p>
+<ol>
+<li>linux 内核，主要是内存管理，进程管理，驱动管理等</li>
+<li>HAL，硬件抽象层，由于 linux 开源许可的原因，各个厂家的驱动不希望开源，所以提供 HAL 各个厂家实现自己的驱动</li>
+<li>android 运行层，包括 c/c++的各种库和 java 虚拟机 davlik 以及 java 标准库，ndk 接口：<a href="https://developer.android.google.cn/ndk/reference" target="_blank" rel="noopener">https://developer.android.google.cn/ndk/reference</a></li>
+<li>java framework 层，app 框架，提供 activty 管理等，api 接口：<a href="https://developer.android.google.cn/reference" target="_blank" rel="noopener">https://developer.android.google.cn/reference</a></li>
+</ol>
+<h3 id="Android-系统启动流程"><a href="#Android-系统启动流程" class="headerlink" title="Android 系统启动流程"></a>Android 系统启动流程</h3><ul>
+<li>init 进程<ul>
+<li>Zygote 受精卵进程，所有 app 进程都从这里创建，监听 socket：666<ul>
+<li>ServiceManager：系统服务的注册查询，bindler 通信的基础，提供 app 和个系统服务的通信</li>
+<li>SystemServer：启动各种系统服务线程 - 系统 ready 后，AMS 启动 home 桌面</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>SystemServer 启动的系统服务：</p>
+<ol>
+<li>ActivityManagerService：四大组件的管理，app 的生命管理</li>
+<li>WindowManagerService： 输入事件的分发和管理</li>
+<li>PackageManagerService ：软件包的解包验证安装</li>
+</ol>
+<h3 id="apk-安装流程"><a href="#apk-安装流程" class="headerlink" title="apk 安装流程"></a>apk 安装流程</h3><p>PackageManagerService 负责解析 apk 包，然后注册 AndroidManifest.xml 所声明的所有组件</p>
+<h3 id="APP-启动"><a href="#APP-启动" class="headerlink" title="APP 启动"></a>APP 启动</h3><p>HOME 进程发送 startActivity 给 ActivityManagerService，AMS 发送 Zygote 消息创建进程，system_server 发送消息给 App 进程，主线程收到消息后回调 Activity.onCreate</p>
+<h3 id="flutter-与-react-native-跨平台技术"><a href="#flutter-与-react-native-跨平台技术" class="headerlink" title="flutter 与 react native 跨平台技术"></a>flutter 与 react native 跨平台技术</h3><p>flutter 框架采用 dart 语言，底层是 dart 虚拟机，release 版本默认 AOT 编译，就是将 dart 代码编译成机器码，所以效率高</p>
+<p>reactnative 框架，底层桥，中间是 js 解释器，上层是 jsx，桥接主要包装原生控件或其他功能给上层使用，性能差的原因是一有解释器，而是有桥接转换</p>
+<p>参考：<br><a href="https://www.jianshu.com/p/e084414c7e1c" target="_blank" rel="noopener">https://www.jianshu.com/p/e084414c7e1c</a><br><a href="https://blog.csdn.net/freekiteyu/article/details/70082302" target="_blank" rel="noopener">https://blog.csdn.net/freekiteyu/article/details/70082302</a><br><a href="https://www.jianshu.com/p/2f95ab717078" target="_blank" rel="noopener">https://www.jianshu.com/p/2f95ab717078</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android%E5%BC%80%E5%8F%91/" rel="tag"># Android开发</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/22/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="面试题">
+      <i class="fa fa-chevron-left"></i> 面试题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安卓系统架构"><span class="nav-number">1.</span> <span class="nav-text">安卓系统架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-系统启动流程"><span class="nav-number">2.</span> <span class="nav-text">Android 系统启动流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apk-安装流程"><span class="nav-number">3.</span> <span class="nav-text">apk 安装流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APP-启动"><span class="nav-number">4.</span> <span class="nav-text">APP 启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flutter-与-react-native-跨平台技术"><span class="nav-number">5.</span> <span class="nav-text">flutter 与 react native 跨平台技术</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="翟云云"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">翟云云</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YunyunZhai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YunyunZhai" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:770833723@qq.com" title="E-Mail → mailto:770833723@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟云云</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: '7SicDyyuRHAKEFrTgfmyJo4n-gzGzoHsz',
+      appKey: 'SQLhyGf3GSnW4rPFJoQ63j52',
+      placeholder: "点评一下",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
