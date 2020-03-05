@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://yunyunzhai.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="编译和链接  编译过程    广义的代码编译过程，实际上应该细分为：预处理，编译，汇编，链接。 预处理过程，负责头文件展开，宏替换，条件编译的选择，删除注释等工作。gcc –E 表示进行预处理。 编译过程，负载将预处理生成的文件，经过词法分析，语法分析，语义分析及优化后生成汇编文件。gcc –S 表示进行编译。 汇编，是将汇编代码转换为机器可执行指令的过程。通过使用 gcc –C 或者 as 命">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译链接资料精选">
+<meta property="og:url" content="https://yunyunzhai.github.io/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/index.html">
+<meta property="og:site_name" content="翟云云的博客">
+<meta property="og:description" content="编译和链接  编译过程    广义的代码编译过程，实际上应该细分为：预处理，编译，汇编，链接。 预处理过程，负责头文件展开，宏替换，条件编译的选择，删除注释等工作。gcc –E 表示进行预处理。 编译过程，负载将预处理生成的文件，经过词法分析，语法分析，语义分析及优化后生成汇编文件。gcc –S 表示进行编译。 汇编，是将汇编代码转换为机器可执行指令的过程。通过使用 gcc –C 或者 as 命">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-05T01:39:34.000Z">
+<meta property="article:modified_time" content="2020-03-05T01:39:55.393Z">
+<meta property="article:author" content="翟云云">
+<meta property="article:tag" content="编译与链接">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yunyunzhai.github.io/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>编译链接资料精选 | 翟云云的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">翟云云的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编译链接资料精选
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:39:34 / 修改时间：09:39:55" itemprop="dateCreated datePublished" datetime="2020-03-05T09:39:34+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">c语言</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/" class="post-meta-item leancloud_visitors" data-flag-title="编译链接资料精选" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol start="2">
+<li>编译和链接</li>
+<li><ol>
+<li>编译过程</li>
+</ol>
+</li>
+</ol>
+<p>广义的代码编译过程，实际上应该细分为：预处理，编译，汇编，链接。</p>
+<p>预处理过程，负责头文件展开，宏替换，条件编译的选择，删除注释等工作。gcc –E 表示进行预处理。</p>
+<p>编译过程，负载将预处理生成的文件，经过词法分析，语法分析，语义分析及优化后生成汇编文件。gcc –S 表示进行编译。</p>
+<p>汇编，是将汇编代码转换为机器可执行指令的过程。通过使用 gcc –C 或者 as 命令完成。</p>
+<p>链接，负载根据目标文件及所需的库文件产生最终的可执行文件。链接主要解决了模块间的相互引用的问题，分为地址和空间分配，符号解析和重定位几个步骤。实际上在编译阶段生成目标文件时，会暂时搁置那些外部引用，而这些外部引用就是在链接时进行确定的。链接器在链接时，会根据符号名称去相应模块中寻找对应符号。待符号确定之后，链接器会重写之前那些未确定的符号的地址，这个过程就是重定位。</p>
+<p>2.1.1.   相关选项</p>
+<p>-WL：这个选项可以将指定的参数传递给链接器。</p>
+<p>比如使用”-Wl,-soname,my-soname”，GCC 会将-soname,my-soname 传递给链接器，用来指定输出共享库的 SO-NAME。</p>
+<p>-shared：表示产生共享对象，产生的代码会在装载时进行重定位。但是无法做到让一份指令由多个进程共享。因为单纯的装载时重定位会对程序中所有指令和数据中的绝对地址进行修改。要做到让多个进程共享，还需要加上-fPIC。</p>
+<p>-fPIC：地址无关代码，是为了能让多个进程共享一份指令。基本思想就是将指令中需要进行修改的那部分分离出来，跟数据放到一块。这样指令部分就可以保持不变，而需要变化的那部分则与数据一块，每个进程都有自己的一份副本。</p>
+<p>-export-dynamic：默认情况下，链接器在产生可执行文件时，为了减少符号表大只会将那些被其他模块引用到的符号放到动态符号表。也就是说，在共享模块引用主模块时，只有那些在链接时被共享模块引用到的符号才会被导出。当程序使用 dlopen()加载某个共享模块时，如果该共享模块反向引用了主模块的符号，而该符号可能在链接时因为未被其他模块引用而未被导出到动态符号表，这样反向引用就会失败。这个参数就是用来解决这个问题的。它表示，链接器在产生可执行文件时，将所有全局符号导出动态符号表。</p>
+<p>-soname：指定输出共享库的 SO-NAME。</p>
+<p>-I：。指定头文件搜索路径。</p>
+<p>-l：指定链接某个库。指定链接的比如是 libxxx.so.x.y.z 的一个库，只需要写-lxxx 即可，编译器根据当前环境，在相关路径中查找名为 xxx 的库。xxx 又称为共享库的链接名(link name)。不同的库可能具有同样的链接名，比如动态和静态版本，libxxx.a libxxx.so。如果链接时采用-lxxx，那么链接器会根据输出文件的情况(动态/静态)选择合适的版本。比如如果 ld 采用了-static 参数，就会使用静态版本，如果使用了-Bdynamic(这也是默认情况)，就会使用动态版本。</p>
+<p>-L：指定链接时查找路径，多个路径用逗号分隔</p>
+<p>-rpath：这种方式可以指定产生的目标程序的共享库查找路径。还有一个类似选项-rpath-link，与-rpath 选项的区别在于，-rpath 选项指定的目录被硬编码到可执行文件中，-rpath-link 选项指定的目录只在链接阶段生效。这两个选项都是链接器 ld 的选项。更多链接器选项可以通过 man ld 查看。</p>
+<p>2.1.2.   编译与链接</p>
+<p>.so 和.a 的生成，可执行文件的生成。.a 的生成只需要编译阶段，而可执行文件的生成还需要进行链接。静态库文件的生成很简单，主要就是分两步，第一步将源文件生成目标文件，可以使用 gcc –c，第二步就是将目标文件打包，可以通过 ar 实现。所以该过程只要求源文件能够通过 gcc –c 这个命令即可。</p>
+<p>共享库的生成要复杂一些。可以有三种方法生成：<br>$ld -G<br>$gcc -shared<br>$libtool<br>用 ld 最复杂，用 gcc -shared 就简单的多，但是-shared 并非在任何平台都可以使用。-shared 该选项指定生成动态连接库（让连接器生成 T 类型的导出符号表，有时候也生成弱连接 W 类型的导出符号），不用该标志外部程序无法连接。GNU 提供了一个更好的工具 libtool，专门用来在各种平台上生成各种库。在编译生成某个.so 文件时，比如 liba.so，虽然它里面可能用到了 libb.so 的东西，但是在生成 a.so 时是可以不加-lb 的，因为 so 的生成不会进行符号解析和重定位。</p>
+<p>以 GCC 为例，它在编译静态库/动态库时到底使用了什么命令？比如：gcc –v -shared hello.c -o libhello.so。ld –G 用来产生.so 文件，也是 gcc 链接时实际调用的命令。</p>
+<p>生成可执行文件时，如果链接的是静态库，那么链接器会按照静态链接规则，将对应的符号引用进行重定位。而如果是动态库，链接器会将这个符号标记为动态链接的符号，不进行重定位，而是在装载时再进行。所以，尽管是动态链接，如果是已经进入到了链接阶段，那么也需要能在相应的.so 中找到某符号的定义，否则也会引发 Undefined reference to 的链接错误。因为链接器只有通过.so 文件，才能判断某符号是个动态链接符号，所以也需要读取这些.so 文件，找到相应符号的定义。</p>
+<p>2.1.3.   头文件查找</p>
+<p>#include 有两种写法形式，分别是：</p>
+<p>#include &lt;&gt; ： 直接到系统指定的某些目录中去找某些头文件。</p>
+<p>#include “” ： 先到源文件所在文件夹去找，然后再到系统指定的某些目录中去找某些头文件。</p>
+<p>gcc 寻找头文件的路径(按照 1-&gt;2-&gt;3 的顺序)：</p>
+<ol>
+<li>在 gcc 编译源文件的时候，通过参数-I 指定头文件的搜索路径，如果指定路径有多个路径时，则按照指定路径的顺序搜索头文件。命令形式如：“gcc -I /path/where/theheadfile/in sourcefile.c“，这里源文件的路径可以是绝对路径，也可以是相对路径。比如设当前路径为/root/test，include_test.c 如果要包含头文件“include/include_test.h“，有两种方法：</li>
+</ol>
+<p>1)include_test.c 中#include “include/include_test.h”或者#include “/root/test/include/include_test.h”，然后 gcc include_test.c 即可</p>
+<p>2)include_test.c 中#include &lt;include_test.h&gt;或者#include &lt;include_test.h&gt;，然后 gcc –I include include_test.c 也可</p>
+<p>2.通过查找 gcc 的环境变量来搜索头文件位置，分别是:</p>
+<p>CPATH/C_INCLUDE_PATH/CPLUS_INCLUDE_PATH/OBJC_INCLUDE_PATH。</p>
+<ol start="3">
+<li>再在缺省目录下搜索，分别是：</li>
+</ol>
+<p>/usr/include</p>
+<p>/usr/local/include</p>
+<p>/usr/lib/gcc-lib/i386-linux/2.95.2/include</p>
+<p>最后一行是 gcc 程序的库文件地址，各个用户的系统上可能不一样。gcc 在默认情况下，都会指定到/usr/include 文件夹寻找头文件。 gcc 还有一个参数：-nostdinc，它使编译器不再系统缺省的头文件目录里面找头文件，一般和-I 联合使用，明确限定头文件的位置。在编译驱动模块时，由于特殊的需求必须强制 GCC 不搜索系统默认路径，也就是不搜索/usr/include，要用参数-nostdinc，还要自己用-I 参数来指定内核头文件路径，这个时候必须在 Makefile 中指定。</p>
+<p>当#include 使用相对路径的时候，gcc 最终会根据上面这些路径，来最终构建出头文件的位置。如#include &lt;sys/types.h&gt;就是包含文件/usr/include/sys/types.h</p>
+<p>2.1.4.   链接时库书写顺序</p>
+<p>链接过程中库的顺序</p>
+<p>Q: 有几个库文件 A.a、B.a、common.a，前两者用到了定义在后者中的例程，如果把    common.a 放在前面，链接器报告存在无法解析的符号名，放在最后则无问题。<br>A: Floyd Davidson <a href="mailto:&#x66;&#x6c;&#111;&#x79;&#100;&#x40;&#x70;&#x74;&#x69;&#97;&#x6c;&#97;&#115;&#x6b;&#x61;&#x2e;&#x6e;&#x65;&#116;">&#x66;&#x6c;&#111;&#x79;&#100;&#x40;&#x70;&#x74;&#x69;&#97;&#x6c;&#97;&#115;&#x6b;&#x61;&#x2e;&#x6e;&#x65;&#116;</a><br>链接器按照命令行上指定顺序搜索库文件和目标文件(.a .o)，二者之间的区别在    于.o 文件被全部链接进来，而只从库文件中析取所需模块，仅当某个模块可以解析当前尚未成功解析的符号时，该模块被析取后链接进来。如果库文件无法解析任何当前尚未成功解析的符号，不从中析取也不发生链接。</p>
+<p>Unix 编程新手的常见问题是数学函数并不在标准 C 库中，而是在 libm.a 中</p>
+<p>cc -lm foo.c</p>
+<p>这里 foo.c 用到了数学库中的符号，但是链接器无法正确解析。当搜索到 libm.a 时，   来自 foo.c 的数学函数符号尚未出现，因此不需要析取 libm.a 的任何模块。接下来 foo.o 链接进来，增加了一批尚未成功解析的符号，但已经没有 libm.a 可供使用了， 因此数学库必须在 foo.o 之后被搜索到。</p>
+<p>cc foo.c –lm</p>
+<p>在你的问题中，如果 common.a 首先被搜索到，因为不匹配尚未成功解析的符号，而被丢弃。结果 A.a 和 B.a 真正链接进来的时候，已经没有库可以解析符号了。</p>
+<p>2.1.5.   链接时库文件查找</p>
+<p>链接时需要告诉链接器，在哪里找到库文件？以静态还是动态的方式链接库文件？默认情况下使用动态方式链接，这要求存在对应的.so 动态库文件，如果不存在，则寻找相应的.a 静态库文件。若在编译时向 gcc 传入-static 选项，则使用静态方式链接，这要求所有库文件都必须有对应的*.a 静态库。</p>
+<p>1.gcc 会去找-L 2.再找 gcc 的环境变量 LIBRARY_PATH  3.再找内定目录 /lib /usr/lib /usr/local/lib，这是当初编译 gcc 时，写在文件里的</p>
+<p>需要澄清一下：</p>
+<p>l  ldconfig 做的事情都与运行程序时有关，跟编译时一点关系都没有</p>
+<p>l  需要注意的是 LD_LIBRARY_PATH 通常只是在程序运行时告诉 loader 该去哪查找共享库，比如 gcc 编译时的链接器可能就不会去查找 LD_LIBRARY_PATH。</p>
+<p>l  查找时如果找到了同名的动态库和静态库如何处理？当我们指定一个路径下的库文件名时，假如此时同时存在 xxx.a 和 xxx.so 的两个库形式，那么优先选择.so 链接(共享库优先)。如果使用了-static，找到了.so 是否会使用？如果使用了-Bdynamic，那找到了.a 会不会使用？.a 的生成能否依赖.so？它所依赖的这些.so 能否不加入-l 参数列表？</p>
+<p>l  系统中链接器与加载器的区别？编译时的链接器是 ld，加载器则位于 ld-linux.so。加载器是否去/etc/ld.so.conf 中目录下去寻找所需的.so，还是依赖于 ldconfig 去更新 ld.so.cache 文件，？答案是依赖于 ldconfig 去更新 cache。</p>
+<p>l  系统中的 ld 与 gcc 采用的链接器的区别？gcc –v 查看 gcc 调用 as/ld 之类程序的时候传给它们的参数。通过 gcc 命令进行链接，与直接使用 ld 的区别？库查找路径是否不同？gcc 的 LIBRARY_PATH，应该是 gcc 本身用的环境变量。</p>
+<p>l  GCC，gcc 与 g++？GCC 在预处理阶段会调用 cpp，在编译阶段调用 gcc 或 g++，汇编阶段调用 as，最后链接阶段比较复杂，在 GCC 内部的这一步调用如下：<br>$ ld -dynamic-linker /lib/ld-linux.so.2 /usr/lib/crt1.o<br>/usr/lib/crti.o /usr/lib/gcc-lib/i686/3.3.1/crtbegin.o<br>-L/usr/lib/gcc-lib/i686/3.3.1 hello.o -lgcc -lgcc_eh<br>-lc -lgcc -lgcc_eh /usr/lib/gcc-lib/i686/3.3.1/crtend.o<br>/usr/lib/crtn.o</p>
+<p>2.2.  GCC</p>
+<p>GCC（GNU Compiler Collection，GNU 编译器套装），是一套由 GNU 开发的编程语言编译器。它是一套以 GPL 及 LGPL 许可证所发行的自由软件，也是 GNU 计划 的关键部分，亦是自由的 类 Unix 及苹果计算机 Mac OS X 操作系统的标准编译器。GCC（特别是其中的 C 语言编译器）也常被认为是跨平台编译器的事实标准。</p>
+<p>GCC 原名为 GNU C 语言编译器（GNU C Compiler），因为它原本只能处理 C 语言。GCC 很快地扩展，变得可处理 C++。之后也变得可处理 Fortran、Pascal、Objective-C、Java, 以及 Ada 与其他语言。</p>
+<p>gcc 在后台实际上经历了预处理，汇编，编译，链接这几个过程，我们可以通过-v 参数查看它的编译细节，如果想看某个具体的编译过程，则可以分别使用-E,-S,-c 和 -O，对应的后台工具则分别为 cpp,cc1/gcc/g++,as,ld。</p>
+<p>2.3.  常见错误<br>2.3.1.   Multiple definition</p>
+<p>符号可以分为强符号和弱符号。比如初始化了的全局变量就是强符号，未初始化的全局变量为弱符号。针对强弱符号，有如下规则：</p>
+<p>l  不允许强符号重定义，及不同的目标文件中不能有同名的强符号。Multiple definition 错误就是违反了这种规定。</p>
+<p>l  如果一个符号在某个文件中是强符号，在另一个文件中是弱符号，那么选择强符号。</p>
+<p>l  如果一个弱符号出现在多个目标文件中，则选择其中占用空间最大的那个。</p>
+<p>强弱符号都是针对变量定义，对于引用则无效，当然针对应用，也有强引用与弱引用。对于强引用来说，在链接成可执行文件时，如果找不到对应变量的定义则会报错。对于弱引用，在这种情况下，不会报错，链接器会采用一个默认值。</p>
+<p>弱符号和弱引用的存在允许用户定义自己的实现去覆盖现有的实现。这样就可以更灵活的对程序进行扩充或裁减。</p>
+<p>2.3.2.   Undefined reference to</p>
+<p>链接时符号未定义。每个目标文件中，都可能存在一些，undefined 类型的符号，这种类型的符号需要在链接时，能够在链接产生的全局符号表中找到其定义，如果找不到，链接器就会产生该错误信息。产生的原因有很多，比如少链接了某个库，符号写错了等等。</p>
+<ol start="3">
+<li>加载</li>
+<li><ol>
+<li>可执行文件装载过程</li>
+</ol>
+</li>
+</ol>
+<p>Linux 系统通过 execve()系统调用来执行程序，系统会为相应格式的文件查找合适的装载处理函数。elf 格式文件的加载主要通过 load_elf_binary()完成，有如下过程：</p>
+<p>l  检查文件格式有效性，比如 magic number，文件头</p>
+<p>l  寻找动态链接的.interp 段，设置动态链接器路径</p>
+<p>l  根据 elf 文件描述，对 elf 文件进行映射，比如代码，数据</p>
+<p>l  初始化 elf 进程环境，比如进程启动时 EDX 寄存器地址应该是 DT_FINI 地址</p>
+<p>l  将系统调用的返回地址，修改成 elf 可执行文件入口点，该入口点取决于程序的链接方式，对于静态链接的可执行文件，这个入口点就是 elf 文件中 e_entry 所指向的地址，对于动态链接的 elf，程序入口点就是动态链接器。{如何判断 elf 采用的是静态链接还是动态链接的？可以通过对它执行 ldd 命令，如果是静态链接，会输出：statically linked}</p>
+<p>load_elf_binary()执行完毕后，可执行文件就被装入了内存，接下来就可以执行了。</p>
+<p>3.2.  动态库加载<br>3.2.1.   工作原理</p>
+<p>如上，对于动态链接的可执行文件在真正执行前，实际上它的很多外部符号还处于无效状态，还未与实际的 so 文件联系起来，因此还有一个动态链接过程。操作系统会首先加载动态链接器 ld.so(/lib/ld-linux.so.2)，加载完这个 so 后，系统就会把控制权交给它，然后它会进行一些初始化操作，根据当前环境参数对可执行文件进行动态链接工作。动态链接器会寻找所需要的.so 文件并进行装载，然后进行符号查找及重定位。如果找不到所需要的符号定义就会产生“undefined symbol”错误。</p>
+<p>在 elf 文件中有一个.interp 段，该段指定了所要采用的动态链接器路径。操作系统会根据该段内容，选择加载的动态链接器。可以通过 objdump –s a.out 查看该段内容，也可以如下命令来查看：readelf –l a.out|grep interpreter。</p>
+<p>.dynamic 段，保存了动态链接器所需的基本信息，比如依赖于哪些共享对象，动态链接符号表的位置，动态链接重定位表的位置，共享对象初始化代码的位置。可以通过 readelf –d a.out 来查看该段内容，其中比较重要的有如下几个：</p>
+<p>DT_RPATH：.so 搜索路径</p>
+<p>DT_INIT：初始化代码地址</p>
+<p>DT_FINIT：结束代码地址</p>
+<p>DT_NEED：依赖的.so</p>
+<p>.dynsym 段，动态符号表段。可以通过 readelf –sD *.so 来查看</p>
+<p>如何确定所需要的加载库？</p>
+<p>如何解析符号？</p>
+<p>重名的文件如何处理？</p>
+<p>3.2.2.   加载过程</p>
+<p>由于动态链接器本身也是一个.so，因此首先要完成自己的重定位过程，称为“自举(bootstrap)”。</p>
+<p>完成自举之后，动态链接器会将可执行文件和它本身的符号表合并到到一个全局符号表中。然后链接器开始查找所需要的.so，在前面提到的.dynamic 段中有一个 DT_NEEDED，它指出了可执行文件所依赖的.so，据此链接器就可以找到所需要的.so 集合，然后开始装载该.so，完成后再从它需要的.so 集合中取出一个.so，如果在此时找不到某个.so 文件就会产生“cannot open shared object file”错误。如果找到相应文件，就会打开它，读取相应的 elf 文件头和.dynamic 段，然后将其代码段和数据段进行映射。如果该.so 还依赖于其他.so，就会把其他.so 加入到待装载集合中，实际上是一个图的遍历问题，上面的过程实际上就是广度优先遍历。</p>
+<p>当新对象被加载之后，它的符号表会被合并到全局符号表中，所以当所有对象加载之后，全局符号表中应该包含了进程进行动态链接所需要的所有符号。这个过程里面存在一个称为“全局符号介入(global symbol interpose)”问题，假设 a.out 依赖了 c.so 和 d.so，而 c.so 依赖于 a.so，d.so 依赖于 b.so，但是 a.so 和 b.so 存在一个同名的符号，此时编译链接无法发现这个同名的符号，因为编译 a.out 时只需要链接 c.so 和 d.so 即可，这样链接器无法发现在 a.so 和 b.so 中存在同名的符号，这样只能加载时解决，而动态链接器有这样的一个规则：当一个符号需要加入全局符号表时，如果相同的符号名已经存在，那么后加入的符号会被忽略。所以，对于这种情况要格外注意。</p>
+<p>上面步骤完成后，就会开始进行符号解析和重定位，链接器会开始遍历可执行文件和每个.so 的重定位表，将它们的 GOT/PLT 中每个需要重定位的位置进行修正。此时，如果某些符号还是无法解析，就会报出“undefined symbol”错误。</p>
+<p>重定位完成之后，如果.so 中有“.init”段，动态链接器会执行这里的代码，以实现初始化过程，比如静态/全局对象的初始化。相应的也会有“.finit”来进行退出操作。可执行文件本身的.init，不会由动态链接器执行，而是通过程序自身的初始化代码完成。</p>
+<p>重定位和初始化完成后，动态链接器所要做的事情就完成了，之后就会把控制权交给可执行程序的入口，开始执行程序。</p>
+<p>3.3.  显式运行时链接</p>
+<p>上面的加载过程是在程序启动时由系统完成的，对于程序本身是透明的。如果程序想在运行时自行加载某个动态库，实现类似插件之类的机制，则需要使用如下几个函数。</p>
+<p>3.3.1.   dlopen()</p>
+<p>用于打开一个动态库，将其加载到进程的地址空间，完成初始化过程。C 语言原形是：</p>
+<p>void * dlopen(const char *filename, int flag);</p>
+<p>如果文件名 filename 是以“/”开头，也就是使用绝对路径，那么 dlopne 就直接使用它，而不去查找某些环境变量或者系统设置的函数库所在的目录了。否则 dlopen()就会按照下面的次序查找函数库文件：</p>
+<ol>
+<li><p>环境变量 LD_LIBRARY 指明的路径。</p>
+</li>
+<li><p>/etc/ld.so.cache 中的函数库列表。</p>
+</li>
+</ol>
+<p>3./lib 目录，然后/usr/lib。不过一些很老的 a.out 的 loader 则是采用相反的次序，也就是先查 /usr/lib，然后是/lib。</p>
+<p>同时如果 filename 值设为 NULL 的话，那么 dlopen 将返回全局符号表的句柄。也就是说可以在运行时找到全局符号表里的任何一个符号，并可以执行它们。全局符号表中包括了可执行程序本身，被动态链接器加载到进程中的所有动态库以及通过 dlopen 打开并使用了 RTLD_GLOBAL 方式的模块中的符号。</p>
+<p>dlopen()函数中，参数 flag 的值必须是 RTLD_LAZY 或者 RTLD_NOW，RTLD_LAZY 的意思是 resolve undefined symbols as code from the dynamic library is executed，而 RTLD_NOW 的含义是 resolve all undefined symbols before dlopen() returns and fail if this cannot be done’。如果有任何未定义的符号引用的绑定工作无法完成，那么 dlopen 就会返回错误，这两种方式必须二选一。此外还有 RTLD_GLOBAL，可以与上面两种方式之一一起使用，表示将被加载的模块的全局符号合并到进程的全局符号表中，这样以后加载的模块就可以使用这些符号。</p>
+<p>如果有好几个函数库，它们之间有一些依赖关系的话，例如 X 依赖 Y，那么你就要先加载那些被依赖的函数。例如先加载 Y，然后加载 X。dlopen()函数的返回值是一个句柄，然后后面的函数就通过使用这个句柄来做进一步的操作。如果打开失败 dlopen()就返回一个 NULL。如果一个函数库被多次打开，它会返回同样的句柄。</p>
+<p>同时 dlopen 还会执行被加载模块的.init 段来进行模块的初始化操作。</p>
+<p>3.3.2.   dlsym()</p>
+<p>这个函数在一个已经打开的函数库里面查找给定的符号。这个函数如下定义：</p>
+<p>void * dlsym(void <em>handle, char \</em>symbol);</p>
+<p>函数中的参数 handle 就是由 dlopen 打开后返回的句柄，symbol 是一个以’\0’结尾的字符串。如果 dlsym()函数没有找到需要查找的 symbol，则返回 NULL。dlsym 的返回值对于不同的符号类型具有不同的意义，如果符号是个函数，则返回的就是函数地址，如果是变量，就是变量的地址，如果是常量就是该常量的值。如果该常量值刚好是 NULL，那如何区分它是没有找到该常量，还是该常量就是 NULL 呢？这就需要看 dlerror()，如果符号找到了 dlerror()就会返回 NULL，否则会返回相应的错误信息。</p>
+<p>符号优先级，前面已经提过，在加载过程中如果发现符号名冲突，先载入的符号会优先，这种优先级方式成为装载序列(load ordering)。进程通过 dlopen 载入对象时，动态链接器在进行符号解析和重定位时，都是采用装载序列。</p>
+<p>但是在使用 dlsym 进行符号地址查找时，如果是在全局符号表中进行查找，即在 dlopen 时，参数 filename 为 NULL，由于全局符号表采用的是装载序列，因此 dlsym 使用的也是装载序列。但是，如果是通过某个 dlopen 打开的共享对象进行符号查找的话，采用的是一种称为依赖序列(dependency ordering)的优先级方式。即它会以被打开的那个共享对象为根节点，进行广度优先遍历，直到找到该符号。{!因为如果 dlopen 调用时，未采用 RTLD_GLOBAL 方式的话，那么被打开对象的符号表不会加入全局符号表，这样它和它依赖的模块可能就会都有自己的符号表，而没有一个全局的符号表}</p>
+<p>3.3.3.   dlerror()</p>
+<p>通过调用 dlerror()函数，我们可以获得最后一次调用 dlopen()，dlsym()，或者 dlclose()的错误信息。 它的返回值类型是 char *，如果返回 NULL，表示上一次调用成功，如果不是 NULL，则代表相应的错误信息。</p>
+<p>3.3.4.   dlclose()</p>
+<p>dlopen()函数的反过程就是 dlclose()，dlclose()用于将已经加载的模块卸载。系统会维护一个加载引用计数器，当调用 dlclose 的时候，就把这个计数器的计数减一，如果计数器为 0，则真正的释放掉。真正释放的时候，如果函数库里面有_fini()这个函数，则自动调用_fini()这个函数，做一些必要的处理。dlclose()返回 0 表示成功，非 0 值表示错误。</p>
+<p>3.4.  共享库版本命名规则<br>3.4.1.   Libname.x.y.z</p>
+<p>X 代表主版本号，y 代表次版本号，z 代表发布版本号。主版本号代表库的重大升级，不同主版本号的库之间是不兼容的。次版本号代表了库的增量升级，即增加一些新的符号接口，且保持原来的符号不变，具有向后兼容性，即依赖于旧版本库的程序在新版本库上也可以运行。发布版本号，代表了库的一些 bug fix 和性能优化，不添加任何新的接口，也不对现有接口进行修改。</p>
+<p>3.4.2.   So-Name</p>
+<p>由上可知主版本号和此版本号实际上决定了程序的接口。通常程序中都会包含了所依赖的库的名称和主版本号，系统是通过一种称为 SO-NAME 的命名机制来记录共享库的依赖关系。每个共享库都有一个对应的 SO-NAME，即名称和主版本号。在 linux 系统中，会为每个共享库在它所在的目录创建一个跟 SO-NAME 相同的并且指向它的软连接。比如系统中有一个/lib/liba.1.1.2 那么系统的共享库管理程序就会创建一个/lib/liba.1 的软连接。</p>
+<p>SO-NAME 会指向系统中相同主版本号的最新版的那个库，使用 SO-NAME 的目的在让所有依赖于某个共享库的模块，在编译，链接和运行时，都使用 SO-NAME，而不使用详细的版本号。前面提过，在.dynamic 段中的 DT_NEEDED 描述了模块所依赖的共享库，为了保证兼容性，采用 SO-NAME 进行.dynamic 段的依赖描述。通过 readelf –d liba.so，可以查看到 elf 文件的 DT_NEEDED 部分。</p>
+<p>3.5.  符号版本机制</p>
+<p>待看。</p>
+<p>3.6.  系统配置</p>
+<p>ldconfig，当系统安装或更新一个共享库就需要运行这个工具，它会遍历所有的默认共享库目录，比如/lib /usr/lib，然后更新所有的软连接，使它们指向最新版的共享库；如果是新安装的共享库，则会为它创建软连接。</p>
+<p>3.7.  运行时库查找过程</p>
+<p>动态链接器对保存在.dynamic 段的 DT_NEEDED 的共享库的查找有一定的规则，如果 DT_NEEDED 保存的是绝对路径，那么动态链接器就按这个路径去查找，如果是相对路径，那么动态链接器会在/lib /usr/lib 和/etc/ld.so.conf 配置文件指定的目录中进行查找。</p>
+<p>ld.so.conf 是一个配置文件，可能包含其他的配置文件，存放了路径信息。为了避免每次查找共享库都去遍历这些目录，linux 系统提供了 ldconfig。ldconfig 除了负责每个共享库目录下的共享库 SO-NAME 的创建删除和更新外，它还会将这些 SO-NAME 收集起来存放到/etc/ld.so.cache 中。当查找共享库时，直接去/etc/ld.so.cache 里找即可，而它的结构则是专为查找优化过的。如果在这里没有找到，它会继续查找/lib 和/usr/lib，如果还未找到就宣告失败。</p>
+<p>所以，如果在系统指定的共享库目录下，添加删除或更新任何一个共享库，或者更改了/etc/ld.so.conf 的配置，都应该运行 ldconfig 这个程序。以便调整 SO-NAME 和/etc/ld.so.cache，而很多安装软件包实际在往系统安装共享库之后都会调用 ldconfig。</p>
+<p>此外，还可以通过 LD_LIBRARY_PATH 来改变库搜索路径。如果为进程设置了 LD_LIBRARY_PATH，那么在启动时，动态链接器会首先在 LD_LIBRARY_PATH 指定的目录下查找。但是，有不少声音主张要避免使用 LD_LIBRARY_PATH 变量，尤其是作为全局变量。这些声音是：</p>
+<ul>
+<li>LD_LIBRARY_PATH is not the answer - <a href="http://prefetch.net/articles/linkers.badldlibrary.html" target="_blank" rel="noopener">http://prefetch.net/articles/linkers.badldlibrary.html</a></li>
+<li>Why LD<em>LIBRARY_PATH is bad - <a href="http://xahlee.org/UnixResource_dir/" target="_blank" rel="noopener">http://xahlee.org/UnixResource_dir/</a></em>/ldpath.html</li>
+<li>LD_LIBRARY_PATH - just say no - <a href="http://blogs.sun.com/rie/date/20040710" target="_blank" rel="noopener">http://blogs.sun.com/rie/date/20040710</a></li>
+</ul>
+<p>综上，动态链接器会按照如下顺序加载或查找共享库：</p>
+<p>l  链接时由-rpath 选项指定的目录(已被硬编码到可执行文件中)</p>
+<p>l  LD_LIBRARY_PATH 指定的目录</p>
+<p>l  路径缓存文件/etc/ld.so.cache 指定的路径</p>
+<p>l  默认共享库目录，先/usr/lib，后/lib</p>
+<p>LD_PRELOAD，可以预先装载一些共享库。由 LD_PRELOAD 指定的文件，会在动态链接库按指定规则搜索共享库之前加载。比 LD_LIBRARY_PATH 指定的还要优先，同时无论程序是否依赖于它，LD_PRELOAD 指定的共享库都会被装载。由于全局符号介入这一机制，LD_PRELOAD 指定的库的符号会覆盖后面加载的库的同名符号。这就使得我们可以修改标准 c 库的某些或某几个函数，而不影响其他使用。比如我们可以在实验程序执行时通过设置 LD_PRELOAD，来让系统优先加载我们修改后的库。</p>
+<p>3.8.  常见错误<br>3.8.1.   undefined symbol</p>
+<p>我们将函数和变量称为符号，函数名和变量名就是符号名。每个目标文件都有一个符号表。表中记录了所用到的所有符号。通常，链接过程只关注全局性的符号，即那些本模块引用自别处的符号，及可能被别处引用的在本模块定义的那些。</p>
+<p>可以使用 readelf，objdump，nm 来查看符号。此外使用 c++filt 工具可以查看被编译器改名(为支持重载及名字空间等机制)后的符号对应的原始名称。</p>
+<p>动态加载时，如果找不到某个符号引用的定义，就会产生该错误。通常是该符号所在的动态库未被加载，也就是说 DT_NEEED 缺少了某个.so。解决方式就是在链接程序时，使用-l 指定所需要的库。</p>
+<p>3.8.2.   Double free or corruption</p>
+<p>原因可能有多种：比如 malloc 了一段内存空间，但是写的时候越界了，这实际上会导致 corruption；链接了同一个库的动态和静态两个版本，且该库内具有全局或静态变量；不同的库内含有相同的全局或静态变量。这里主要关注下由于链接多个具有同名变量的库的情况。</p>
+<p>在通常情况下，共享库都是通过使用附加选项 -fpic 或 -fPIC 进行编译，从目标代码产生位置无关的代码（Position Independent Code，PIC），使用 -shared 选项将目标代码放进共享目标库中。位置无关代码需要能够被加载到不同进程的不同地址，并且能得以正确的执行，故其代码要经过特别的编译处理：位置无关代码（PIC）对常量和函数入口地址的操作都是采用基于基寄存器（base register）BASE+ 偏移量的相对地址的寻址方式。即使程序被装载到内存中的不同地址，即 BASE 值不同，而偏移量是不变的，所以程序仍然可以找到正确的入口地址或者常量。</p>
+<p>然而，当应用程序链接了多个共享库，如果在这些共享库中，存在相同作用域范围的同名静态成员变量或者同名 ( 非静态 ) 全局变量，那么当程序访问完静态成员变量或全局变量结束析构时，由于某内存块的 double free 会导致 core dump，这是由于 Linux 编译器的缺陷造成的。</p>
+<p>链接时符号查找原理如下：</p>
+<p>1、应用程序在链接阶段时，会顺序生成符号表。也就是说，在应用程序中涉及到的符号，会在链接文件中逐个顺次查找<br>           2、一旦查找到符号，就停止本符号的查找工作，转向第二个符号的查找<br>           3、如果没有用到.a 里的符号，即查找的过程中没有涉及到该.a，则不会在程序中链接该.a<br>           4、对于.so，无论是否涉及到符号查找，均会进行加载<br>           5、so 的加载和卸载会涉及到自身内存分配和释放，而.a 不会（.a 相当于.o 的集合，.o 直接静态编译到应用程序，成为程序一部分）<br>           6、.a 和.o 有不同，.a 是.o 的集合，但是，.o 必定会加载，.a 不一定会加载（只加载符号表相关的.o）</p>
+<p>这样，对于有不同库的同名全局变量，只会产生一个符号，但是由于.so 本身在卸载的时候会对全局变量进行析构，同时如果多个共享库，或者程序本身具有该全局变量，这样就会出现重复 free 的情况，导致 double free 错误。</p>
+<p>解决方法：使用选项-fpie 或-fPIE，此时生成的共享库不会为静态成员变量或全局变量在 GOT 中创建对应的条目（通过 objdump 或 readelf 命令可以查看），从而避免了由于静态对象“在同一地址构造两次，析构两次”而对同一内存区域释放两次引起的程序 core dump(重复构造没有问题，但是重复析构会导致 double free，但是如果构造函数有内存分配动作，是否会导致内存泄露？)。</p>
+<p>选项-fpie 和-fPIE 与-fpic 及-fPIC 的用法很相似，区别在于前者总是将生成的位置无关代码看作是属于程序本身，并直接链接进该可执行程序，而非存入全局偏移表 GOT 中；这样，对于同名的静态或全局对象的访问，其构造与析构操作将保持一一对应。</p>
+<p>还有如果具有同名变量的库一个是.so 和一个是.a，将.so 放到前面，也可以避免这个问题，根据上面的链接规则，当在.so 中找到该符号时，那么.a 中的内容就不会被链接了。更详细内容可以参考这两篇文章：库冲突 技巧：多共享动态库中同名对象重复析构问题的解决方法。</p>
+<p>3.8.3.   LD_DEBUG</p>
+<p>LD_DEBUG 这个环境变量可以打开动态库的调试功能，输出很多信息，对于开发调试动态库很有帮助。比如设置 LD_DEBUG=files，就可以看到整个装载过程。此外它还可以设置为：</p>
+<p>l  bindings：显示动态链接的符号绑定过程</p>
+<p>l  libs：显示共享库的查找过程</p>
+<p>l  versions：显示符号的版本依赖关系</p>
+<p>l  reloc：显示重定位过程</p>
+<p>l  symbols：显示符号表查找过程</p>
+<p>l  statistics：显示动态链接过程中的各种统计信息</p>
+<p>l  all：显示以上所有信息</p>
+<p>l  help：显示帮助信息</p>
+<ol start="4">
+<li>相关工具</li>
+<li><ol>
+<li>file</li>
+</ol>
+</li>
+</ol>
+<p>file 程序是用来判断文件类型的，比如可以用命令 file xxx.tar.tar 看一下文件类型，然后用 tar 加适当的参数解压。在这里主要是可以通过 file 来查看某文件是否链接了动态库。</p>
+<p>$ file a.out<br>a.out: ELF 32-bit LSB executable, Intel 80386,<br>version 1 (SYSV), dynamically linked (uses shared<br>libs), not stripped</p>
+<p>最后一个 not stripped 表示该文件含符号表(可以利用命令 strip 去除符号表)</p>
+<p>4.2.  nm</p>
+<p>用于列出目标文件的符号。可以通过-C 选项，来显示符号的可读形式，即未被 mangle 的形式。-D 可以用来显示动态符号。其中 U 类型的符号，代表该目标文件中未定义的那些 symbol，而这些 symbol 通常都是定义在其他文件中，T 表示该 symbol 在此文件中有定义。所以，nm 最常用的地方在于，查看这个文件中是否包含某函数的定义，包含哪些未定义符号，因此在产生链接问题时，通常需要对 U 和 T 类型格外关注</p>
+<p>4.3.  c++filt</p>
+<p>c++filt 可以将 mangle 的符号进行还原。</p>
+<p>4.4.  ldd</p>
+<p>ldd 可以用来查看.so 所依赖的共享库文件列表及未找到的.so，ldd –r 还会报告缺少的目标对象和函数。</p>
+<p>ldd 实际上是个脚本，能够显示可执行模块的 dependency，其原理是通过设置一系列的环境变量，如下：LD_TRACE_LOADED_OBJECTS、LD_WARN、LD_BIND_NOW、LD_LIBRARY_VERSION、LD_VERBOSE 等。当 LD_TRACE_LOADED_OBJECTS 环境变量不为空时，任何可执行程序在运行时，它都会只显示模块的 dependency，而程序并不真正执行。</p>
+<p>ldd 显示可执行模块的 dependency 的工作原理，其实质是通过 ld-linux.so(elf 动态库的装载器)来实现的。我们知道，ld-linux.so 模块会先于 executable 模块程序工作，并获得控制权，因此当上述的那些环境变量被设置时，ld-linux.so 选择了显示可执行模块的 dependency。</p>
+<p>4.5.  readelf</p>
+<p>它是专门针对 ELF 文件格式的解析器，但是它并不提供反汇编功能，可以通过 objdump 进行反汇编。readelf 可以用来查看头信息，符号信息，动态重定位信息等 elf 内部各个部分。</p>
+<p>4.6.  ldconfig</p>
+<p>ldconfig 是一个动态链接库管理命令。为了让动态链接库为系统所共享,还需运行动态链接库的管理命令–ldconfigldconfig  命令的用途,主要是在默认搜寻目录(/lib 和/usr/lib)以及动态库配置文件/etc/ld.so.conf 内所列的目录下,搜索出可共享的动态链接库(格式如前介绍,lib<em>.so</em>),进而创建出动态装入程序(ld.so)所需的连接和缓存文件.缓存文件默认为/etc/ld.so.cache,此文件保存已排好序的动态链接库名字列表。</p>
+<p>4.7.  strip</p>
+<p>可以用来清理共享库和可执行文件中的符号信息和调试信息。也可以通过 ld –s 或 ld –S，二者区别是：-S 消除调试符号信息，-s 消除所有符号信息。也可以通过 gcc 参数”-Wl,-s”或”-Wl,-S”来向 ld 传递这两个参数。</p>
+<ol start="5">
+<li>问题分析</li>
+<li><ol>
+<li>分析步骤</li>
+</ol>
+</li>
+</ol>
+<p>无论是编译，链接还是加载，本质上都需要去寻找某些符号的定义。当找不到对应的符号时通常都会产生某些错误，类似于上面提到的那些。</p>
+<p>实际上基本上都需要确定以下问题。需要哪些符号的定义？去哪里寻找这些符号的定义？找到的符号定义是否满足要求？</p>
+<p>具体来说，比如动态库加载时，需要确定需要加载哪些.so？去哪找到这些.so？这些.so 中是否包含了所有的未定义符号？加载哪些.so，是由可执行文件及各个.so 的.dynamic 段中的 DT_NEEDED 决定的。去哪寻找这些.so，则是由各种路径确定的。如果出现.so 文件找不到或符号未定义或版本不正确之类的动态库相关问题时，通常的分析步骤如下：</p>
+<p>l  查看-l 参数，确定可执行程序已经链接了所需的库文件</p>
+<p>l  使用 find，在当前系统中查找，看是否能够找到该库文件</p>
+<p>l  确定系统当前的库搜索路径</p>
+<p>l  如果可以找到该库文件，则需要确定它所在目录是否已经在库搜索路径中，如果不在则将它加入合适路径</p>
+<p>l  如果它刚好也在库搜索路径中，需要确定路径中是否还有同名的库文件</p>
+<p>l  如果它是唯一的存在于库搜索路径中的库文件，则详细分析该文件：</p>
+<p>?  使用 ldd 查看该.so 的依赖性</p>
+<p>?  使用 nm 查看其符号表，找到未定义符号，nm –a *.so|grep U</p>
+<p>l  如果还找不到问题所在，设置 LD_DEBUG 环境变量，进行调试</p>
+<p>此外，如果是诡异的编译问题，还可以利用 gcc 的-E,-S,-c 和 –O 分阶段进行，查看每个阶段的输出是否正常。同时为每个命令加上-v，查看实际执行的命令，同时还可以看到头文件及库文件的搜索路径。比如可能因为宏替换，导致某些用户定义的变量被其他的一些宏定义替换，或者因为头文件搜索路径顺序，导致找到了一个错误的头文件。</p>
+<p>5.2.  实例分析</p>
+<p>最近碰到的一个问题是：调用 dlopen 时产生 undefined symbol，采用了 RTLD_NOW 方式。对于 undefined symbol：</p>
+<p>类似上面的步骤，使用 ldd 查看它现在依赖的.so，使用 nm 找到那个未定义的 symbol，如果是 c++程序，使用 c++filt 将它转换为可读形式，确认该 symbol 定义所在的库，然后判断该库是否已经在加载列表中，或者库的版本是否正确。</p>
+<p>最终确定原因是：我们的可执行程序，本身会调用 dlopen 去在运行时加载某些.so，但是这些.so 文件在生成时的-l 参数，没有加入那些该.so 所依赖的其他.so。这样该.so 文件的 DT_NEEDED 列表就是不完整的，这样加载器就不会去加载它们，这样某些符号就找不到它们的定义。</p>
+<p>解决方案有两个：一个是保持现有.so 不变，我们在编译可执行文件的-l 参数中加入这些必需的库的。另一个是修改现有.so，在-l 中加入它所依赖的那些库。第一个方案，只需要修改可执行文件即可，但是这种方式不是一种彻底的解决方案，因为比如该.so 文件被其他程序使用时，仍然会产生这种问题，因此根本的解决方案是，.so 文件本身在编译时就要在-l 参数中写入它所依赖的那些库。</p>
+<p>5.3.  编译链接和加载实验<br>5.3.1.   源代码</p>
+<p>//test.h</p>
+<p>void test();</p>
+<p>//test.c</p>
+<p>#include <iostream></p>
+<p>using namespace std;</p>
+<p>void test()</p>
+<p>{</p>
+<p>cout &lt;&lt; “test” &lt;&lt; endl;</p>
+<p>}</p>
+<p>//main.c</p>
+<p>#include “test.h”</p>
+<p>int main()</p>
+<p>{</p>
+<p>test();</p>
+<p>return 0;</p>
+<p>}</p>
+<p>5.3.2.   创建静态库</p>
+<p>gcc –v -c test.c; ar r libtest.a test.o</p>
+<p>[<a href="mailto:admin@clu01-gala16.dev.sd.aliyun.com">admin@clu01-gala16.dev.sd.aliyun.com</a>]$gcc -v -c test.cpp</p>
+<p>Using built-in specs.</p>
+<p>Target: x86_64-redhat-linux</p>
+<p>Configured with: ../configure –prefix=/usr –mandir=/usr/share/man –infodir=/usr/share/info –enable-shared –enable-threads=posix –enable-checking=release –with-system-zlib –enable-__cxa_atexit –disable-libunwind-exceptions –enable-libgcj-multifile –enable-languages=c,c++,objc,obj-c++,java,fortran,ada –enable-java-awt=gtk –disable-dssi –enable-plugin –with-java-home=/usr/lib/jvm/java-1.4.2-gcj-1.4.2.0/jre –with-cpu=generic –host=x86_64-redhat-linux</p>
+<p>Thread model: posix</p>
+<p>gcc version 4.1.2 20080704 (Red Hat 4.1.2-46)</p>
+<p>/usr/libexec/gcc/x86_64-redhat-linux/4.1.2/cc1plus -quiet -v -D_GNU_SOURCE test.cpp -quiet -dumpbase test.cpp -mtune=generic -auxbase test -version -o /tmp/ccdMLquk.s</p>
+<p>ignoring nonexistent directory “/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../x86_64-redhat-linux/include”</p>
+<p>#include “…” search starts here:</p>
+<p>#include &lt;…&gt; search starts here:</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/x86_64-redhat-linux</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/backward</p>
+<p>/usr/local/include</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/include</p>
+<p>/usr/include</p>
+<p>End of search list.</p>
+<p>GNU C++ version 4.1.2 20080704 (Red Hat 4.1.2-46) (x86_64-redhat-linux)</p>
+<p>compiled by GNU C version 4.1.2 20080704 (Red Hat 4.1.2-46).</p>
+<p>GGC heuristics: –param ggc-min-expand=100 –param ggc-min-heapsize=131072</p>
+<p>Compiler executable checksum: 927721cb17bef594f560fa66ec50ff62</p>
+<p>as -V -Qy -o test.o /tmp/ccdMLquk.s</p>
+<p>GNU assembler version 2.17.50.0.6-12.el5 (x86_64-redhat-linux) using BFD version 2.17.50.0.6-12.el5 20061020</p>
+<p>可以看到加上-v 之后，就能看到各个步骤的具体命令，还能看到头文件搜索路径。</p>
+<p>5.3.3.   创建动态库</p>
+<p>gcc  -shared test.cpp -o libtest.so –fPIC -v</p>
+<p>[<a href="mailto:admin@clu01-gala16.dev.sd.aliyun.com">admin@clu01-gala16.dev.sd.aliyun.com</a>]$gcc  -shared test.cpp -o libtest.so -fPIC -v</p>
+<p>Using built-in specs.</p>
+<p>Target: x86_64-redhat-linux</p>
+<p>Configured with: ../configure –prefix=/usr –mandir=/usr/share/man –infodir=/usr/share/info –enable-shared –enable-threads=posix –enable-checking=release –with-system-zlib –enable-__cxa_atexit –disable-libunwind-exceptions –enable-libgcj-multifile –enable-languages=c,c++,objc,obj-c++,java,fortran,ada –enable-java-awt=gtk –disable-dssi –enable-plugin –with-java-home=/usr/lib/jvm/java-1.4.2-gcj-1.4.2.0/jre –with-cpu=generic –host=x86_64-redhat-linux</p>
+<p>Thread model: posix</p>
+<p>gcc version 4.1.2 20080704 (Red Hat 4.1.2-46)</p>
+<p>/usr/libexec/gcc/x86_64-redhat-linux/4.1.2/cc1plus -quiet -v -D_GNU_SOURCE test.cpp -quiet -dumpbase test.cpp -mtune=generic -auxbase test -version -fPIC -o /tmp/ccv7EbFP.s</p>
+<p>ignoring nonexistent directory “/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../x86_64-redhat-linux/include”</p>
+<p>#include “…” search starts here:</p>
+<p>#include &lt;…&gt; search starts here:</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/x86_64-redhat-linux</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/backward</p>
+<p>/usr/local/include</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/include</p>
+<p>/usr/include</p>
+<p>End of search list.</p>
+<p>GNU C++ version 4.1.2 20080704 (Red Hat 4.1.2-46) (x86_64-redhat-linux)</p>
+<p>compiled by GNU C version 4.1.2 20080704 (Red Hat 4.1.2-46).</p>
+<p>GGC heuristics: –param ggc-min-expand=100 –param ggc-min-heapsize=131072</p>
+<p>Compiler executable checksum: 927721cb17bef594f560fa66ec50ff62</p>
+<p>as -V -Qy -o /tmp/ccmzTeZF.o /tmp/ccv7EbFP.s</p>
+<p>GNU assembler version 2.17.50.0.6-12.el5 (x86_64-redhat-linux) using BFD version 2.17.50.0.6-12.el5 20061020</p>
+<p>/usr/libexec/gcc/x86_64-redhat-linux/4.1.2/collect2 –eh-frame-hdr -m elf_x86_64 –hash-style=gnu -shared -o libtest.so /usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.1.2/crtbeginS.o -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 /tmp/ccmzTeZF.o -lgcc –as-needed -lgcc_s –no-as-needed -lc -lgcc –as-needed -lgcc_s –no-as-needed /usr/lib/gcc/x86_64-redhat-linux/4.1.2/crtendS.o /usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64/crtn.o</p>
+<p>5.3.4.   创建可执行文件</p>
+<p>LIBRARY_PATH=.;export LIBRARY_PATH</p>
+<p>g++ main.cpp -ltest</p>
+<p>gcc 头文件搜索路径</p>
+<p>-iquote 用于搜索”#include “file””形式的头文件</p>
+<p>-I</p>
+<p>C_PATH：类似于-I 但优先级在-I 之后，可以用于任何类型语言的预处理(比如 c,c++)</p>
+<p>-isystem</p>
+<p>C_INCLUDE_PATH：c 语言的，类似于-isystem，但优先级在-isystem 之后</p>
+<p>CPLUS_INCLUDE_PATH：c++的</p>
+<p>OBJC_INCLUDE_PATH：Objective-C 的</p>
+<p>gcc 库文件搜索路径</p>
+<p>-L</p>
+<p>LIBRARY_PATH：可以用来指定库文件搜索路径，但是优先级在-L 之后</p>
+<p>LD_LIBRARY_PATH：对于 gcc 编译不起作用，只与加载有关</p>
+<p>测试-static，如果无.a，有.so 是否可以？答案是必须是.a 的库，否则不行</p>
+<p>测试-Bdynamic，如果无.so，有.a 是否可以？答案是可以</p>
+<p>5.3.5.   加载测试</p>
+<p>测试-rpath：g++ main.cpp -ltest -Wl,-rpath=. ，-rpath 只对加载起作用，对链接无作用，通过它可以把运行时需要的动态库绝对路径写在可执行文件里</p>
+<p>测试 LD_PRELOAD：在加载阶段器作用，无论可执行文件链不链接，加载器都会加载它</p>
+<p>测试 LD_LIBRARY_PATH：在加载阶段起作用</p>
+<p>测试 ldconfig：可以直接对当前路径应用 ldconfig，这样也可以将其加入</p>
+<p>测试/etc/ld.so.conf：直接只将路径添加到该文件，不起作用，必须执行 ldconfig</p>
+<p>测试/etc/ld.so.cache：加载时会直接从该处查找</p>
+<ol start="6">
+<li>参考资料</li>
+</ol>
+<p>程序员的自我修养—链接、装载与库</p>
+<p>GCC 编译的背后( 预处理和编译 汇编和链接 )</p>
+<p>An Introduction to GCC 学习笔记</p>
+<p>LINUX 下如何用 GCC 编译动态库</p>
+<p>gcc 生成静态库和动态库</p>
+<p>GCC 编译优化指南</p>
+<p>深入理解软件包的配置、编译与安装</p>
+<ol start="7">
+<li>附录</li>
+</ol>
+<p><a href="http://www.gentoo.org/proj/en/base/amd64/howtos/fpic.xml" target="_blank" rel="noopener">http://www.gentoo.org/proj/en/base/amd64/howtos/fpic.xml</a></p>
+<ol>
+<li>The Problem</li>
+</ol>
+<p>Sometimes it occurs that gcc bails out with an error message like the following:</p>
+<p>Code Listing 1.1: A typical gcc error message</p>
+<p>.libs/assert.o: relocation R_X86_64_32 against `a local symbol’ can not be usedwhen making a shared object; recompile with -fPIC .libs/assert.o: could notread symbols: Bad value</p>
+<p>There are several different types of causes for such an error. This HOWTO will explain all of them and show how to fix them.</p>
+<ol>
+<li>What is PIC?</li>
+</ol>
+<p>PIC is an abbreviation for Position-Independent Code. The following is an excerpt of the Wikipedia article about position-independent code:</p>
+<p>“In computing, position-independent code (PIC) or position-independent executable (PIE) is object code that can execute at different locations in memory. PIC is commonly used for shared libraries, so that the same library code can be mapped to a location in each application (using the virtual memory system) where it won’t overlap the application or other shared libraries. PIC was also used on older computer systems lacking an MMU, so that the operating system could keep applications away from each other.<br>Position-independent code can be copied to any memory location without modification and executed, unlike relocatable code, which requires special processing by a link editor or program loader to make it suitable for execution at a given location. Code must generally be written or compiled in a special fashion in order to be position independent. Instructions that refer to specific memory addresses, such as absolute branches, must be replaced with equivalent program counter relative instructions. The extra indirection may cause PIC code to be less efficient, although modern processors are designed to ameliorate this.”<br>—Wikipedia Encyclopaedia</p>
+<p>On certain architectures (AMD64 amongst them), shared libraries must be “PIC-enabled”.</p>
+<ol>
+<li>What are “relocations”?</li>
+</ol>
+<p>Again, from Wikipedia:</p>
+<p>“In computer science, relocation refers to the process of replacing symbolic references or names of libraries with actual usable addresses in memory before running a program. It is typically done by the linker during compilation, although it can be done at run-time by a loader. Compilers or assemblers typically generate the executable with zero as the lower-most, starting address. Before the execution of object code, these addresses should be adjusted so that they denote the correct runtime addresses.”<br>—Wikipedia Encyclopaedia</p>
+<p>With these terms defined, we can finally have a look at the different scenarios where breakage occurs:</p>
+<ol>
+<li>Case 1: Broken compiler</li>
+</ol>
+<p>At least GCC 3.4 is known to have a broken implementation of the -fvisibility-inlines-hidden flag. The use of this flag is therefore highly discouraged, reported bugs are usually marked as RESOLVED INVALID. See bug 108872 for an example of a typical error message caused by this flag.</p>
+<ol>
+<li>Case 2: Broken `-fPIC’ support checks in configure</li>
+</ol>
+<p>Many configure tools check whether the compiler supports the -fPIC flag or not. They do so by compiling a minimalistic program with the -fPIC flag and checking stderr. If the compiler prints <em>any</em> warnings, it is assumed that the -fPIC flag is not supported by the compiler and is therefore abandoned. Unfortunately, if the user specifies a non-existing flag (i.e. C++-only flags in CFLAGS or flags introduced by newer versions of GCC but unknown to older ones), GCC prints a warning too, resulting in borkage.</p>
+<p>To prevent this kind of breakage, the AMD64 profiles use a bashrc that filters out invalid flags in C[XX]FLAGS.</p>
+<p>See bug bug 122208 for an example.</p>
+<ol>
+<li>Case 3: Lack of `-fPIC’ flag in the software to be built</li>
+</ol>
+<p>This is the most common case. It is a real bug in the build system and should be fixed in the ebuild, preferably with a patch that is sent upstream. Assuming the error message looks like this:</p>
+<p>Code Listing 1.1: A sample error message</p>
+<p>.libs/assert.o: relocation R_X86_64_32 against `a local symbol’ can not be usedwhen making a shared object; recompile with -fPIC .libs/assert.o: could notread symbols: Bad value</p>
+<p>This means that the file assert.o was not compiled with the -fPIC flag, which it should. When you fix this kind of error, make sure only objects that are used in shared libraries are compiled with -fPIC.</p>
+<p>In this case, globally adding -fPIC to C[XX]FLAGS resolves the issue, although this practice is discouraged because the executables end up being PIC-enabled, too.</p>
+<p>Note: Adding the -fPIC flag to the linking command or LDFLAGS won’t help.</p>
+<ol>
+<li>Case 4: Linking dynamically against static archives</li>
+</ol>
+<p>Sometimes a package tries to build shared libraries using statically built archives which are not PIC-enabled. There are two main reasons why this happens:</p>
+<p>Often it is the result of mixing USE=static and USE=-static. If a library package can be built statically by setting USE=static, it usually doesn’t create a .so file but only a .a archive. However, when GCC is given the -l flag to link to said (dynamic or static) library, it falls back to the static archive when it can’t find a shared lib. In this case, the preferred solution is to build the static library using the -fPIC flag too.</p>
+<p>Warning: Only build the static archive with -fPIC on AMD64. On other architectures this is unneeded and will have a performance impact at execution time.</p>
+<p>See bug 88360 and mysql bug 8796 for an example.</p>
+<p>Sometimes it is also the case that a library isn’t intended to be a shared library at all, e.g. because it makes heavy usage of global variables. In this case the solution is to turn the to-be-built shared library into a static one.</p>
+<p>See bug 131460 for an example.</p>
+<p>Code Listing 1.1: A sample error message</p>
+<p>gcc   -fPIC -DSHARED_OBJECT -c lex.yy.cgcc  -shared -o html2txt.so lex.yy.o -lflusr/lib/gcc/x86_64-pc-linux-gnu/4.1.1/../../../../x86_64-pc-linux-gnu/bin/ld:/usr/lib/gcc/x86_64-pc-linux-gnu/4.1.1/../../../../lib64/libfl.a(libyywrap.o):relocation R_X86_64_32 against `a local symbol’ can not be used when making ashared object; recompile with -fPIC/usr/lib/gcc/x86_64-pc-linux-gnu/4.1.1/../../../../lib64/libfl.a: could notread symbols: Bad value</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E8%AF%91%E4%B8%8E%E9%93%BE%E6%8E%A5/" rel="tag"># 编译与链接</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E6%80%BB%E7%BB%93/" rel="prev" title="编译链接总结">
+      <i class="fa fa-chevron-left"></i> 编译链接总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/05/acpi-pci%E6%80%BB%E7%BB%93/" rel="next" title="acpi-pci总结">
+      acpi-pci总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="翟云云"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">翟云云</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YunyunZhai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YunyunZhai" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:770833723@qq.com" title="E-Mail → mailto:770833723@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟云云</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: '7SicDyyuRHAKEFrTgfmyJo4n-gzGzoHsz',
+      appKey: 'SQLhyGf3GSnW4rPFJoQ63j52',
+      placeholder: "点评一下",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -175,6 +175,1272 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/AS%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F%E5%92%8CBGP%E5%8D%8F%E8%AE%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/AS%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F%E5%92%8CBGP%E5%8D%8F%E8%AE%AE/" class="post-title-link" itemprop="url">AS自治系统和BGP协议</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:57:56 / 修改时间：10:00:42" itemprop="dateCreated datePublished" datetime="2020-03-05T09:57:56+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/AS%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F%E5%92%8CBGP%E5%8D%8F%E8%AE%AE/" class="post-meta-item leancloud_visitors" data-flag-title="AS自治系统和BGP协议" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/AS%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F%E5%92%8CBGP%E5%8D%8F%E8%AE%AE/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/AS%E8%87%AA%E6%B2%BB%E7%B3%BB%E7%BB%9F%E5%92%8CBGP%E5%8D%8F%E8%AE%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>AS：自治系统</p>
+<p>BGP：各个自治系统通过 BGP 协议相互连接</p>
+<p>查看各个运营商的网络情况：<a href="https://lookinglass.org/" target="_blank" rel="noopener">https://lookinglass.org/</a></p>
+<p><a href="http://www.bgplookingglass.com/" target="_blank" rel="noopener">http://www.bgplookingglass.com/</a></p>
+<p><a href="https://www.robtex.com/" target="_blank" rel="noopener">https://www.robtex.com/</a></p>
+<p>联通：<a href="http://lg.hkunicom.com/lg" target="_blank" rel="noopener">http://lg.hkunicom.com/lg</a></p>
+<p><a href="https://www.de-cix.net/" target="_blank" rel="noopener">https://www.de-cix.net/</a></p>
+<p><a href="https://lg.fra.de-cix.net/routeservers/rs1_fra_ipv4" target="_blank" rel="noopener">https://lg.fra.de-cix.net/routeservers/rs1_fra_ipv4</a></p>
+<p><a href="https://lg.telia.net/" target="_blank" rel="noopener">https://lg.telia.net/</a></p>
+<p><a href="http://www.hkix.net/hkix/hkixlg.htm" target="_blank" rel="noopener">http://www.hkix.net/hkix/hkixlg.htm</a></p>
+<p>中国电信三张网络</p>
+<ol>
+<li><p>163 骨干网   ASN: AS4134  省级出国节点 ip 地址均为 202.97 开头</p>
+</li>
+<li><p>CN2 GT 普通 CN2    无 ASN，不对外宣告（AS4809 不确定）    省级节点为 202.97 开头，出国时走 59.43 的 CN2 线路以避开拥堵，回程全走 163 线路</p>
+</li>
+</ol>
+<p>测试工具：<a href="https://tools.ipip.net/traceroute.php" target="_blank" rel="noopener">https://tools.ipip.net/traceroute.php</a></p>
+<p>如搬瓦工普通 CN2 机房，测试 IP:23.252.103.101，</p>
+<p><img src="/images/traceroute1.png" alt="tracerote1"></p>
+<ol start="3">
+<li>CN2 GIA 高端线路 无 ASN，不对外宣告 省市全部 59.43 开头，回程也是 59.43，双向 CN2，真正的 CN2 线路</li>
+</ol>
+<p>如搬瓦工高端 CN2 机房，测试 IP: 65.49.131.102</p>
+<p><img src="/images/traceroute2.png" alt="tracerote2"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/web%E4%B8%8A%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%98%BE%E7%A4%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/web%E4%B8%8A%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%98%BE%E7%A4%BA/" class="post-title-link" itemprop="url">web上数学公式显示</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:55:04 / 修改时间：09:55:38" itemprop="dateCreated datePublished" datetime="2020-03-05T09:55:04+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/web%E4%B8%8A%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%98%BE%E7%A4%BA/" class="post-meta-item leancloud_visitors" data-flag-title="web上数学公式显示" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/web%E4%B8%8A%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%98%BE%E7%A4%BA/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/web%E4%B8%8A%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%98%BE%E7%A4%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>概念<br>LaTeX 是一种基于 ΤΕΧ 的排版系统，由美国计算机学家莱斯利·兰伯特（Leslie Lamport）在 20 世纪 80 年代初期开发，利用这种格式，即使使用者没有排版和程序设计的知识也可以充分发挥由 TeX 所提供的强大功能，能在几天，甚至几小时内生成很多具有书籍质量的印刷品。对于生成复杂表格和数学公式，这一点表现得尤为突出。因此它非常适用于生成高印刷质量的科技和数学类文档。</p>
+<p>MathJax 是一个显示网络上数学公式的开源 JavaScript 引擎库，它可以在所有浏览器上面工作，其中就支持 LaTeX，MathML 和 AsciiMath 符号，里面的数字会被 MathJax 使用 JavaScript 引擎解析成 HTML，SVG 或者是 MathML 方程式，然后在现代的浏览器里面显示。 它的设计目标是利用最新的 web 技术，构建一个支持 math 的 web 平台。支持主要的浏览器和操作系统,包括那些移动设备</p>
+<p>KaTeX： 可汗学院出品，号称“最快”的数学公式渲染库<br>支持主流的浏览器：Chrome, Firefox, Safari, Opera 和 IE8-IE11。</p>
+<p>web 数学公式编辑器：<a href="https://github.com/mathquill/mathquill" target="_blank" rel="noopener">https://github.com/mathquill/mathquill</a></p>
+<p>可汗学院数学公式编辑器：math-input = react + redux + mathquill<br><a href="https://github.com/Khan/math-input" target="_blank" rel="noopener">https://github.com/Khan/math-input</a></p>
+<p>芬兰大学入学考试数学编辑器：<a href="https://github.com/digabi/rich-text-editor" target="_blank" rel="noopener">https://github.com/digabi/rich-text-editor</a></p>
+<p>katex： react native 版本<br><a href="https://github.com/3axap4eHko/react-native-katex" target="_blank" rel="noopener">https://github.com/3axap4eHko/react-native-katex</a></p>
+<p>在线测试工具<br>在线测试，我们可以进行 latex 公式、katex 效果一一对应<br><a href="http://pandao.github.io/editor.md/examples/katex.html" target="_blank" rel="noopener">http://pandao.github.io/editor.md/examples/katex.html</a><br><a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">http://latex.codecogs.com/eqneditor/editor.php</a><br><a href="http://latex.91maths.com/" target="_blank" rel="noopener">http://latex.91maths.com/</a></p>
+<p>latex 公式<br>参考文档：<br><a href="http://www.mohu.org/info/lshort-cn.pdf" target="_blank" rel="noopener">http://www.mohu.org/info/lshort-cn.pdf</a></p>
+<p>作者：润木阳<br>来源：CSDN<br>原文：<a href="https://blog.csdn.net/u013210620/article/details/81938733" target="_blank" rel="noopener">https://blog.csdn.net/u013210620/article/details/81938733</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/web%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/web%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/" class="post-title-link" itemprop="url">web富文本编辑器</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:51:48 / 修改时间：09:52:29" itemprop="dateCreated datePublished" datetime="2020-03-05T09:51:48+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/web%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/" class="post-meta-item leancloud_visitors" data-flag-title="web富文本编辑器" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/web%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/web%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>web 富文本编辑器<br>slate</p>
+<p><a href="https://github.com/ianstormtaylor/slate" target="_blank" rel="noopener">https://github.com/ianstormtaylor/slate</a></p>
+<p><a href="https://github.com/nossas/slate-editor/tree/master" target="_blank" rel="noopener">https://github.com/nossas/slate-editor/tree/master</a></p>
+<p><a href="https://github.com/Canner/canner-slate-editor" target="_blank" rel="noopener">https://github.com/Canner/canner-slate-editor</a></p>
+<p>draft-js</p>
+<p><a href="https://github.com/facebook/draft-js" target="_blank" rel="noopener">https://github.com/facebook/draft-js</a></p>
+<p><a href="https://github.com/margox/braft-editor" target="_blank" rel="noopener">https://github.com/margox/braft-editor</a></p>
+<p>quill</p>
+<p><a href="https://github.com/quilljs/quill" target="_blank" rel="noopener">https://github.com/quilljs/quill</a></p>
+<p>simditor: coffeescript</p>
+<p><a href="https://github.com/mycolorway/simditor" target="_blank" rel="noopener">https://github.com/mycolorway/simditor</a></p>
+<p>tinymce</p>
+<p><a href="https://github.com/tinymce/tinymce" target="_blank" rel="noopener">https://github.com/tinymce/tinymce</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/" class="post-title-link" itemprop="url">linux性能分析汇总</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:47:37 / 修改时间：09:50:43" itemprop="dateCreated datePublished" datetime="2020-03-05T09:47:37+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux%E5%86%85%E6%A0%B8/" itemprop="url" rel="index">
+                    <span itemprop="name">linux内核</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/" class="post-meta-item leancloud_visitors" data-flag-title="linux性能分析汇总" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/images/linux%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7.jpg" alt="性能分析工具汇总"></p>
+<p>一、分析工具</p>
+<p>1、CPU 性能分析工具：<br>vmstat<br>ps<br>sar<br>time<br>strace<br>pstree<br>top<br>2、Memory 性能分析工具：<br>vmstat<br>strace<br>top<br>ipcs<br>ipcrm<br>cat /proc/meminfo<br>cat /proc/slabinfo<br>cat /proc//maps<br>3、I/O 性能分析工具：<br>vmstat<br>ipstat<br>repquota<br>quotacheck<br>4、Network 性能分析工具：<br>ifconfig<br>ethereal<br>tethereal<br>iptraf<br>iwconfig<br>nfsstat<br>mrtg<br>ntop<br>netstat<br>cat /proc/sys/net<br>二、Linux 性能调优工具</p>
+<p>当通过上述工具及命令，我们发现了应用的性能瓶颈以后，我们可以通过以下工具或者命令来进行性能的调整<br>1、CPU 性能调优工具：<br>nice / renic<br>sysctl<br>2、Memory 性能调优工具：<br>swapon<br>ulimit<br>sysctl<br>3、I/O 性能调优工具：<br>edquota<br>quoton<br>sysctl<br>boot line:elevator=<br>4、Network 性能调优工具：<br>ifconfig<br>iwconfig<br>sysctl<br>三、性能调整</p>
+<p>1、CPU 性能调整</p>
+<p>当一个系统的 CPU 空闲时间或者等待时间小于 5%时，我们就可以认为系统的 CPU 资源耗尽，我们应该对 CPU 进行性能调整。</p>
+<p>CPU 性能调整方法：<br>编辑/proc/sys/kernel/中的文件，修改内核参数。<br>#cd /proc/sys/kernel/</p>
+<h1 id="ls-proc-sys-kernel"><a href="#ls-proc-sys-kernel" class="headerlink" title="ls /proc/sys/kernel/"></a>ls /proc/sys/kernel/</h1><p>acct hotplug panic real-root-dev<br>cad_pid modprobe panic_on_oops sem<br>cap-bound msgmax pid_max shmall<br>core_pattern msgmnb powersave-nap shmmax<br>core_uses_pid msgmni print-fatal-signals shmmni<br>ctrl-alt-del ngroups_max printk suid_dumpable<br>domainname osrelease printk_ratelimit sysrq<br>exec-shield ostype printk_ratelimit_burst tainted<br>exec-shield-randomize overflowgid pty threads-max<br>hostname overflowuid random version<br>一般可能需要编辑的是 pid_max 和 threads-max，如下：</p>
+<h1 id="sysctl-kernel-threads-max"><a href="#sysctl-kernel-threads-max" class="headerlink" title="sysctl kernel.threads-max"></a>sysctl kernel.threads-max</h1><p>kernel.threads-max = 8192</p>
+<h1 id="sysctl-kernel-threads-max-10000"><a href="#sysctl-kernel-threads-max-10000" class="headerlink" title="sysctl kernel.threads-max=10000"></a>sysctl kernel.threads-max=10000</h1><p>kernel.threads-max = 10000<br>2、Memory 性能调整</p>
+<p>当一个应用系统的内存资源出现下面的情况时，我们认为需要进行 Memory 性能调整：<br>页面频繁换进换出；<br>缺少非活动页。<br>例如在使用 vmstat 命令时发现，memory 的 cache 使用率非常低，而 swap 的 si 或者 so 则有比较高的数据值时，应该警惕内存的性能问题。<br>Memory 性能调整方法： 1)关闭非核心的服务进程。<br>相关的方法请见 CPU 性能调整部分。 2)修改/proc/sys/vm/下的系统参数。</p>
+<h1 id="ls-proc-sys-vm"><a href="#ls-proc-sys-vm" class="headerlink" title="ls /proc/sys/vm/"></a>ls /proc/sys/vm/</h1><p>block_dump laptop_mode nr_pdflush_threads<br>dirty_background_ratio legacy_va_layout overcommit_memory<br>dirty_expire_centisecs lower_zone_protection overcommit_ratio<br>dirty_ratio max_map_count page-cluster<br>dirty_writeback_centisecs min_free_kbytes swappiness<br>hugetlb_shm_group nr_hugepages vfs_cache_pressure</p>
+<h1 id="sysctl-vm-min-free-kbytes"><a href="#sysctl-vm-min-free-kbytes" class="headerlink" title="sysctl vm.min_free_kbytes"></a>sysctl vm.min_free_kbytes</h1><p>vm.min_free_kbytes = 1024</p>
+<h1 id="sysctl-w-vm-min-free-kbytes-2508"><a href="#sysctl-w-vm-min-free-kbytes-2508" class="headerlink" title="sysctl -w vm.min_free_kbytes=2508"></a>sysctl -w vm.min_free_kbytes=2508</h1><p>vm.min_free_kbytes = 2508</p>
+<h1 id="cat-etc-sysctl-conf"><a href="#cat-etc-sysctl-conf" class="headerlink" title="cat /etc/sysctl.conf"></a>cat /etc/sysctl.conf</h1><p>…<br>vm.min_free_kbytes=2058<br>… 3)配置系统的 swap 交换分区等于或者 2 倍于物理内存。</p>
+<h1 id="free"><a href="#free" class="headerlink" title="free"></a>free</h1><p>total used free shared buffers cached<br>Mem: 987656 970240 17416 0 63324 742400<br>-/+ buffers/cache: 164516 823140<br>Swap: 1998840 150272 1848568<br>3、I/O 性能调整<br>系统出现以下情况时，我们认为该系统存在 I/O 性能问题：<br>系统等待 I/O 的时间超过 50%；<br>一个设备的平均队列长度大于 5。<br>我们可以通过诸如 vmstat 等命令，查看 CPU 的 wa 等待时间，以得到系统是否存在 I/O 性能问题的准确信息。<br>I/O 性能调整方法： 1)修改 I/O 调度算法。<br>Linux 已知的 I/O 调试算法有 4 种：<br>deadline - Deadline I/O scheduler<br>as - Anticipatory I/O scheduler<br>cfq - Complete Fair Queuing scheduler<br>noop - Noop I/O scheduler<br>可以编辑/etc/yaboot.conf 文件修改参数 elevator 得到。</p>
+<h1 id="vi-etc-yaboot-conf"><a href="#vi-etc-yaboot-conf" class="headerlink" title="vi /etc/yaboot.conf"></a>vi /etc/yaboot.conf</h1><p>image=/vmlinuz-2.6.9-11.EL<br>label=linux<br>read-only<br>initrd=/initrd-2.6.9-11.EL.img<br>root=/dev/VolGroup00/LogVol00<br>append=”elevator=cfq rhgb quiet” 2)文件系统调整。<br>对于文件系统的调整，有几个公认的准则：<br>将 I/O 负载相对平均的分配到所有可用的磁盘上；<br>选择合适的文件系统，Linux 内核支持 reiserfs、ext2、ext3、jfs、xfs 等文件系统；</p>
+<h1 id="mkfs-t-reiserfs-j-dev-sdc1"><a href="#mkfs-t-reiserfs-j-dev-sdc1" class="headerlink" title="mkfs -t reiserfs -j /dev/sdc1"></a>mkfs -t reiserfs -j /dev/sdc1</h1><p>文件系统即使在建立后，本身也可以通过命令调优；<br>tune2fs (ext2/ext3)<br>reiserfstune (reiserfs)<br>jfs_tune (jfs) 3)文件系统 Mount 时可加入选项 noatime、nodiratime。</p>
+<h1 id="vi-etc-fstab"><a href="#vi-etc-fstab" class="headerlink" title="vi /etc/fstab"></a>vi /etc/fstab</h1><p>…<br>/dev/sdb1 /backup reiserfs acl, user_xattr, noatime, nodiratime 1 1 4)调整块设备的 READAHEAD，调大 RA 值。<br>[root@overflowuid ~]# blockdev –report<br>RO RA SSZ BSZ StartSec Size Device<br>…<br>rw 256 512 4096 0 71096640 /dev/sdb<br>rw 256 512 4096 32 71094240 /dev/sdb1<br>[root@overflowuid ~]# blockdev –setra 2048 /dev/sdb1<br>[root@overflowuid ~]# blockdev –report<br>RO RA SSZ BSZ StartSec Size Device<br>…<br>rw 2048 512 4096 0 71096640 /dev/sdb<br>rw 2048 512 4096 32 71094240 /dev/sdb1<br>4、Network 性能调整</p>
+<p>一个应用系统出现如下情况时，我们认为该系统存在网络性能问题：<br>网络接口的吞吐量小于期望值；<br>出现大量的丢包现象；<br>出现大量的冲突现象。<br>Network 性能调整方法： 1)调整网卡的参数。</p>
+<h1 id="ethtool-eth0"><a href="#ethtool-eth0" class="headerlink" title="ethtool eth0"></a>ethtool eth0</h1><p>Settings for eth0:<br>Supported ports: [ TP ]<br>Supported link modes: 10baseT/Half 10baseT/Full<br>100baseT/Half 100baseT/Full<br>1000baseT/Full<br>Supports auto-negotiation: Yes<br>Advertised link modes: 10baseT/Half 10baseT/Full<br>100baseT/Half 100baseT/Full<br>1000baseT/Full<br>Advertised auto-negotiation: Yes<br>Speed: 100Mb/s<br>Duplex: Half<br>Port: Twisted Pair<br>PHYAD: 0<br>Transceiver: internal<br>Auto-negotiation: on<br>Supports Wake-on: d<br>Wake-on: d<br>Current message level: 0×00000007 (7)<br>Link detected: yes<br>#ethtool -s eth0 duplex full<br>#ifconfig eth0 mtu 9000 up 2)增加网络缓冲区和包的队列。</p>
+<h1 id="cat-proc-sys-net-ipv4-tcp-mem"><a href="#cat-proc-sys-net-ipv4-tcp-mem" class="headerlink" title="cat /proc/sys/net/ipv4/tcp_mem"></a>cat /proc/sys/net/ipv4/tcp_mem</h1><p>196608 262144 393216</p>
+<h1 id="cat-proc-sys-net-core-rmem-default"><a href="#cat-proc-sys-net-core-rmem-default" class="headerlink" title="cat /proc/sys/net/core/rmem_default"></a>cat /proc/sys/net/core/rmem_default</h1><p>135168</p>
+<h1 id="cat-proc-sys-net-core-rmem-max"><a href="#cat-proc-sys-net-core-rmem-max" class="headerlink" title="cat /proc/sys/net/core/rmem_max"></a>cat /proc/sys/net/core/rmem_max</h1><p>131071</p>
+<h1 id="cat-proc-sys-net-core-wmem-default"><a href="#cat-proc-sys-net-core-wmem-default" class="headerlink" title="cat /proc/sys/net/core/wmem_default"></a>cat /proc/sys/net/core/wmem_default</h1><p>135168</p>
+<h1 id="cat-proc-sys-net-core-wmem-max"><a href="#cat-proc-sys-net-core-wmem-max" class="headerlink" title="cat /proc/sys/net/core/wmem_max"></a>cat /proc/sys/net/core/wmem_max</h1><p>131071</p>
+<h1 id="cat-proc-sys-net-core-optmem-max"><a href="#cat-proc-sys-net-core-optmem-max" class="headerlink" title="cat /proc/sys/net/core/optmem_max"></a>cat /proc/sys/net/core/optmem_max</h1><p>20480</p>
+<h1 id="cat-proc-sys-net-core-netdev-max-backlog"><a href="#cat-proc-sys-net-core-netdev-max-backlog" class="headerlink" title="cat /proc/sys/net/core/netdev_max_backlog"></a>cat /proc/sys/net/core/netdev_max_backlog</h1><p>300</p>
+<h1 id="sysctl-net-core-rmem-max"><a href="#sysctl-net-core-rmem-max" class="headerlink" title="sysctl net.core.rmem_max"></a>sysctl net.core.rmem_max</h1><p>net.core.rmem_max = 131071</p>
+<h1 id="sysctl-w-net-core-rmem-max-135168"><a href="#sysctl-w-net-core-rmem-max-135168" class="headerlink" title="sysctl -w net.core.rmem_max=135168"></a>sysctl -w net.core.rmem_max=135168</h1><p>net.core.rmem_max = 135168 3)调整 Webserving。</p>
+<h1 id="sysctl-net-ipv4-tcp-tw-reuse"><a href="#sysctl-net-ipv4-tcp-tw-reuse" class="headerlink" title="sysctl net.ipv4.tcp_tw_reuse"></a>sysctl net.ipv4.tcp_tw_reuse</h1><p>net.ipv4.tcp_tw_reuse = 0</p>
+<h1 id="sysctl-w-net-ipv4-tcp-tw-reuse-1"><a href="#sysctl-w-net-ipv4-tcp-tw-reuse-1" class="headerlink" title="sysctl -w net.ipv4.tcp_tw_reuse=1"></a>sysctl -w net.ipv4.tcp_tw_reuse=1</h1><p>net.ipv4.tcp_tw_reuse = 1</p>
+<h1 id="sysctl-net-ipv4-tcp-tw-recycle"><a href="#sysctl-net-ipv4-tcp-tw-recycle" class="headerlink" title="sysctl net.ipv4.tcp_tw_recycle"></a>sysctl net.ipv4.tcp_tw_recycle</h1><p>net.ipv4.tcp_tw_recycle = 0</p>
+<h1 id="sysctl-w-net-ipv4-tcp-tw-recycle-1"><a href="#sysctl-w-net-ipv4-tcp-tw-recycle-1" class="headerlink" title="sysctl -w net.ipv4.tcp_tw_recycle=1"></a>sysctl -w net.ipv4.tcp_tw_recycle=1</h1><p>net.ipv4.tcp_tw_recycle = 1</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/linux%E4%B8%8Btrace%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/linux%E4%B8%8Btrace%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">linux下trace机制</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:45:32 / 修改时间：09:46:01" itemprop="dateCreated datePublished" datetime="2020-03-05T09:45:32+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux%E5%86%85%E6%A0%B8/" itemprop="url" rel="index">
+                    <span itemprop="name">linux内核</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/linux%E4%B8%8Btrace%E6%9C%BA%E5%88%B6/" class="post-meta-item leancloud_visitors" data-flag-title="linux下trace机制" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/linux%E4%B8%8Btrace%E6%9C%BA%E5%88%B6/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/linux%E4%B8%8Btrace%E6%9C%BA%E5%88%B6/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一：tracing 目录文件以及创建的代码<br>root@memory-153:/sys/kernel/debug/tracing# ls<br>available_events            options              stack_trace_filter<br>available_filter_functions  per_cpu              trace<br>available_tracers           printk_formats       trace_clock<br>buffer_size_kb              README               trace_marker<br>buffer_total_size_kb        saved_cmdlines       trace_options<br>current_tracer              saved_cmdlines_size  trace_pipe<br>dyn_ftrace_total_info       set_event            trace_stat<br>enabled_functions           set_ftrace_filter    tracing_cpumask<br>events                      set_ftrace_notrace   tracing_max_latency<br>free_buffer                 set_ftrace_pid       tracing_on<br>function_profile_enabled    set_graph_function   tracing_thresh<br>instances                   set_graph_notrace    uprobe_events<br>kprobe_events               snapshot             uprobe_profile<br>kprobe_profile              stack_max_size<br>max_graph_depth             stack_trace</p>
+<p>root@memory-153:/sys/kernel/debug/tracing# cat /boot/System.map-3.12.1 | grep trace | grep *<em>initcall<br>ffffffff81e482d0 t *</em>initcall_trace_init_flags_sys_exitearly<br>ffffffff81e482d8 t *<em>initcall_trace_init_flags_sys_enterearly<br>ffffffff81e482e8 t *</em>initcall_register_trigger_all_cpu_backtraceearly<br>ffffffff81e48348 t *<em>initcall_tracer_alloc_buffersearly<br>ffffffff81e48358 t *</em>initcall_init_trace_printkearly<br>ffffffff81e48360 t *<em>initcall_event_trace_memsetupearly<br>ffffffff81e48368 t *</em>initcall_init_ftrace_syscallsearly<br>ffffffff81e48410 t *<em>initcall_ftrace_mod_cmd_init1<br>ffffffff81e48418 t *</em>initcall_init_function_trace1<br>ffffffff81e48420 t *<em>initcall_init_wakeup_tracer1<br>ffffffff81e48428 t *</em>initcall_init_graph_trace1<br>ffffffff81e48430 t *<em>initcall_event_trace_enable1<br>ffffffff81e48978 t *</em>initcall_ftrace_init_debugfs5<br>ffffffff81e48980 t *<em>initcall_tracer_init_debugfs5<br>ffffffff81e48988 t *</em>initcall_init_trace_printk_function_export5<br>ffffffff81e48998 t *<em>initcall_event_trace_init5<br>ffffffff81e489a0 t *</em>initcall_init_kprobe_trace5<br>ffffffff81e489a8 t *<em>initcall_init_uprobe_trace5<br>ffffffff81e48c10 t *</em>initcall_init_tracepoints6<br>ffffffff81e48c20 t *<em>initcall_stack_trace_init6<br>ffffffff81e48c28 t *</em>initcall_init_mmio_trace6<br>ffffffff81e48c30 t *<em>initcall_init_blk_tracer6<br>ffffffff81e494a8 t *</em>initcall_clear_boot_tracer7<br>ffffffff81e494b0 t __initcall_kdb_ftrace_register7</p>
+<p>ftrace_init_debugfs 7<br>available_filter_functions enabled_functions set_ftrace_filter<br>set_ftrace_notrace set_graph_function set_ftrace_pid trace_stat function_profile_enabled</p>
+<p>tracer_init_debugfs 20</p>
+<p>tracing_cpumask trace_options trace trace_pipe buffer_size_kb buffer_total_size_kb free_buffer trace_marker trace_clock tracing_on snapshot per_cpu<br>available_tracers current_tracer tracing_max_latency tracing_thresh README saved_cmdlines dyn_ftrace_total_info instances options</p>
+<p>init_trace_printk_function_export 1 printk_formats</p>
+<p>event_trace_init 3<br>available_events set_event events</p>
+<p>init_kprobe_trace 2<br>kprobe_events kprobe_profile</p>
+<p>init_uprobe_trace 2<br>uprobe_events uprobe_profile</p>
+<p>stack_trace_init 3<br>stack_max_size stack_trace stack_trace_filter</p>
+<p>not found:<br>saved_cmdlines_size set_graph_notrace max_graph_depth</p>
+<p>二：tracepoint, ftrace event, syscall trace<br>tracepoint</p>
+<p>VMLINUX_SYMBOL(<strong>start_</strong>tracepoints_ptrs) = .;  <br><em>(__tracepoints_ptrs) /</em> Tracepoints: pointer array <em>/<br>VMLINUX_SYMBOL(**stop\</em>**tracepoints_ptrs) = .;  <br><em>(__tracepoints_strings)/</em> Tracepoints: strings _/ \</p>
+<p>tracepoint.h<br>#define DEFINE<em>TRACE_FN(name, reg, unreg)     <br> static const char __tpstrtab</em>##name[]     <br> <strong>attribute</strong>((section(“<strong>tracepoints_strings”))) = #name;  <br> struct tracepoint <em>*tracepoint</em>##name     <br> **attribute</strong>((section(“<strong>tracepoints”))) =    <br>  { <em>*tpstrtab</em>##name, STATIC<em>KEY_INIT_FALSE, reg, unreg, NULL };<br> static struct tracepoint \</em> const __tracepoint_ptr<em>##name *</em>used  <br> **attribute</strong>((section(“<em><em>tracepoints</em>ptrs”))) =   <br>  &amp;__tracepoint</em>##name;</p>
+<p>ftrace event</p>
+<p>trace_types  所有 tracer 链表<br>nop tracer<br>function_trace<br>wakeup_tracer<br>wakeup_rt_tracer<br>mmio_tracer<br>blk_tracer</p>
+<p>vmlinux.lds.h<br>#define FTRACE_EVENTS() . = ALIGN(8);     <br>   VMLINUX_SYMBOL(<strong>start_ftrace_events) = .; <br>   *(_ftrace_events)    <br>   VMLINUX_SYMBOL(</strong>stop_ftrace_events) = .;</p>
+<p>ftrace.h<br>#undef DEFINE<em>EVENT_PRINT<br>#define DEFINE_EVENT_PRINT(template, call, proto, args, print)  <br>         <br>static const char print_fmt</em>##call[] = print;    <br>         <br>static struct ftrace<em>event_call __used event</em>##call = {   <br> .name   = #call,    <br> .class   = &amp;event<em>class</em>##template,  <br> .event.funcs  = &amp;ftrace<em>event_type_funcs</em>##call, <br> .print<em>fmt  = print_fmt</em>##call,   <br>};         <br>static struct ftrace<em>event_call <strong>used     <br>**attribute</strong>((section(“_ftrace_events”))) ***event</em>##call = &amp;event_##call</p>
+<p>syscall trace</p>
+<p>#define SYSCALL<em>TRACE_ENTER_EVENT(sname)    <br> static struct syscall_metadata __syscall_meta</em>##sname;  <br> static struct ftrace<em>event_call __used    <br>   event_enter</em>##sname = {     <br>  .name                   = “sys<em>enter”#sname,  <br>  .class   = &amp;event_class_syscall_enter, <br>  .event.funcs            = &amp;enter_syscall_print_funcs, <br>  .data   = (void \</em>)&amp;__syscall_meta<em>##sname,<br>  .flags   = TRACE<em>EVENT_FL_CAP_ANY, <br> };        <br> static struct ftrace_event_call *</em>used    <br>   <strong>attribute</strong>((section(“_ftrace_events”)))   <br>  ***event_enter</em>##sname = &amp;event<em>enter</em>##sname;</p>
+<p>#define SYSCALL<em>TRACE_EXIT_EVENT(sname)     <br> static struct syscall_metadata __syscall_meta</em>##sname;  <br> static struct ftrace<em>event_call __used    <br>   event_exit</em>##sname = {     <br>  .name                   = “sys<em>exit”#sname,  <br>  .class   = &amp;event_class_syscall_exit, <br>  .event.funcs  = &amp;exit_syscall_print_funcs, <br>  .data   = (void \</em>)&amp;__syscall_meta<em>##sname,<br>  .flags   = TRACE<em>EVENT_FL_CAP_ANY, <br> };        <br> static struct ftrace_event_call *</em>used    <br>   <strong>attribute</strong>((section(“_ftrace_events”)))   <br> ***event_exit</em>##sname = &amp;event<em>exit</em>##sname;</p>
+<p>#define SYSCALL<em>METADATA(sname, nb, …)   <br> static const char *types</em>##sname[] = {   <br>  <strong>MAP(nb,</strong>SC<em>STR_TDECL,<strong>VA_ARGS</strong>)  <br> };       <br> static const char *args</em>##sname[] = {   <br>  <strong>MAP(nb,</strong>SC<em>STR_ADECL,<strong>VA_ARGS</strong>)  <br> };       <br> SYSCALL_TRACE_ENTER_EVENT(sname);   <br> SYSCALL_TRACE_EXIT_EVENT(sname);   <br> static struct syscall_metadata *<em>used   <br>   *</em>syscall_meta</em>##sname = {    <br>  .name   = “sys”#sname,   <br>  .syscall<em>nr = -1, /</em> Filled in at boot <em>/ <br>  .nb_args  = nb,    <br>  .types  = nb ? types</em>##sname : NULL, <br>  .args  = nb ? args<em>##sname : NULL, <br>  .enter_event = &amp;event_enter</em>##sname,  <br>  .exit<em>event = &amp;event_exit</em>##sname,  <br>  .enter<em>fields = LIST_HEAD_INIT(__syscall_meta</em>##sname.enter<em>fields), <br> };       <br> static struct syscall_metadata <strong>used   <br>   **attribute</strong>((section(“*<em>syscalls_metadata”))) <br>  \</em>__p_syscall_meta</em>##sname = &amp;_<em>syscall_meta</em>##sname;<br>#else<br>#define SYSCALL_METADATA(sname, nb, …)<br>#endif</p>
+<p>#define SYSCALL<em>DEFINE0(sname)     <br> SYSCALL_METADATA(</em>##sname, 0);    <br> asmlinkage long sys_##sname(void)</p>
+<p>#define SYSCALL<em>DEFINE1(name, …) SYSCALL_DEFINEx(1, *##name, *</em>VA_ARGS<strong>)<br>#define SYSCALL<em>DEFINE2(name, …) SYSCALL_DEFINEx(2, *##name, *</em>VA_ARGS</strong>)<br>#define SYSCALL<em>DEFINE3(name, …) SYSCALL_DEFINEx(3, *##name, *</em>VA_ARGS<strong>)<br>#define SYSCALL<em>DEFINE4(name, …) SYSCALL_DEFINEx(4, *##name, *</em>VA_ARGS</strong>)<br>#define SYSCALL<em>DEFINE5(name, …) SYSCALL_DEFINEx(5, *##name, *</em>VA_ARGS<strong>)<br>#define SYSCALL<em>DEFINE6(name, …) SYSCALL_DEFINEx(6, *##name, *</em>VA_ARGS</strong>)</p>
+<p>#define SYSCALL_DEFINEx(x, sname, …)    <br> SYSCALL_METADATA(sname, x, <strong>VA_ARGS</strong>)   <br> *<em>SYSCALL_DEFINEx(x, sname, *</em>VA_ARGS__)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/acpi-pci%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/acpi-pci%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">acpi-pci总结</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:42:23 / 修改时间：09:43:21" itemprop="dateCreated datePublished" datetime="2020-03-05T09:42:23+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux%E5%86%85%E6%A0%B8/" itemprop="url" rel="index">
+                    <span itemprop="name">linux内核</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/acpi-pci%E6%80%BB%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="acpi-pci总结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/acpi-pci%E6%80%BB%E7%BB%93/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/acpi-pci%E6%80%BB%E7%BB%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li>pci 初始化</li>
+</ol>
+<p>memory@memory-153:~$ cat /boot/System.map-3.16.0 | grep pci | grep *<em>initcall<br>ffffffff81e5bba0 t *</em>initcall_pcibus_class_init2<br>ffffffff81e5bba8 t *<em>initcall_pci_driver_init2<br>ffffffff81e5bc58 t *</em>initcall_acpi_pci_init3<br>ffffffff81e5bc78 t *<em>initcall_register_xen_pci_notifier3<br>ffffffff81e5bc98 t *</em>initcall_pci_arch_init3<br>ffffffff81e5bde0 t *<em>initcall_pci_slot_init4<br>ffffffff81e5bfe8 t *</em>initcall_pci_subsys_init4<br>ffffffff81e5c1a8 t *<em>initcall_pcibios_assign_resources5<br>ffffffff81e5c1d8 t *</em>initcall_pci_apply_final_quirks5s<br>ffffffff81e5c1e8 t *<em>initcall_pci_iommu_initrootfs<br>ffffffff81e5c650 t *</em>initcall_pci_proc_init6<br>ffffffff81e5c658 t *<em>initcall_pcie_portdrv_init6<br>ffffffff81e5c668 t *</em>initcall_pcie_pme_service_init6<br>ffffffff81e5c678 t *<em>initcall_pci_hotplug_init6<br>ffffffff81e5c680 t *</em>initcall_pcied_init6<br>ffffffff81e5c730 t *<em>initcall_virtio_pci_driver_init6<br>ffffffff81e5c760 t *</em>initcall_platform_pci_module_init6<br>ffffffff81e5c7a0 t *<em>initcall_serial_pci_driver_init6<br>ffffffff81e5c878 t *</em>initcall_sis_pci_driver_init6<br>ffffffff81e5c880 t *<em>initcall_ata_generic_pci_driver_init6<br>ffffffff81e5c958 t *</em>initcall_ehci_pci_init6<br>ffffffff81e5c970 t *<em>initcall_ohci_pci_init6<br>ffffffff81e5cb90 t *</em>initcall_pci_resource_alignment_sysfs_init7<br>ffffffff81e5cb98 t *<em>initcall_pci_sysfs_init7<br>ffffffff81e5cc08 t *</em>initcall_pci_mmcfg_late_insert_resources7</p>
+<ol start="2">
+<li>pci hotplug 流程<br>   1) 通过 acpi_install_notify_handler 向 acpi 模块注册消息处理函数<pre><code>消息处理函数为 handle_hotplug_event</code></pre></li>
+</ol>
+<p>handle_hotplug_event–&gt;hotplug_event_work–&gt;hotplug_event–&gt;acpiphp_rescan_slot–&gt;pci_scan_slot<br>   –&gt;pci_scan_single_device–&gt;pci_scan_device–&gt;pci_setup_device<br>                            –&gt;pci_device_add–&gt;device_add</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/" class="post-title-link" itemprop="url">编译链接资料精选</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:39:34 / 修改时间：09:39:55" itemprop="dateCreated datePublished" datetime="2020-03-05T09:39:34+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">c语言</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/" class="post-meta-item leancloud_visitors" data-flag-title="编译链接资料精选" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E8%B5%84%E6%96%99%E7%B2%BE%E9%80%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol start="2">
+<li>编译和链接</li>
+<li><ol>
+<li>编译过程</li>
+</ol>
+</li>
+</ol>
+<p>广义的代码编译过程，实际上应该细分为：预处理，编译，汇编，链接。</p>
+<p>预处理过程，负责头文件展开，宏替换，条件编译的选择，删除注释等工作。gcc –E 表示进行预处理。</p>
+<p>编译过程，负载将预处理生成的文件，经过词法分析，语法分析，语义分析及优化后生成汇编文件。gcc –S 表示进行编译。</p>
+<p>汇编，是将汇编代码转换为机器可执行指令的过程。通过使用 gcc –C 或者 as 命令完成。</p>
+<p>链接，负载根据目标文件及所需的库文件产生最终的可执行文件。链接主要解决了模块间的相互引用的问题，分为地址和空间分配，符号解析和重定位几个步骤。实际上在编译阶段生成目标文件时，会暂时搁置那些外部引用，而这些外部引用就是在链接时进行确定的。链接器在链接时，会根据符号名称去相应模块中寻找对应符号。待符号确定之后，链接器会重写之前那些未确定的符号的地址，这个过程就是重定位。</p>
+<p>2.1.1.   相关选项</p>
+<p>-WL：这个选项可以将指定的参数传递给链接器。</p>
+<p>比如使用”-Wl,-soname,my-soname”，GCC 会将-soname,my-soname 传递给链接器，用来指定输出共享库的 SO-NAME。</p>
+<p>-shared：表示产生共享对象，产生的代码会在装载时进行重定位。但是无法做到让一份指令由多个进程共享。因为单纯的装载时重定位会对程序中所有指令和数据中的绝对地址进行修改。要做到让多个进程共享，还需要加上-fPIC。</p>
+<p>-fPIC：地址无关代码，是为了能让多个进程共享一份指令。基本思想就是将指令中需要进行修改的那部分分离出来，跟数据放到一块。这样指令部分就可以保持不变，而需要变化的那部分则与数据一块，每个进程都有自己的一份副本。</p>
+<p>-export-dynamic：默认情况下，链接器在产生可执行文件时，为了减少符号表大只会将那些被其他模块引用到的符号放到动态符号表。也就是说，在共享模块引用主模块时，只有那些在链接时被共享模块引用到的符号才会被导出。当程序使用 dlopen()加载某个共享模块时，如果该共享模块反向引用了主模块的符号，而该符号可能在链接时因为未被其他模块引用而未被导出到动态符号表，这样反向引用就会失败。这个参数就是用来解决这个问题的。它表示，链接器在产生可执行文件时，将所有全局符号导出动态符号表。</p>
+<p>-soname：指定输出共享库的 SO-NAME。</p>
+<p>-I：。指定头文件搜索路径。</p>
+<p>-l：指定链接某个库。指定链接的比如是 libxxx.so.x.y.z 的一个库，只需要写-lxxx 即可，编译器根据当前环境，在相关路径中查找名为 xxx 的库。xxx 又称为共享库的链接名(link name)。不同的库可能具有同样的链接名，比如动态和静态版本，libxxx.a libxxx.so。如果链接时采用-lxxx，那么链接器会根据输出文件的情况(动态/静态)选择合适的版本。比如如果 ld 采用了-static 参数，就会使用静态版本，如果使用了-Bdynamic(这也是默认情况)，就会使用动态版本。</p>
+<p>-L：指定链接时查找路径，多个路径用逗号分隔</p>
+<p>-rpath：这种方式可以指定产生的目标程序的共享库查找路径。还有一个类似选项-rpath-link，与-rpath 选项的区别在于，-rpath 选项指定的目录被硬编码到可执行文件中，-rpath-link 选项指定的目录只在链接阶段生效。这两个选项都是链接器 ld 的选项。更多链接器选项可以通过 man ld 查看。</p>
+<p>2.1.2.   编译与链接</p>
+<p>.so 和.a 的生成，可执行文件的生成。.a 的生成只需要编译阶段，而可执行文件的生成还需要进行链接。静态库文件的生成很简单，主要就是分两步，第一步将源文件生成目标文件，可以使用 gcc –c，第二步就是将目标文件打包，可以通过 ar 实现。所以该过程只要求源文件能够通过 gcc –c 这个命令即可。</p>
+<p>共享库的生成要复杂一些。可以有三种方法生成：<br>$ld -G<br>$gcc -shared<br>$libtool<br>用 ld 最复杂，用 gcc -shared 就简单的多，但是-shared 并非在任何平台都可以使用。-shared 该选项指定生成动态连接库（让连接器生成 T 类型的导出符号表，有时候也生成弱连接 W 类型的导出符号），不用该标志外部程序无法连接。GNU 提供了一个更好的工具 libtool，专门用来在各种平台上生成各种库。在编译生成某个.so 文件时，比如 liba.so，虽然它里面可能用到了 libb.so 的东西，但是在生成 a.so 时是可以不加-lb 的，因为 so 的生成不会进行符号解析和重定位。</p>
+<p>以 GCC 为例，它在编译静态库/动态库时到底使用了什么命令？比如：gcc –v -shared hello.c -o libhello.so。ld –G 用来产生.so 文件，也是 gcc 链接时实际调用的命令。</p>
+<p>生成可执行文件时，如果链接的是静态库，那么链接器会按照静态链接规则，将对应的符号引用进行重定位。而如果是动态库，链接器会将这个符号标记为动态链接的符号，不进行重定位，而是在装载时再进行。所以，尽管是动态链接，如果是已经进入到了链接阶段，那么也需要能在相应的.so 中找到某符号的定义，否则也会引发 Undefined reference to 的链接错误。因为链接器只有通过.so 文件，才能判断某符号是个动态链接符号，所以也需要读取这些.so 文件，找到相应符号的定义。</p>
+<p>2.1.3.   头文件查找</p>
+<p>#include 有两种写法形式，分别是：</p>
+<p>#include &lt;&gt; ： 直接到系统指定的某些目录中去找某些头文件。</p>
+<p>#include “” ： 先到源文件所在文件夹去找，然后再到系统指定的某些目录中去找某些头文件。</p>
+<p>gcc 寻找头文件的路径(按照 1-&gt;2-&gt;3 的顺序)：</p>
+<ol>
+<li>在 gcc 编译源文件的时候，通过参数-I 指定头文件的搜索路径，如果指定路径有多个路径时，则按照指定路径的顺序搜索头文件。命令形式如：“gcc -I /path/where/theheadfile/in sourcefile.c“，这里源文件的路径可以是绝对路径，也可以是相对路径。比如设当前路径为/root/test，include_test.c 如果要包含头文件“include/include_test.h“，有两种方法：</li>
+</ol>
+<p>1)include_test.c 中#include “include/include_test.h”或者#include “/root/test/include/include_test.h”，然后 gcc include_test.c 即可</p>
+<p>2)include_test.c 中#include &lt;include_test.h&gt;或者#include &lt;include_test.h&gt;，然后 gcc –I include include_test.c 也可</p>
+<p>2.通过查找 gcc 的环境变量来搜索头文件位置，分别是:</p>
+<p>CPATH/C_INCLUDE_PATH/CPLUS_INCLUDE_PATH/OBJC_INCLUDE_PATH。</p>
+<ol start="3">
+<li>再在缺省目录下搜索，分别是：</li>
+</ol>
+<p>/usr/include</p>
+<p>/usr/local/include</p>
+<p>/usr/lib/gcc-lib/i386-linux/2.95.2/include</p>
+<p>最后一行是 gcc 程序的库文件地址，各个用户的系统上可能不一样。gcc 在默认情况下，都会指定到/usr/include 文件夹寻找头文件。 gcc 还有一个参数：-nostdinc，它使编译器不再系统缺省的头文件目录里面找头文件，一般和-I 联合使用，明确限定头文件的位置。在编译驱动模块时，由于特殊的需求必须强制 GCC 不搜索系统默认路径，也就是不搜索/usr/include，要用参数-nostdinc，还要自己用-I 参数来指定内核头文件路径，这个时候必须在 Makefile 中指定。</p>
+<p>当#include 使用相对路径的时候，gcc 最终会根据上面这些路径，来最终构建出头文件的位置。如#include &lt;sys/types.h&gt;就是包含文件/usr/include/sys/types.h</p>
+<p>2.1.4.   链接时库书写顺序</p>
+<p>链接过程中库的顺序</p>
+<p>Q: 有几个库文件 A.a、B.a、common.a，前两者用到了定义在后者中的例程，如果把    common.a 放在前面，链接器报告存在无法解析的符号名，放在最后则无问题。<br>A: Floyd Davidson <a href="mailto:&#x66;&#x6c;&#111;&#x79;&#100;&#x40;&#x70;&#x74;&#x69;&#97;&#x6c;&#97;&#115;&#x6b;&#x61;&#x2e;&#x6e;&#x65;&#116;">&#x66;&#x6c;&#111;&#x79;&#100;&#x40;&#x70;&#x74;&#x69;&#97;&#x6c;&#97;&#115;&#x6b;&#x61;&#x2e;&#x6e;&#x65;&#116;</a><br>链接器按照命令行上指定顺序搜索库文件和目标文件(.a .o)，二者之间的区别在    于.o 文件被全部链接进来，而只从库文件中析取所需模块，仅当某个模块可以解析当前尚未成功解析的符号时，该模块被析取后链接进来。如果库文件无法解析任何当前尚未成功解析的符号，不从中析取也不发生链接。</p>
+<p>Unix 编程新手的常见问题是数学函数并不在标准 C 库中，而是在 libm.a 中</p>
+<p>cc -lm foo.c</p>
+<p>这里 foo.c 用到了数学库中的符号，但是链接器无法正确解析。当搜索到 libm.a 时，   来自 foo.c 的数学函数符号尚未出现，因此不需要析取 libm.a 的任何模块。接下来 foo.o 链接进来，增加了一批尚未成功解析的符号，但已经没有 libm.a 可供使用了， 因此数学库必须在 foo.o 之后被搜索到。</p>
+<p>cc foo.c –lm</p>
+<p>在你的问题中，如果 common.a 首先被搜索到，因为不匹配尚未成功解析的符号，而被丢弃。结果 A.a 和 B.a 真正链接进来的时候，已经没有库可以解析符号了。</p>
+<p>2.1.5.   链接时库文件查找</p>
+<p>链接时需要告诉链接器，在哪里找到库文件？以静态还是动态的方式链接库文件？默认情况下使用动态方式链接，这要求存在对应的.so 动态库文件，如果不存在，则寻找相应的.a 静态库文件。若在编译时向 gcc 传入-static 选项，则使用静态方式链接，这要求所有库文件都必须有对应的*.a 静态库。</p>
+<p>1.gcc 会去找-L 2.再找 gcc 的环境变量 LIBRARY_PATH  3.再找内定目录 /lib /usr/lib /usr/local/lib，这是当初编译 gcc 时，写在文件里的</p>
+<p>需要澄清一下：</p>
+<p>l  ldconfig 做的事情都与运行程序时有关，跟编译时一点关系都没有</p>
+<p>l  需要注意的是 LD_LIBRARY_PATH 通常只是在程序运行时告诉 loader 该去哪查找共享库，比如 gcc 编译时的链接器可能就不会去查找 LD_LIBRARY_PATH。</p>
+<p>l  查找时如果找到了同名的动态库和静态库如何处理？当我们指定一个路径下的库文件名时，假如此时同时存在 xxx.a 和 xxx.so 的两个库形式，那么优先选择.so 链接(共享库优先)。如果使用了-static，找到了.so 是否会使用？如果使用了-Bdynamic，那找到了.a 会不会使用？.a 的生成能否依赖.so？它所依赖的这些.so 能否不加入-l 参数列表？</p>
+<p>l  系统中链接器与加载器的区别？编译时的链接器是 ld，加载器则位于 ld-linux.so。加载器是否去/etc/ld.so.conf 中目录下去寻找所需的.so，还是依赖于 ldconfig 去更新 ld.so.cache 文件，？答案是依赖于 ldconfig 去更新 cache。</p>
+<p>l  系统中的 ld 与 gcc 采用的链接器的区别？gcc –v 查看 gcc 调用 as/ld 之类程序的时候传给它们的参数。通过 gcc 命令进行链接，与直接使用 ld 的区别？库查找路径是否不同？gcc 的 LIBRARY_PATH，应该是 gcc 本身用的环境变量。</p>
+<p>l  GCC，gcc 与 g++？GCC 在预处理阶段会调用 cpp，在编译阶段调用 gcc 或 g++，汇编阶段调用 as，最后链接阶段比较复杂，在 GCC 内部的这一步调用如下：<br>$ ld -dynamic-linker /lib/ld-linux.so.2 /usr/lib/crt1.o<br>/usr/lib/crti.o /usr/lib/gcc-lib/i686/3.3.1/crtbegin.o<br>-L/usr/lib/gcc-lib/i686/3.3.1 hello.o -lgcc -lgcc_eh<br>-lc -lgcc -lgcc_eh /usr/lib/gcc-lib/i686/3.3.1/crtend.o<br>/usr/lib/crtn.o</p>
+<p>2.2.  GCC</p>
+<p>GCC（GNU Compiler Collection，GNU 编译器套装），是一套由 GNU 开发的编程语言编译器。它是一套以 GPL 及 LGPL 许可证所发行的自由软件，也是 GNU 计划 的关键部分，亦是自由的 类 Unix 及苹果计算机 Mac OS X 操作系统的标准编译器。GCC（特别是其中的 C 语言编译器）也常被认为是跨平台编译器的事实标准。</p>
+<p>GCC 原名为 GNU C 语言编译器（GNU C Compiler），因为它原本只能处理 C 语言。GCC 很快地扩展，变得可处理 C++。之后也变得可处理 Fortran、Pascal、Objective-C、Java, 以及 Ada 与其他语言。</p>
+<p>gcc 在后台实际上经历了预处理，汇编，编译，链接这几个过程，我们可以通过-v 参数查看它的编译细节，如果想看某个具体的编译过程，则可以分别使用-E,-S,-c 和 -O，对应的后台工具则分别为 cpp,cc1/gcc/g++,as,ld。</p>
+<p>2.3.  常见错误<br>2.3.1.   Multiple definition</p>
+<p>符号可以分为强符号和弱符号。比如初始化了的全局变量就是强符号，未初始化的全局变量为弱符号。针对强弱符号，有如下规则：</p>
+<p>l  不允许强符号重定义，及不同的目标文件中不能有同名的强符号。Multiple definition 错误就是违反了这种规定。</p>
+<p>l  如果一个符号在某个文件中是强符号，在另一个文件中是弱符号，那么选择强符号。</p>
+<p>l  如果一个弱符号出现在多个目标文件中，则选择其中占用空间最大的那个。</p>
+<p>强弱符号都是针对变量定义，对于引用则无效，当然针对应用，也有强引用与弱引用。对于强引用来说，在链接成可执行文件时，如果找不到对应变量的定义则会报错。对于弱引用，在这种情况下，不会报错，链接器会采用一个默认值。</p>
+<p>弱符号和弱引用的存在允许用户定义自己的实现去覆盖现有的实现。这样就可以更灵活的对程序进行扩充或裁减。</p>
+<p>2.3.2.   Undefined reference to</p>
+<p>链接时符号未定义。每个目标文件中，都可能存在一些，undefined 类型的符号，这种类型的符号需要在链接时，能够在链接产生的全局符号表中找到其定义，如果找不到，链接器就会产生该错误信息。产生的原因有很多，比如少链接了某个库，符号写错了等等。</p>
+<ol start="3">
+<li>加载</li>
+<li><ol>
+<li>可执行文件装载过程</li>
+</ol>
+</li>
+</ol>
+<p>Linux 系统通过 execve()系统调用来执行程序，系统会为相应格式的文件查找合适的装载处理函数。elf 格式文件的加载主要通过 load_elf_binary()完成，有如下过程：</p>
+<p>l  检查文件格式有效性，比如 magic number，文件头</p>
+<p>l  寻找动态链接的.interp 段，设置动态链接器路径</p>
+<p>l  根据 elf 文件描述，对 elf 文件进行映射，比如代码，数据</p>
+<p>l  初始化 elf 进程环境，比如进程启动时 EDX 寄存器地址应该是 DT_FINI 地址</p>
+<p>l  将系统调用的返回地址，修改成 elf 可执行文件入口点，该入口点取决于程序的链接方式，对于静态链接的可执行文件，这个入口点就是 elf 文件中 e_entry 所指向的地址，对于动态链接的 elf，程序入口点就是动态链接器。{如何判断 elf 采用的是静态链接还是动态链接的？可以通过对它执行 ldd 命令，如果是静态链接，会输出：statically linked}</p>
+<p>load_elf_binary()执行完毕后，可执行文件就被装入了内存，接下来就可以执行了。</p>
+<p>3.2.  动态库加载<br>3.2.1.   工作原理</p>
+<p>如上，对于动态链接的可执行文件在真正执行前，实际上它的很多外部符号还处于无效状态，还未与实际的 so 文件联系起来，因此还有一个动态链接过程。操作系统会首先加载动态链接器 ld.so(/lib/ld-linux.so.2)，加载完这个 so 后，系统就会把控制权交给它，然后它会进行一些初始化操作，根据当前环境参数对可执行文件进行动态链接工作。动态链接器会寻找所需要的.so 文件并进行装载，然后进行符号查找及重定位。如果找不到所需要的符号定义就会产生“undefined symbol”错误。</p>
+<p>在 elf 文件中有一个.interp 段，该段指定了所要采用的动态链接器路径。操作系统会根据该段内容，选择加载的动态链接器。可以通过 objdump –s a.out 查看该段内容，也可以如下命令来查看：readelf –l a.out|grep interpreter。</p>
+<p>.dynamic 段，保存了动态链接器所需的基本信息，比如依赖于哪些共享对象，动态链接符号表的位置，动态链接重定位表的位置，共享对象初始化代码的位置。可以通过 readelf –d a.out 来查看该段内容，其中比较重要的有如下几个：</p>
+<p>DT_RPATH：.so 搜索路径</p>
+<p>DT_INIT：初始化代码地址</p>
+<p>DT_FINIT：结束代码地址</p>
+<p>DT_NEED：依赖的.so</p>
+<p>.dynsym 段，动态符号表段。可以通过 readelf –sD *.so 来查看</p>
+<p>如何确定所需要的加载库？</p>
+<p>如何解析符号？</p>
+<p>重名的文件如何处理？</p>
+<p>3.2.2.   加载过程</p>
+<p>由于动态链接器本身也是一个.so，因此首先要完成自己的重定位过程，称为“自举(bootstrap)”。</p>
+<p>完成自举之后，动态链接器会将可执行文件和它本身的符号表合并到到一个全局符号表中。然后链接器开始查找所需要的.so，在前面提到的.dynamic 段中有一个 DT_NEEDED，它指出了可执行文件所依赖的.so，据此链接器就可以找到所需要的.so 集合，然后开始装载该.so，完成后再从它需要的.so 集合中取出一个.so，如果在此时找不到某个.so 文件就会产生“cannot open shared object file”错误。如果找到相应文件，就会打开它，读取相应的 elf 文件头和.dynamic 段，然后将其代码段和数据段进行映射。如果该.so 还依赖于其他.so，就会把其他.so 加入到待装载集合中，实际上是一个图的遍历问题，上面的过程实际上就是广度优先遍历。</p>
+<p>当新对象被加载之后，它的符号表会被合并到全局符号表中，所以当所有对象加载之后，全局符号表中应该包含了进程进行动态链接所需要的所有符号。这个过程里面存在一个称为“全局符号介入(global symbol interpose)”问题，假设 a.out 依赖了 c.so 和 d.so，而 c.so 依赖于 a.so，d.so 依赖于 b.so，但是 a.so 和 b.so 存在一个同名的符号，此时编译链接无法发现这个同名的符号，因为编译 a.out 时只需要链接 c.so 和 d.so 即可，这样链接器无法发现在 a.so 和 b.so 中存在同名的符号，这样只能加载时解决，而动态链接器有这样的一个规则：当一个符号需要加入全局符号表时，如果相同的符号名已经存在，那么后加入的符号会被忽略。所以，对于这种情况要格外注意。</p>
+<p>上面步骤完成后，就会开始进行符号解析和重定位，链接器会开始遍历可执行文件和每个.so 的重定位表，将它们的 GOT/PLT 中每个需要重定位的位置进行修正。此时，如果某些符号还是无法解析，就会报出“undefined symbol”错误。</p>
+<p>重定位完成之后，如果.so 中有“.init”段，动态链接器会执行这里的代码，以实现初始化过程，比如静态/全局对象的初始化。相应的也会有“.finit”来进行退出操作。可执行文件本身的.init，不会由动态链接器执行，而是通过程序自身的初始化代码完成。</p>
+<p>重定位和初始化完成后，动态链接器所要做的事情就完成了，之后就会把控制权交给可执行程序的入口，开始执行程序。</p>
+<p>3.3.  显式运行时链接</p>
+<p>上面的加载过程是在程序启动时由系统完成的，对于程序本身是透明的。如果程序想在运行时自行加载某个动态库，实现类似插件之类的机制，则需要使用如下几个函数。</p>
+<p>3.3.1.   dlopen()</p>
+<p>用于打开一个动态库，将其加载到进程的地址空间，完成初始化过程。C 语言原形是：</p>
+<p>void * dlopen(const char *filename, int flag);</p>
+<p>如果文件名 filename 是以“/”开头，也就是使用绝对路径，那么 dlopne 就直接使用它，而不去查找某些环境变量或者系统设置的函数库所在的目录了。否则 dlopen()就会按照下面的次序查找函数库文件：</p>
+<ol>
+<li><p>环境变量 LD_LIBRARY 指明的路径。</p>
+</li>
+<li><p>/etc/ld.so.cache 中的函数库列表。</p>
+</li>
+</ol>
+<p>3./lib 目录，然后/usr/lib。不过一些很老的 a.out 的 loader 则是采用相反的次序，也就是先查 /usr/lib，然后是/lib。</p>
+<p>同时如果 filename 值设为 NULL 的话，那么 dlopen 将返回全局符号表的句柄。也就是说可以在运行时找到全局符号表里的任何一个符号，并可以执行它们。全局符号表中包括了可执行程序本身，被动态链接器加载到进程中的所有动态库以及通过 dlopen 打开并使用了 RTLD_GLOBAL 方式的模块中的符号。</p>
+<p>dlopen()函数中，参数 flag 的值必须是 RTLD_LAZY 或者 RTLD_NOW，RTLD_LAZY 的意思是 resolve undefined symbols as code from the dynamic library is executed，而 RTLD_NOW 的含义是 resolve all undefined symbols before dlopen() returns and fail if this cannot be done’。如果有任何未定义的符号引用的绑定工作无法完成，那么 dlopen 就会返回错误，这两种方式必须二选一。此外还有 RTLD_GLOBAL，可以与上面两种方式之一一起使用，表示将被加载的模块的全局符号合并到进程的全局符号表中，这样以后加载的模块就可以使用这些符号。</p>
+<p>如果有好几个函数库，它们之间有一些依赖关系的话，例如 X 依赖 Y，那么你就要先加载那些被依赖的函数。例如先加载 Y，然后加载 X。dlopen()函数的返回值是一个句柄，然后后面的函数就通过使用这个句柄来做进一步的操作。如果打开失败 dlopen()就返回一个 NULL。如果一个函数库被多次打开，它会返回同样的句柄。</p>
+<p>同时 dlopen 还会执行被加载模块的.init 段来进行模块的初始化操作。</p>
+<p>3.3.2.   dlsym()</p>
+<p>这个函数在一个已经打开的函数库里面查找给定的符号。这个函数如下定义：</p>
+<p>void * dlsym(void <em>handle, char \</em>symbol);</p>
+<p>函数中的参数 handle 就是由 dlopen 打开后返回的句柄，symbol 是一个以’\0’结尾的字符串。如果 dlsym()函数没有找到需要查找的 symbol，则返回 NULL。dlsym 的返回值对于不同的符号类型具有不同的意义，如果符号是个函数，则返回的就是函数地址，如果是变量，就是变量的地址，如果是常量就是该常量的值。如果该常量值刚好是 NULL，那如何区分它是没有找到该常量，还是该常量就是 NULL 呢？这就需要看 dlerror()，如果符号找到了 dlerror()就会返回 NULL，否则会返回相应的错误信息。</p>
+<p>符号优先级，前面已经提过，在加载过程中如果发现符号名冲突，先载入的符号会优先，这种优先级方式成为装载序列(load ordering)。进程通过 dlopen 载入对象时，动态链接器在进行符号解析和重定位时，都是采用装载序列。</p>
+<p>但是在使用 dlsym 进行符号地址查找时，如果是在全局符号表中进行查找，即在 dlopen 时，参数 filename 为 NULL，由于全局符号表采用的是装载序列，因此 dlsym 使用的也是装载序列。但是，如果是通过某个 dlopen 打开的共享对象进行符号查找的话，采用的是一种称为依赖序列(dependency ordering)的优先级方式。即它会以被打开的那个共享对象为根节点，进行广度优先遍历，直到找到该符号。{!因为如果 dlopen 调用时，未采用 RTLD_GLOBAL 方式的话，那么被打开对象的符号表不会加入全局符号表，这样它和它依赖的模块可能就会都有自己的符号表，而没有一个全局的符号表}</p>
+<p>3.3.3.   dlerror()</p>
+<p>通过调用 dlerror()函数，我们可以获得最后一次调用 dlopen()，dlsym()，或者 dlclose()的错误信息。 它的返回值类型是 char *，如果返回 NULL，表示上一次调用成功，如果不是 NULL，则代表相应的错误信息。</p>
+<p>3.3.4.   dlclose()</p>
+<p>dlopen()函数的反过程就是 dlclose()，dlclose()用于将已经加载的模块卸载。系统会维护一个加载引用计数器，当调用 dlclose 的时候，就把这个计数器的计数减一，如果计数器为 0，则真正的释放掉。真正释放的时候，如果函数库里面有_fini()这个函数，则自动调用_fini()这个函数，做一些必要的处理。dlclose()返回 0 表示成功，非 0 值表示错误。</p>
+<p>3.4.  共享库版本命名规则<br>3.4.1.   Libname.x.y.z</p>
+<p>X 代表主版本号，y 代表次版本号，z 代表发布版本号。主版本号代表库的重大升级，不同主版本号的库之间是不兼容的。次版本号代表了库的增量升级，即增加一些新的符号接口，且保持原来的符号不变，具有向后兼容性，即依赖于旧版本库的程序在新版本库上也可以运行。发布版本号，代表了库的一些 bug fix 和性能优化，不添加任何新的接口，也不对现有接口进行修改。</p>
+<p>3.4.2.   So-Name</p>
+<p>由上可知主版本号和此版本号实际上决定了程序的接口。通常程序中都会包含了所依赖的库的名称和主版本号，系统是通过一种称为 SO-NAME 的命名机制来记录共享库的依赖关系。每个共享库都有一个对应的 SO-NAME，即名称和主版本号。在 linux 系统中，会为每个共享库在它所在的目录创建一个跟 SO-NAME 相同的并且指向它的软连接。比如系统中有一个/lib/liba.1.1.2 那么系统的共享库管理程序就会创建一个/lib/liba.1 的软连接。</p>
+<p>SO-NAME 会指向系统中相同主版本号的最新版的那个库，使用 SO-NAME 的目的在让所有依赖于某个共享库的模块，在编译，链接和运行时，都使用 SO-NAME，而不使用详细的版本号。前面提过，在.dynamic 段中的 DT_NEEDED 描述了模块所依赖的共享库，为了保证兼容性，采用 SO-NAME 进行.dynamic 段的依赖描述。通过 readelf –d liba.so，可以查看到 elf 文件的 DT_NEEDED 部分。</p>
+<p>3.5.  符号版本机制</p>
+<p>待看。</p>
+<p>3.6.  系统配置</p>
+<p>ldconfig，当系统安装或更新一个共享库就需要运行这个工具，它会遍历所有的默认共享库目录，比如/lib /usr/lib，然后更新所有的软连接，使它们指向最新版的共享库；如果是新安装的共享库，则会为它创建软连接。</p>
+<p>3.7.  运行时库查找过程</p>
+<p>动态链接器对保存在.dynamic 段的 DT_NEEDED 的共享库的查找有一定的规则，如果 DT_NEEDED 保存的是绝对路径，那么动态链接器就按这个路径去查找，如果是相对路径，那么动态链接器会在/lib /usr/lib 和/etc/ld.so.conf 配置文件指定的目录中进行查找。</p>
+<p>ld.so.conf 是一个配置文件，可能包含其他的配置文件，存放了路径信息。为了避免每次查找共享库都去遍历这些目录，linux 系统提供了 ldconfig。ldconfig 除了负责每个共享库目录下的共享库 SO-NAME 的创建删除和更新外，它还会将这些 SO-NAME 收集起来存放到/etc/ld.so.cache 中。当查找共享库时，直接去/etc/ld.so.cache 里找即可，而它的结构则是专为查找优化过的。如果在这里没有找到，它会继续查找/lib 和/usr/lib，如果还未找到就宣告失败。</p>
+<p>所以，如果在系统指定的共享库目录下，添加删除或更新任何一个共享库，或者更改了/etc/ld.so.conf 的配置，都应该运行 ldconfig 这个程序。以便调整 SO-NAME 和/etc/ld.so.cache，而很多安装软件包实际在往系统安装共享库之后都会调用 ldconfig。</p>
+<p>此外，还可以通过 LD_LIBRARY_PATH 来改变库搜索路径。如果为进程设置了 LD_LIBRARY_PATH，那么在启动时，动态链接器会首先在 LD_LIBRARY_PATH 指定的目录下查找。但是，有不少声音主张要避免使用 LD_LIBRARY_PATH 变量，尤其是作为全局变量。这些声音是：</p>
+<ul>
+<li>LD_LIBRARY_PATH is not the answer - <a href="http://prefetch.net/articles/linkers.badldlibrary.html" target="_blank" rel="noopener">http://prefetch.net/articles/linkers.badldlibrary.html</a></li>
+<li>Why LD<em>LIBRARY_PATH is bad - <a href="http://xahlee.org/UnixResource_dir/" target="_blank" rel="noopener">http://xahlee.org/UnixResource_dir/</a></em>/ldpath.html</li>
+<li>LD_LIBRARY_PATH - just say no - <a href="http://blogs.sun.com/rie/date/20040710" target="_blank" rel="noopener">http://blogs.sun.com/rie/date/20040710</a></li>
+</ul>
+<p>综上，动态链接器会按照如下顺序加载或查找共享库：</p>
+<p>l  链接时由-rpath 选项指定的目录(已被硬编码到可执行文件中)</p>
+<p>l  LD_LIBRARY_PATH 指定的目录</p>
+<p>l  路径缓存文件/etc/ld.so.cache 指定的路径</p>
+<p>l  默认共享库目录，先/usr/lib，后/lib</p>
+<p>LD_PRELOAD，可以预先装载一些共享库。由 LD_PRELOAD 指定的文件，会在动态链接库按指定规则搜索共享库之前加载。比 LD_LIBRARY_PATH 指定的还要优先，同时无论程序是否依赖于它，LD_PRELOAD 指定的共享库都会被装载。由于全局符号介入这一机制，LD_PRELOAD 指定的库的符号会覆盖后面加载的库的同名符号。这就使得我们可以修改标准 c 库的某些或某几个函数，而不影响其他使用。比如我们可以在实验程序执行时通过设置 LD_PRELOAD，来让系统优先加载我们修改后的库。</p>
+<p>3.8.  常见错误<br>3.8.1.   undefined symbol</p>
+<p>我们将函数和变量称为符号，函数名和变量名就是符号名。每个目标文件都有一个符号表。表中记录了所用到的所有符号。通常，链接过程只关注全局性的符号，即那些本模块引用自别处的符号，及可能被别处引用的在本模块定义的那些。</p>
+<p>可以使用 readelf，objdump，nm 来查看符号。此外使用 c++filt 工具可以查看被编译器改名(为支持重载及名字空间等机制)后的符号对应的原始名称。</p>
+<p>动态加载时，如果找不到某个符号引用的定义，就会产生该错误。通常是该符号所在的动态库未被加载，也就是说 DT_NEEED 缺少了某个.so。解决方式就是在链接程序时，使用-l 指定所需要的库。</p>
+<p>3.8.2.   Double free or corruption</p>
+<p>原因可能有多种：比如 malloc 了一段内存空间，但是写的时候越界了，这实际上会导致 corruption；链接了同一个库的动态和静态两个版本，且该库内具有全局或静态变量；不同的库内含有相同的全局或静态变量。这里主要关注下由于链接多个具有同名变量的库的情况。</p>
+<p>在通常情况下，共享库都是通过使用附加选项 -fpic 或 -fPIC 进行编译，从目标代码产生位置无关的代码（Position Independent Code，PIC），使用 -shared 选项将目标代码放进共享目标库中。位置无关代码需要能够被加载到不同进程的不同地址，并且能得以正确的执行，故其代码要经过特别的编译处理：位置无关代码（PIC）对常量和函数入口地址的操作都是采用基于基寄存器（base register）BASE+ 偏移量的相对地址的寻址方式。即使程序被装载到内存中的不同地址，即 BASE 值不同，而偏移量是不变的，所以程序仍然可以找到正确的入口地址或者常量。</p>
+<p>然而，当应用程序链接了多个共享库，如果在这些共享库中，存在相同作用域范围的同名静态成员变量或者同名 ( 非静态 ) 全局变量，那么当程序访问完静态成员变量或全局变量结束析构时，由于某内存块的 double free 会导致 core dump，这是由于 Linux 编译器的缺陷造成的。</p>
+<p>链接时符号查找原理如下：</p>
+<p>1、应用程序在链接阶段时，会顺序生成符号表。也就是说，在应用程序中涉及到的符号，会在链接文件中逐个顺次查找<br>           2、一旦查找到符号，就停止本符号的查找工作，转向第二个符号的查找<br>           3、如果没有用到.a 里的符号，即查找的过程中没有涉及到该.a，则不会在程序中链接该.a<br>           4、对于.so，无论是否涉及到符号查找，均会进行加载<br>           5、so 的加载和卸载会涉及到自身内存分配和释放，而.a 不会（.a 相当于.o 的集合，.o 直接静态编译到应用程序，成为程序一部分）<br>           6、.a 和.o 有不同，.a 是.o 的集合，但是，.o 必定会加载，.a 不一定会加载（只加载符号表相关的.o）</p>
+<p>这样，对于有不同库的同名全局变量，只会产生一个符号，但是由于.so 本身在卸载的时候会对全局变量进行析构，同时如果多个共享库，或者程序本身具有该全局变量，这样就会出现重复 free 的情况，导致 double free 错误。</p>
+<p>解决方法：使用选项-fpie 或-fPIE，此时生成的共享库不会为静态成员变量或全局变量在 GOT 中创建对应的条目（通过 objdump 或 readelf 命令可以查看），从而避免了由于静态对象“在同一地址构造两次，析构两次”而对同一内存区域释放两次引起的程序 core dump(重复构造没有问题，但是重复析构会导致 double free，但是如果构造函数有内存分配动作，是否会导致内存泄露？)。</p>
+<p>选项-fpie 和-fPIE 与-fpic 及-fPIC 的用法很相似，区别在于前者总是将生成的位置无关代码看作是属于程序本身，并直接链接进该可执行程序，而非存入全局偏移表 GOT 中；这样，对于同名的静态或全局对象的访问，其构造与析构操作将保持一一对应。</p>
+<p>还有如果具有同名变量的库一个是.so 和一个是.a，将.so 放到前面，也可以避免这个问题，根据上面的链接规则，当在.so 中找到该符号时，那么.a 中的内容就不会被链接了。更详细内容可以参考这两篇文章：库冲突 技巧：多共享动态库中同名对象重复析构问题的解决方法。</p>
+<p>3.8.3.   LD_DEBUG</p>
+<p>LD_DEBUG 这个环境变量可以打开动态库的调试功能，输出很多信息，对于开发调试动态库很有帮助。比如设置 LD_DEBUG=files，就可以看到整个装载过程。此外它还可以设置为：</p>
+<p>l  bindings：显示动态链接的符号绑定过程</p>
+<p>l  libs：显示共享库的查找过程</p>
+<p>l  versions：显示符号的版本依赖关系</p>
+<p>l  reloc：显示重定位过程</p>
+<p>l  symbols：显示符号表查找过程</p>
+<p>l  statistics：显示动态链接过程中的各种统计信息</p>
+<p>l  all：显示以上所有信息</p>
+<p>l  help：显示帮助信息</p>
+<ol start="4">
+<li>相关工具</li>
+<li><ol>
+<li>file</li>
+</ol>
+</li>
+</ol>
+<p>file 程序是用来判断文件类型的，比如可以用命令 file xxx.tar.tar 看一下文件类型，然后用 tar 加适当的参数解压。在这里主要是可以通过 file 来查看某文件是否链接了动态库。</p>
+<p>$ file a.out<br>a.out: ELF 32-bit LSB executable, Intel 80386,<br>version 1 (SYSV), dynamically linked (uses shared<br>libs), not stripped</p>
+<p>最后一个 not stripped 表示该文件含符号表(可以利用命令 strip 去除符号表)</p>
+<p>4.2.  nm</p>
+<p>用于列出目标文件的符号。可以通过-C 选项，来显示符号的可读形式，即未被 mangle 的形式。-D 可以用来显示动态符号。其中 U 类型的符号，代表该目标文件中未定义的那些 symbol，而这些 symbol 通常都是定义在其他文件中，T 表示该 symbol 在此文件中有定义。所以，nm 最常用的地方在于，查看这个文件中是否包含某函数的定义，包含哪些未定义符号，因此在产生链接问题时，通常需要对 U 和 T 类型格外关注</p>
+<p>4.3.  c++filt</p>
+<p>c++filt 可以将 mangle 的符号进行还原。</p>
+<p>4.4.  ldd</p>
+<p>ldd 可以用来查看.so 所依赖的共享库文件列表及未找到的.so，ldd –r 还会报告缺少的目标对象和函数。</p>
+<p>ldd 实际上是个脚本，能够显示可执行模块的 dependency，其原理是通过设置一系列的环境变量，如下：LD_TRACE_LOADED_OBJECTS、LD_WARN、LD_BIND_NOW、LD_LIBRARY_VERSION、LD_VERBOSE 等。当 LD_TRACE_LOADED_OBJECTS 环境变量不为空时，任何可执行程序在运行时，它都会只显示模块的 dependency，而程序并不真正执行。</p>
+<p>ldd 显示可执行模块的 dependency 的工作原理，其实质是通过 ld-linux.so(elf 动态库的装载器)来实现的。我们知道，ld-linux.so 模块会先于 executable 模块程序工作，并获得控制权，因此当上述的那些环境变量被设置时，ld-linux.so 选择了显示可执行模块的 dependency。</p>
+<p>4.5.  readelf</p>
+<p>它是专门针对 ELF 文件格式的解析器，但是它并不提供反汇编功能，可以通过 objdump 进行反汇编。readelf 可以用来查看头信息，符号信息，动态重定位信息等 elf 内部各个部分。</p>
+<p>4.6.  ldconfig</p>
+<p>ldconfig 是一个动态链接库管理命令。为了让动态链接库为系统所共享,还需运行动态链接库的管理命令–ldconfigldconfig  命令的用途,主要是在默认搜寻目录(/lib 和/usr/lib)以及动态库配置文件/etc/ld.so.conf 内所列的目录下,搜索出可共享的动态链接库(格式如前介绍,lib<em>.so</em>),进而创建出动态装入程序(ld.so)所需的连接和缓存文件.缓存文件默认为/etc/ld.so.cache,此文件保存已排好序的动态链接库名字列表。</p>
+<p>4.7.  strip</p>
+<p>可以用来清理共享库和可执行文件中的符号信息和调试信息。也可以通过 ld –s 或 ld –S，二者区别是：-S 消除调试符号信息，-s 消除所有符号信息。也可以通过 gcc 参数”-Wl,-s”或”-Wl,-S”来向 ld 传递这两个参数。</p>
+<ol start="5">
+<li>问题分析</li>
+<li><ol>
+<li>分析步骤</li>
+</ol>
+</li>
+</ol>
+<p>无论是编译，链接还是加载，本质上都需要去寻找某些符号的定义。当找不到对应的符号时通常都会产生某些错误，类似于上面提到的那些。</p>
+<p>实际上基本上都需要确定以下问题。需要哪些符号的定义？去哪里寻找这些符号的定义？找到的符号定义是否满足要求？</p>
+<p>具体来说，比如动态库加载时，需要确定需要加载哪些.so？去哪找到这些.so？这些.so 中是否包含了所有的未定义符号？加载哪些.so，是由可执行文件及各个.so 的.dynamic 段中的 DT_NEEDED 决定的。去哪寻找这些.so，则是由各种路径确定的。如果出现.so 文件找不到或符号未定义或版本不正确之类的动态库相关问题时，通常的分析步骤如下：</p>
+<p>l  查看-l 参数，确定可执行程序已经链接了所需的库文件</p>
+<p>l  使用 find，在当前系统中查找，看是否能够找到该库文件</p>
+<p>l  确定系统当前的库搜索路径</p>
+<p>l  如果可以找到该库文件，则需要确定它所在目录是否已经在库搜索路径中，如果不在则将它加入合适路径</p>
+<p>l  如果它刚好也在库搜索路径中，需要确定路径中是否还有同名的库文件</p>
+<p>l  如果它是唯一的存在于库搜索路径中的库文件，则详细分析该文件：</p>
+<p>?  使用 ldd 查看该.so 的依赖性</p>
+<p>?  使用 nm 查看其符号表，找到未定义符号，nm –a *.so|grep U</p>
+<p>l  如果还找不到问题所在，设置 LD_DEBUG 环境变量，进行调试</p>
+<p>此外，如果是诡异的编译问题，还可以利用 gcc 的-E,-S,-c 和 –O 分阶段进行，查看每个阶段的输出是否正常。同时为每个命令加上-v，查看实际执行的命令，同时还可以看到头文件及库文件的搜索路径。比如可能因为宏替换，导致某些用户定义的变量被其他的一些宏定义替换，或者因为头文件搜索路径顺序，导致找到了一个错误的头文件。</p>
+<p>5.2.  实例分析</p>
+<p>最近碰到的一个问题是：调用 dlopen 时产生 undefined symbol，采用了 RTLD_NOW 方式。对于 undefined symbol：</p>
+<p>类似上面的步骤，使用 ldd 查看它现在依赖的.so，使用 nm 找到那个未定义的 symbol，如果是 c++程序，使用 c++filt 将它转换为可读形式，确认该 symbol 定义所在的库，然后判断该库是否已经在加载列表中，或者库的版本是否正确。</p>
+<p>最终确定原因是：我们的可执行程序，本身会调用 dlopen 去在运行时加载某些.so，但是这些.so 文件在生成时的-l 参数，没有加入那些该.so 所依赖的其他.so。这样该.so 文件的 DT_NEEDED 列表就是不完整的，这样加载器就不会去加载它们，这样某些符号就找不到它们的定义。</p>
+<p>解决方案有两个：一个是保持现有.so 不变，我们在编译可执行文件的-l 参数中加入这些必需的库的。另一个是修改现有.so，在-l 中加入它所依赖的那些库。第一个方案，只需要修改可执行文件即可，但是这种方式不是一种彻底的解决方案，因为比如该.so 文件被其他程序使用时，仍然会产生这种问题，因此根本的解决方案是，.so 文件本身在编译时就要在-l 参数中写入它所依赖的那些库。</p>
+<p>5.3.  编译链接和加载实验<br>5.3.1.   源代码</p>
+<p>//test.h</p>
+<p>void test();</p>
+<p>//test.c</p>
+<p>#include <iostream></p>
+<p>using namespace std;</p>
+<p>void test()</p>
+<p>{</p>
+<p>cout &lt;&lt; “test” &lt;&lt; endl;</p>
+<p>}</p>
+<p>//main.c</p>
+<p>#include “test.h”</p>
+<p>int main()</p>
+<p>{</p>
+<p>test();</p>
+<p>return 0;</p>
+<p>}</p>
+<p>5.3.2.   创建静态库</p>
+<p>gcc –v -c test.c; ar r libtest.a test.o</p>
+<p>[<a href="mailto:admin@clu01-gala16.dev.sd.aliyun.com">admin@clu01-gala16.dev.sd.aliyun.com</a>]$gcc -v -c test.cpp</p>
+<p>Using built-in specs.</p>
+<p>Target: x86_64-redhat-linux</p>
+<p>Configured with: ../configure –prefix=/usr –mandir=/usr/share/man –infodir=/usr/share/info –enable-shared –enable-threads=posix –enable-checking=release –with-system-zlib –enable-__cxa_atexit –disable-libunwind-exceptions –enable-libgcj-multifile –enable-languages=c,c++,objc,obj-c++,java,fortran,ada –enable-java-awt=gtk –disable-dssi –enable-plugin –with-java-home=/usr/lib/jvm/java-1.4.2-gcj-1.4.2.0/jre –with-cpu=generic –host=x86_64-redhat-linux</p>
+<p>Thread model: posix</p>
+<p>gcc version 4.1.2 20080704 (Red Hat 4.1.2-46)</p>
+<p>/usr/libexec/gcc/x86_64-redhat-linux/4.1.2/cc1plus -quiet -v -D_GNU_SOURCE test.cpp -quiet -dumpbase test.cpp -mtune=generic -auxbase test -version -o /tmp/ccdMLquk.s</p>
+<p>ignoring nonexistent directory “/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../x86_64-redhat-linux/include”</p>
+<p>#include “…” search starts here:</p>
+<p>#include &lt;…&gt; search starts here:</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/x86_64-redhat-linux</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/backward</p>
+<p>/usr/local/include</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/include</p>
+<p>/usr/include</p>
+<p>End of search list.</p>
+<p>GNU C++ version 4.1.2 20080704 (Red Hat 4.1.2-46) (x86_64-redhat-linux)</p>
+<p>compiled by GNU C version 4.1.2 20080704 (Red Hat 4.1.2-46).</p>
+<p>GGC heuristics: –param ggc-min-expand=100 –param ggc-min-heapsize=131072</p>
+<p>Compiler executable checksum: 927721cb17bef594f560fa66ec50ff62</p>
+<p>as -V -Qy -o test.o /tmp/ccdMLquk.s</p>
+<p>GNU assembler version 2.17.50.0.6-12.el5 (x86_64-redhat-linux) using BFD version 2.17.50.0.6-12.el5 20061020</p>
+<p>可以看到加上-v 之后，就能看到各个步骤的具体命令，还能看到头文件搜索路径。</p>
+<p>5.3.3.   创建动态库</p>
+<p>gcc  -shared test.cpp -o libtest.so –fPIC -v</p>
+<p>[<a href="mailto:admin@clu01-gala16.dev.sd.aliyun.com">admin@clu01-gala16.dev.sd.aliyun.com</a>]$gcc  -shared test.cpp -o libtest.so -fPIC -v</p>
+<p>Using built-in specs.</p>
+<p>Target: x86_64-redhat-linux</p>
+<p>Configured with: ../configure –prefix=/usr –mandir=/usr/share/man –infodir=/usr/share/info –enable-shared –enable-threads=posix –enable-checking=release –with-system-zlib –enable-__cxa_atexit –disable-libunwind-exceptions –enable-libgcj-multifile –enable-languages=c,c++,objc,obj-c++,java,fortran,ada –enable-java-awt=gtk –disable-dssi –enable-plugin –with-java-home=/usr/lib/jvm/java-1.4.2-gcj-1.4.2.0/jre –with-cpu=generic –host=x86_64-redhat-linux</p>
+<p>Thread model: posix</p>
+<p>gcc version 4.1.2 20080704 (Red Hat 4.1.2-46)</p>
+<p>/usr/libexec/gcc/x86_64-redhat-linux/4.1.2/cc1plus -quiet -v -D_GNU_SOURCE test.cpp -quiet -dumpbase test.cpp -mtune=generic -auxbase test -version -fPIC -o /tmp/ccv7EbFP.s</p>
+<p>ignoring nonexistent directory “/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../x86_64-redhat-linux/include”</p>
+<p>#include “…” search starts here:</p>
+<p>#include &lt;…&gt; search starts here:</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/x86_64-redhat-linux</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../include/c++/4.1.2/backward</p>
+<p>/usr/local/include</p>
+<p>/usr/lib/gcc/x86_64-redhat-linux/4.1.2/include</p>
+<p>/usr/include</p>
+<p>End of search list.</p>
+<p>GNU C++ version 4.1.2 20080704 (Red Hat 4.1.2-46) (x86_64-redhat-linux)</p>
+<p>compiled by GNU C version 4.1.2 20080704 (Red Hat 4.1.2-46).</p>
+<p>GGC heuristics: –param ggc-min-expand=100 –param ggc-min-heapsize=131072</p>
+<p>Compiler executable checksum: 927721cb17bef594f560fa66ec50ff62</p>
+<p>as -V -Qy -o /tmp/ccmzTeZF.o /tmp/ccv7EbFP.s</p>
+<p>GNU assembler version 2.17.50.0.6-12.el5 (x86_64-redhat-linux) using BFD version 2.17.50.0.6-12.el5 20061020</p>
+<p>/usr/libexec/gcc/x86_64-redhat-linux/4.1.2/collect2 –eh-frame-hdr -m elf_x86_64 –hash-style=gnu -shared -o libtest.so /usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.1.2/crtbeginS.o -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 /tmp/ccmzTeZF.o -lgcc –as-needed -lgcc_s –no-as-needed -lc -lgcc –as-needed -lgcc_s –no-as-needed /usr/lib/gcc/x86_64-redhat-linux/4.1.2/crtendS.o /usr/lib/gcc/x86_64-redhat-linux/4.1.2/../../../../lib64/crtn.o</p>
+<p>5.3.4.   创建可执行文件</p>
+<p>LIBRARY_PATH=.;export LIBRARY_PATH</p>
+<p>g++ main.cpp -ltest</p>
+<p>gcc 头文件搜索路径</p>
+<p>-iquote 用于搜索”#include “file””形式的头文件</p>
+<p>-I</p>
+<p>C_PATH：类似于-I 但优先级在-I 之后，可以用于任何类型语言的预处理(比如 c,c++)</p>
+<p>-isystem</p>
+<p>C_INCLUDE_PATH：c 语言的，类似于-isystem，但优先级在-isystem 之后</p>
+<p>CPLUS_INCLUDE_PATH：c++的</p>
+<p>OBJC_INCLUDE_PATH：Objective-C 的</p>
+<p>gcc 库文件搜索路径</p>
+<p>-L</p>
+<p>LIBRARY_PATH：可以用来指定库文件搜索路径，但是优先级在-L 之后</p>
+<p>LD_LIBRARY_PATH：对于 gcc 编译不起作用，只与加载有关</p>
+<p>测试-static，如果无.a，有.so 是否可以？答案是必须是.a 的库，否则不行</p>
+<p>测试-Bdynamic，如果无.so，有.a 是否可以？答案是可以</p>
+<p>5.3.5.   加载测试</p>
+<p>测试-rpath：g++ main.cpp -ltest -Wl,-rpath=. ，-rpath 只对加载起作用，对链接无作用，通过它可以把运行时需要的动态库绝对路径写在可执行文件里</p>
+<p>测试 LD_PRELOAD：在加载阶段器作用，无论可执行文件链不链接，加载器都会加载它</p>
+<p>测试 LD_LIBRARY_PATH：在加载阶段起作用</p>
+<p>测试 ldconfig：可以直接对当前路径应用 ldconfig，这样也可以将其加入</p>
+<p>测试/etc/ld.so.conf：直接只将路径添加到该文件，不起作用，必须执行 ldconfig</p>
+<p>测试/etc/ld.so.cache：加载时会直接从该处查找</p>
+<ol start="6">
+<li>参考资料</li>
+</ol>
+<p>程序员的自我修养—链接、装载与库</p>
+<p>GCC 编译的背后( 预处理和编译 汇编和链接 )</p>
+<p>An Introduction to GCC 学习笔记</p>
+<p>LINUX 下如何用 GCC 编译动态库</p>
+<p>gcc 生成静态库和动态库</p>
+<p>GCC 编译优化指南</p>
+<p>深入理解软件包的配置、编译与安装</p>
+<ol start="7">
+<li>附录</li>
+</ol>
+<p><a href="http://www.gentoo.org/proj/en/base/amd64/howtos/fpic.xml" target="_blank" rel="noopener">http://www.gentoo.org/proj/en/base/amd64/howtos/fpic.xml</a></p>
+<ol>
+<li>The Problem</li>
+</ol>
+<p>Sometimes it occurs that gcc bails out with an error message like the following:</p>
+<p>Code Listing 1.1: A typical gcc error message</p>
+<p>.libs/assert.o: relocation R_X86_64_32 against `a local symbol’ can not be usedwhen making a shared object; recompile with -fPIC .libs/assert.o: could notread symbols: Bad value</p>
+<p>There are several different types of causes for such an error. This HOWTO will explain all of them and show how to fix them.</p>
+<ol>
+<li>What is PIC?</li>
+</ol>
+<p>PIC is an abbreviation for Position-Independent Code. The following is an excerpt of the Wikipedia article about position-independent code:</p>
+<p>“In computing, position-independent code (PIC) or position-independent executable (PIE) is object code that can execute at different locations in memory. PIC is commonly used for shared libraries, so that the same library code can be mapped to a location in each application (using the virtual memory system) where it won’t overlap the application or other shared libraries. PIC was also used on older computer systems lacking an MMU, so that the operating system could keep applications away from each other.<br>Position-independent code can be copied to any memory location without modification and executed, unlike relocatable code, which requires special processing by a link editor or program loader to make it suitable for execution at a given location. Code must generally be written or compiled in a special fashion in order to be position independent. Instructions that refer to specific memory addresses, such as absolute branches, must be replaced with equivalent program counter relative instructions. The extra indirection may cause PIC code to be less efficient, although modern processors are designed to ameliorate this.”<br>—Wikipedia Encyclopaedia</p>
+<p>On certain architectures (AMD64 amongst them), shared libraries must be “PIC-enabled”.</p>
+<ol>
+<li>What are “relocations”?</li>
+</ol>
+<p>Again, from Wikipedia:</p>
+<p>“In computer science, relocation refers to the process of replacing symbolic references or names of libraries with actual usable addresses in memory before running a program. It is typically done by the linker during compilation, although it can be done at run-time by a loader. Compilers or assemblers typically generate the executable with zero as the lower-most, starting address. Before the execution of object code, these addresses should be adjusted so that they denote the correct runtime addresses.”<br>—Wikipedia Encyclopaedia</p>
+<p>With these terms defined, we can finally have a look at the different scenarios where breakage occurs:</p>
+<ol>
+<li>Case 1: Broken compiler</li>
+</ol>
+<p>At least GCC 3.4 is known to have a broken implementation of the -fvisibility-inlines-hidden flag. The use of this flag is therefore highly discouraged, reported bugs are usually marked as RESOLVED INVALID. See bug 108872 for an example of a typical error message caused by this flag.</p>
+<ol>
+<li>Case 2: Broken `-fPIC’ support checks in configure</li>
+</ol>
+<p>Many configure tools check whether the compiler supports the -fPIC flag or not. They do so by compiling a minimalistic program with the -fPIC flag and checking stderr. If the compiler prints <em>any</em> warnings, it is assumed that the -fPIC flag is not supported by the compiler and is therefore abandoned. Unfortunately, if the user specifies a non-existing flag (i.e. C++-only flags in CFLAGS or flags introduced by newer versions of GCC but unknown to older ones), GCC prints a warning too, resulting in borkage.</p>
+<p>To prevent this kind of breakage, the AMD64 profiles use a bashrc that filters out invalid flags in C[XX]FLAGS.</p>
+<p>See bug bug 122208 for an example.</p>
+<ol>
+<li>Case 3: Lack of `-fPIC’ flag in the software to be built</li>
+</ol>
+<p>This is the most common case. It is a real bug in the build system and should be fixed in the ebuild, preferably with a patch that is sent upstream. Assuming the error message looks like this:</p>
+<p>Code Listing 1.1: A sample error message</p>
+<p>.libs/assert.o: relocation R_X86_64_32 against `a local symbol’ can not be usedwhen making a shared object; recompile with -fPIC .libs/assert.o: could notread symbols: Bad value</p>
+<p>This means that the file assert.o was not compiled with the -fPIC flag, which it should. When you fix this kind of error, make sure only objects that are used in shared libraries are compiled with -fPIC.</p>
+<p>In this case, globally adding -fPIC to C[XX]FLAGS resolves the issue, although this practice is discouraged because the executables end up being PIC-enabled, too.</p>
+<p>Note: Adding the -fPIC flag to the linking command or LDFLAGS won’t help.</p>
+<ol>
+<li>Case 4: Linking dynamically against static archives</li>
+</ol>
+<p>Sometimes a package tries to build shared libraries using statically built archives which are not PIC-enabled. There are two main reasons why this happens:</p>
+<p>Often it is the result of mixing USE=static and USE=-static. If a library package can be built statically by setting USE=static, it usually doesn’t create a .so file but only a .a archive. However, when GCC is given the -l flag to link to said (dynamic or static) library, it falls back to the static archive when it can’t find a shared lib. In this case, the preferred solution is to build the static library using the -fPIC flag too.</p>
+<p>Warning: Only build the static archive with -fPIC on AMD64. On other architectures this is unneeded and will have a performance impact at execution time.</p>
+<p>See bug 88360 and mysql bug 8796 for an example.</p>
+<p>Sometimes it is also the case that a library isn’t intended to be a shared library at all, e.g. because it makes heavy usage of global variables. In this case the solution is to turn the to-be-built shared library into a static one.</p>
+<p>See bug 131460 for an example.</p>
+<p>Code Listing 1.1: A sample error message</p>
+<p>gcc   -fPIC -DSHARED_OBJECT -c lex.yy.cgcc  -shared -o html2txt.so lex.yy.o -lflusr/lib/gcc/x86_64-pc-linux-gnu/4.1.1/../../../../x86_64-pc-linux-gnu/bin/ld:/usr/lib/gcc/x86_64-pc-linux-gnu/4.1.1/../../../../lib64/libfl.a(libyywrap.o):relocation R_X86_64_32 against `a local symbol’ can not be used when making ashared object; recompile with -fPIC/usr/lib/gcc/x86_64-pc-linux-gnu/4.1.1/../../../../lib64/libfl.a: could notread symbols: Bad value</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">编译链接总结</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:37:47 / 修改时间：09:38:35" itemprop="dateCreated datePublished" datetime="2020-03-05T09:37:47+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">c语言</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E6%80%BB%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="编译链接总结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E6%80%BB%E7%BB%93/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/%E7%BC%96%E8%AF%91%E9%93%BE%E6%8E%A5%E6%80%BB%E7%BB%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一：软件包介绍：</p>
+<p>glibc : libc, ld.so, ldd, ldconfig 等</p>
+<p>binutils : ar, as, ld ,nm, objcopy, objdump, readelf, size, strip</p>
+<p>gcc : c++, cc, cpp, libgcc, libstdc++, gcc, gccbug, gcc 相关</p>
+<p>二：gcc 头文件搜索目录</p>
+<p>gcc –print-prog-name = cc1 cc1plus</p>
+<p>c 头文件目录：’gcc –print-prog-name=cc1’ -v   !!!!注意：不是单引号，是 tab 按键上面的按键</p>
+<p>c++头文件目录：’gcc –print-prog-name=cpp’ -v</p>
+<p>寻找策略：</p>
+<p>1：从-I 开始</p>
+<p>2：从环境变量 C_INCLUDE_PATH 等</p>
+<p>3：内定目录（使用-nostdinc 关闭默认路径）</p>
+<p>二：连接器搜索库目录：ld –verbose | grep SEARCH</p>
+<p>寻找策略：</p>
+<p>1：从-L 开始</p>
+<p>2：环境变量 LIBRARY_PATH</p>
+<p>3：内定目录（使用-nostdlib 关闭默认库）</p>
+<p>三：gcc 预处理器 cpp 的内置宏：gcc -posix -E -dM - &lt;/dev/null 或者 cpp -dM &lt; /dev/null</p>
+<p>注意：不包含<strong>LINE</strong>这些。</p>
+<p>四：运行时动态链接库查找目录</p>
+<p>1：编译时指定</p>
+<p>2：LD_LIBRARY_PATH</p>
+<p>3：/etc/ld.so.conf 指定</p>
+<p>4：默认动态库查找路径/lib, /usr/lib…..</p>
+<p>五：gcc 环境变量</p>
+<p>C_INCLUDE_PATH：c 程序查找头文件</p>
+<p>CPATH：c/c++/obj-c 头文件查找</p>
+<p>CPLUS_INCLUDE_PATH：c++头文件查找</p>
+<p>LIBRARY_PATH：连接器 ld 查找库文件</p>
+<p>LANG：字符集</p>
+<p>LD_LIBRARY_PATH：运行时查找动态库</p>
+<p>六：ld 标准连接器设置入口地址方法</p>
+<p>1：ld 命令行-e 选项</p>
+<p>2：链接脚本 ENTRY()命令</p>
+<p>3：如定义 start 符号，使用 start</p>
+<p>4：存在 text section 使用 text section</p>
+<p>5：使用 0 值</p>
+<p>ld –vervose 内置连接器脚本</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/02/26/Android%E5%BC%80%E5%8F%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -469,1087 +1735,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/02/20/linux%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/20/linux%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="post-title-link" itemprop="url">linux进程和线程</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-20 19:30:14" itemprop="dateCreated datePublished" datetime="2020-02-20T19:30:14+08:00">2020-02-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-01 09:14:25" itemprop="dateModified" datetime="2020-03-01T09:14:25+08:00">2020-03-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index">
-                    <span itemprop="name">linux系统编程</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/02/20/linux%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="linux进程和线程" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2020/02/20/linux%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/20/linux%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="多进程和多线程"><a href="#多进程和多线程" class="headerlink" title="多进程和多线程"></a>多进程和多线程</h3><p>现代操作系统通过多进程实现多任务宏观的并发执行</p>
-<p>进程是资源分配的基本单元<br>线程是处理器调度的基本单位</p>
-<p>进程和线程，不同操作系统的实现方式可能不同</p>
-<p>进程通信<br>linux 进程通信方式：<br>管道：命名管道（mkfifo）,父子进程间匿名管道 pipe，内核中利用文件实现<br>信号量：sem_init，sem_post 等，为了防止不同进程临界区资源产生问题，P 操作获取信号量，V 操作释放信号量<br>信号：sigaction，kill 等，Ctrl-C 产 SIGINT 信号,Ctrl-\产 SIGQUIT 信号,Ctrl-Z 产 SIGTSTP 信号<br>消息队列：msgget，存在与内核中，数据会从用户空间和内核空间相互复制，不适合数据量大操作频繁的场景<br>共享内存：shmget，地址空间映射，不需要复制数据，读写需要其他方式进行同步<br>套接字：socket，不同机器间的数据通信</p>
-<p>线程同步<br>linux 内核没有提供线程，通过 pthread 库实现用户级多线程，c++11 后标准库开始支持多线程，实现原理是为每个创建的线程在当前进程空间生成运行栈<br>windows 系统提供系统线程，可通过 CreateThread，ExitThread 等系统函数操作，或 vc++运行库提供_beginthreadex 对 CreateThread 的包装函数</p>
-<p>以下主要以 linux 下 c++学习和总结<br>| 功能 | pthread | std::thread(c++11) | thrd_t(c11) |<br>| :—– | :———- | :———- |<br>|线程创建 | pthread_create | thread 类 | thrd_create(C11) |<br>|互斥 mutex | pthread_mutex_init | mutex 类 | mtx_init |<br>|条件变量 | pthread_cond_init | condition_variable | cnd_init |<br>|读写锁 | pthread_rwlock_init | thread 类 | thrd_create(C11) |<br>|信号量 | sem_init | counting_semaphore(C++20) | sem_init |<br>|屏障 | pthread_barrier_init | barrier(C++20) | 无 |</p>
-<p>进程通信的信号量和信号 ，线程同步也可以使用</p>
-<p>互斥锁，只有加锁和不加锁两种状态，使用简单情况，相当于 0，1 状态的信号量<br>信号量，信号量的 count 代表多个可用的资源，比如多台打印机的情况<br>条件变量：可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件的测试是在互斥锁的保护下进行的。条件变量始终与互斥锁一起使用。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/02/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">计算机网络</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-20 19:20:14" itemprop="dateCreated datePublished" datetime="2020-02-20T19:20:14+08:00">2020-02-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-01 09:15:03" itemprop="dateModified" datetime="2020-03-01T09:15:03+08:00">2020-03-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机网络</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/02/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-meta-item leancloud_visitors" data-flag-title="计算机网络" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2020/02/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/20/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="TCP-IP-协议栈"><a href="#TCP-IP-协议栈" class="headerlink" title="TCP/IP 协议栈"></a>TCP/IP 协议栈</h3><p>应用层：http，https，FTP，DNS 等<br>传输层：TCP，UDP<br>网络层：ICMP，ARP，RARP，IP<br>网络接入层：</p>
-<p>常用端口：http:tcp:80，https:tcp:443，DNS:udp:53</p>
-<h3 id="TCP-与-UDP"><a href="#TCP-与-UDP" class="headerlink" title="TCP 与 UDP"></a>TCP 与 UDP</h3><p>TCP 是面向连接的全双工的可靠数据传输服务，UDP 是无连接的报文服务<br>为保证全双工，TCP 建立连接需要 3 次握手（SYN，SYN+ACK，ACK），4 次挥手（FIN，ACK，fin,ack）<br>socket，SOCK_STREAM 代表 TCP，SOCK_DGRAM 代表 UDP</p>
-<h3 id="http-和-https"><a href="#http-和-https" class="headerlink" title="http 和 https"></a>http 和 https</h3><p>http 数据是明文传输，https 是加密的<br>https 需要服务端安装证书<br>服务器收到客户端 https 请求后，会把证书公钥发给客户端<br>客户端利用公钥将密钥加密后发给服务器<br>服务器利用私钥解密得到密钥，然后利用密钥对数据解密后传输</p>
-<p>服务器和客户端之间的数据需要密钥进行加密，但是协商密钥的过程有可能被窃取，所以通过证书的方式把密钥加密，保证密钥协商过程安全</p>
-<h3 id="IO-多路复用"><a href="#IO-多路复用" class="headerlink" title="IO 多路复用"></a>IO 多路复用</h3><p>五种 IO 模型</p>
-<ol>
-<li>阻塞，调用 recvfrom 等，会被阻塞</li>
-<li>非阻塞，无论数据是否准备好都立即返回，可以设置 socket 为非阻塞</li>
-<li>IO 多路复用，select（底层是数组），poll（底层是链表），epoll（底层是红黑树），可以等待多组数据</li>
-<li>异步 IO，有 2 种，glibc 中通过创建工作线程实现异步 IO（aio_read 等函数），内核提供的（io_setup）</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/02/18/c_cpp%E5%BC%82%E5%90%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/18/c_cpp%E5%BC%82%E5%90%8C/" class="post-title-link" itemprop="url">c_cpp 异同</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-18 15:06:45" itemprop="dateCreated datePublished" datetime="2020-02-18T15:06:45+08:00">2020-02-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-01 09:13:50" itemprop="dateModified" datetime="2020-03-01T09:13:50+08:00">2020-03-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
-                    <span itemprop="name">c语言</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/02/18/c_cpp%E5%BC%82%E5%90%8C/" class="post-meta-item leancloud_visitors" data-flag-title="c_cpp 异同" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2020/02/18/c_cpp%E5%BC%82%E5%90%8C/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/18/c_cpp%E5%BC%82%E5%90%8C/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>根据关键字比较：</p>
-<h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><p>共有部分：double,char,float,int,long,short,signed,void,union,unsigned,enum,struct<br>c++中特有：class,bool,true,false<br>wchar_t<br>char8_t (C++20 起)<br>char16_t (C++11 起)<br>char32_t (C++11 起)</p>
-<p>类型限定符：const,restrict (C99 起),volatile<br>c++中特有：mutable</p>
-<p>强制类型转换<br>const_cast<br>dynamic_cast<br>reinterpret_cast<br>static_cast</p>
-<h3 id="存储类指定符"><a href="#存储类指定符" class="headerlink" title="存储类指定符"></a>存储类指定符</h3><p>auto<br>extern<br>static<br>register<br>thread_local</p>
-<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><p>friend<br>private<br>protected<br>public<br>virtual<br>operator<br>typeid<br>this</p>
-<h3 id="模板编程"><a href="#模板编程" class="headerlink" title="模板编程"></a>模板编程</h3><p>template<br>typename</p>
-<h3 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h3><p>namespace<br>using</p>
-<h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>throw<br>try<br>catch<br>noexcept (C++11 起)</p>
-<h3 id="动态内存分配"><a href="#动态内存分配" class="headerlink" title="动态内存分配"></a>动态内存分配</h3><p>delete(1)<br>new</p>
-<h3 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h3><p>co_await (C++20 起)<br>co_return (C++20 起)<br>co_yield (C++20 起)</p>
-<h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>export(1)(3)<br>import (C++20)</p>
-<h3 id="代用记号"><a href="#代用记号" class="headerlink" title="代用记号"></a>代用记号</h3><p>&amp;&amp;替代 and，&amp;=替代 and_eq，等等</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/02/08/%E5%85%AC%E5%8A%A1%E5%91%98%E4%B8%8E%E4%BA%8B%E4%B8%9A%E5%8D%95%E4%BD%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/08/%E5%85%AC%E5%8A%A1%E5%91%98%E4%B8%8E%E4%BA%8B%E4%B8%9A%E5%8D%95%E4%BD%8D/" class="post-title-link" itemprop="url">公务员与事业单位</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-08 09:32:59" itemprop="dateCreated datePublished" datetime="2020-02-08T09:32:59+08:00">2020-02-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-01 09:14:36" itemprop="dateModified" datetime="2020-03-01T09:14:36+08:00">2020-03-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%BA%BA%E7%94%9F%E6%9D%82%E8%B0%88/" itemprop="url" rel="index">
-                    <span itemprop="name">人生杂谈</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/02/08/%E5%85%AC%E5%8A%A1%E5%91%98%E4%B8%8E%E4%BA%8B%E4%B8%9A%E5%8D%95%E4%BD%8D/" class="post-meta-item leancloud_visitors" data-flag-title="公务员与事业单位" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2020/02/08/%E5%85%AC%E5%8A%A1%E5%91%98%E4%B8%8E%E4%BA%8B%E4%B8%9A%E5%8D%95%E4%BD%8D/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/08/%E5%85%AC%E5%8A%A1%E5%91%98%E4%B8%8E%E4%BA%8B%E4%B8%9A%E5%8D%95%E4%BD%8D/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="国考"><a href="#国考" class="headerlink" title="国考"></a>国考</h3><p>基本流程</p>
-<h2 id="报名"><a href="#报名" class="headerlink" title="报名"></a>报名</h2><p>时间：2019-10-15，报名网址：<a href="http://bm.scs.gov.cn/kl2020" target="_blank" rel="noopener">http://bm.scs.gov.cn/kl2020</a></p>
-<h2 id="资格审查"><a href="#资格审查" class="headerlink" title="资格审查"></a>资格审查</h2><h2 id="报名确认（上传照片、缴费）"><a href="#报名确认（上传照片、缴费）" class="headerlink" title="报名确认（上传照片、缴费）"></a>报名确认（上传照片、缴费）</h2><h2 id="打印准考证"><a href="#打印准考证" class="headerlink" title="打印准考证"></a>打印准考证</h2><h2 id="笔试"><a href="#笔试" class="headerlink" title="笔试"></a>笔试</h2><p>时间：2019-11-24<br>内容：行政能力测试和申论，满分均为 100 分<br>官方大纲：《中央机关及其直属机构 2020 年度考试录用公务员公共科目笔试考试大纲》</p>
-<h2 id="面试："><a href="#面试：" class="headerlink" title="面试："></a>面试：</h2><p>时间：2020 年 2 月，笔试和面试各站 50%</p>
-<h2 id="体检"><a href="#体检" class="headerlink" title="体检"></a>体检</h2><h2 id="考察"><a href="#考察" class="headerlink" title="考察"></a>考察</h2><p>国考专业对比：<br>工学=&gt;电子信息类=&gt;电子信息科学与技术<br>理学=&gt;物理学类=&gt;应用物理学</p>
-<p>陕西省考专业：<br>电气信息类=&gt;电子信息科学与技术<br>物理学类=&gt;应用物理学</p>
-<p>近几年国考数据统计</p>
-<table>
-<thead>
-<tr>
-<th align="center">年份</th>
-<th align="center">高校毕业人数</th>
-<th align="center">招录人数</th>
-<th align="center">审查通过</th>
-<th align="center">参加笔试</th>
-<th align="center">最终比例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">2020</td>
-<td align="center">874 万</td>
-<td align="center">24128</td>
-<td align="center">143.7 万</td>
-<td align="center">96.5 万</td>
-<td align="center">40:1</td>
-</tr>
-<tr>
-<td align="center">2019</td>
-<td align="center">834 万</td>
-<td align="center">14537</td>
-<td align="center">635113</td>
-<td align="center">92 万</td>
-<td align="center">63:1</td>
-</tr>
-<tr>
-<td align="center">2018</td>
-<td align="center">820 万</td>
-<td align="center">28533</td>
-<td align="center">165.97 万</td>
-<td align="center">113.4 万</td>
-<td align="center">40:1</td>
-</tr>
-<tr>
-<td align="center">2017</td>
-<td align="center">795 万</td>
-<td align="center">27061</td>
-<td align="center">148.63 万</td>
-<td align="center">98.4 万</td>
-<td align="center">36:1</td>
-</tr>
-<tr>
-<td align="center">2016</td>
-<td align="center">765 万</td>
-<td align="center">27817</td>
-<td align="center">139.46 万</td>
-<td align="center">93 万</td>
-<td align="center">33:1</td>
-</tr>
-<tr>
-<td align="center">2015</td>
-<td align="center">749 万</td>
-<td align="center">22248</td>
-<td align="center">129 万</td>
-<td align="center">90 万</td>
-<td align="center">41:1</td>
-</tr>
-<tr>
-<td align="center">2014</td>
-<td align="center">727 万</td>
-<td align="center">19538</td>
-<td align="center">152 万</td>
-<td align="center">99 万</td>
-<td align="center">40:1</td>
-</tr>
-<tr>
-<td align="center">2013</td>
-<td align="center">699 万</td>
-<td align="center">20839</td>
-<td align="center">138.3 万</td>
-<td align="center">111.7 万</td>
-<td align="center">54:1</td>
-</tr>
-<tr>
-<td align="center">2012</td>
-<td align="center">680 万</td>
-<td align="center">17941</td>
-<td align="center">130 万</td>
-<td align="center">96 万</td>
-<td align="center">54:1</td>
-</tr>
-<tr>
-<td align="center">2011</td>
-<td align="center">660 万</td>
-<td align="center">15290</td>
-<td align="center">141.5 万</td>
-<td align="center">90.2 万</td>
-<td align="center">59:1</td>
-</tr>
-<tr>
-<td align="center">2010</td>
-<td align="center">631 万</td>
-<td align="center">15526</td>
-<td align="center">144.3 万</td>
-<td align="center">92.7 万</td>
-<td align="center">60:1</td>
-</tr>
-<tr>
-<td align="center">2009</td>
-<td align="center">611 万</td>
-<td align="center">13566</td>
-<td align="center">105.2 万</td>
-<td align="center">77.5 万</td>
-<td align="center">57:1</td>
-</tr>
-</tbody></table>
-<p>高校毕业人数持续增长，经济下滑，就业压力增大<br>参加国考的竞争预计愈发激烈</p>
-<h3 id="陕西省公务员考试"><a href="#陕西省公务员考试" class="headerlink" title="陕西省公务员考试"></a>陕西省公务员考试</h3><h2 id="报名-1"><a href="#报名-1" class="headerlink" title="报名"></a>报名</h2><p>时间：2019-3-22，报名网址：陕西人事考试网 <a href="http://www.sxrsks.cn" target="_blank" rel="noopener">http://www.sxrsks.cn</a></p>
-<h3 id="事业单位"><a href="#事业单位" class="headerlink" title="事业单位"></a>事业单位</h3><p>陕西省事业单位：陕西人事考试网：<a href="http://www.sxrsks.cn/website/bkwj_index.aspx" target="_blank" rel="noopener">http://www.sxrsks.cn/website/bkwj_index.aspx</a><br>报名时间：4 月 8 号<br>笔试包括《职业能力倾向测验》和《综合应用能力》两科，各科满分均为 150 分</p>
-<p>2 个我能考的，属于公益一类，全额拨款<br>2019 年的 陕西省荣誉军人康复医院网络管理 笔试最低分 196.5 分<br>2019 年的 陕西省卫生计生政策评估与信息中心机房管理与系统维护（具有电子信息科学与技术助理工程师资格证） 笔试最低分 149.5</p>
-<p>西安市事业单位：西安人事考试网：<a href="http://xapta.xa.gov.cn/preview/channel/666.jhtml" target="_blank" rel="noopener">http://xapta.xa.gov.cn/preview/channel/666.jhtml</a><br>考试时间：4 月 8 号<br>笔试包括《职业能力倾向测验》和《综合应用能力》两科，各科满分均为 150 分</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/01/15/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/15/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" class="post-title-link" itemprop="url">编程范式</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-01-15 16:55:12 / 修改时间：17:49:54" itemprop="dateCreated datePublished" datetime="2020-01-15T16:55:12+08:00">2020-01-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E6%80%9D%E8%80%83/" itemprop="url" rel="index">
-                    <span itemprop="name">编程思考</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/01/15/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" class="post-meta-item leancloud_visitors" data-flag-title="编程范式" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2020/01/15/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/15/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="编程范式分类"><a href="#编程范式分类" class="headerlink" title="编程范式分类"></a>编程范式分类</h3><p><img src="/images/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F%E5%88%86%E7%B1%BB.jpg" alt="编程范式分类"></p>
-<h3 id="语言和范式关系"><a href="#语言和范式关系" class="headerlink" title="语言和范式关系"></a>语言和范式关系</h3><p><img src="/images/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E8%8C%83%E5%BC%8F%E5%85%B3%E7%B3%BB.jpg" alt="语言和范式关系"></p>
-<p>相关书籍：<strong>待完成</strong><br>程序设计语言实践之路<br>VanRoyChapter.pdf</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/01/13/cpp%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/13/cpp%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/" class="post-title-link" itemprop="url">cpp语言核心</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-13 15:57:23" itemprop="dateCreated datePublished" datetime="2020-01-13T15:57:23+08:00">2020-01-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-01 09:14:06" itemprop="dateModified" datetime="2020-03-01T09:14:06+08:00">2020-03-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c/" itemprop="url" rel="index">
-                    <span itemprop="name">c++</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/01/13/cpp%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/" class="post-meta-item leancloud_visitors" data-flag-title="cpp语言核心" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2020/01/13/cpp%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/13/cpp%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>阅读本文之前，可先参考<a href="/c语言核心">c 语言核心</a></p>
-<p>c++相对于 c 语言，主要是增加了面向对象和模板编程</p>
-<h3 id="c-中的实体"><a href="#c-中的实体" class="headerlink" title="c++中的实体"></a>c++中的实体</h3><p>C++ 程序中的实体包括：值、对象、引用、 结构化绑定 (C++17 起)、函数、枚举项、类型、类成员、模板、模板特化、命名空间和形参包。预处理器宏不是 C++ 实体。</p>
-<p>对象类型：非函数类型、非引用类型且非 void 类型的<br>所以，以下实体都不是对象：值，引用，函数，枚举项，类型，类的非静态成员，位域，模板，类或函数模板的特化，命名空间，形参包，和 this。</p>
-<h3 id="名字查找和命名空间"><a href="#名字查找和命名空间" class="headerlink" title="名字查找和命名空间"></a>名字查找和命名空间</h3><p>作用域：文件作用域（全局作用域）、命名空间作用域、类作用域、块作用域、枚举作用域、函数作用域、函数形参作用域、模板形参作用域</p>
-<h3 id="内部链接和外部链接"><a href="#内部链接和外部链接" class="headerlink" title="内部链接和外部链接"></a>内部链接和外部链接</h3><p>内部链接：其他编译单元无法访问的名称，拥有内部链接，相反是外部链接</p>
-<p>以下为内部链接：</p>
-<ol>
-<li>所有声明</li>
-<li>类型(struct/union/enum 等)</li>
-<li>命名空间中的 static 函数和变量以及 const 常量</li>
-<li>inline 函数</li>
-</ol>
-<p>以下为外部链接：</p>
-<ol>
-<li>命名空间中的非 static 函数和变量</li>
-<li>类成员函数（包含成员函数和 static 成员函数）和静态成员变量</li>
-</ol>
-<h3 id="类型比较"><a href="#类型比较" class="headerlink" title="类型比较"></a>类型比较</h3><p>c++有如下类型：</p>
-<ul>
-<li>基本类型<ul>
-<li>void</li>
-<li>nullptr：空指针</li>
-<li>算术类型<ul>
-<li>整数类型<ul>
-<li>bool 类型</li>
-<li>字符类型<ul>
-<li>窄字符：（char、signed char、unsigned char、char8_t）</li>
-<li>宽字符：（char16_t、char32_t、wchar_t）</li>
-</ul>
-</li>
-<li>整数类型：各种限定的 int</li>
-</ul>
-</li>
-<li>浮点类型：（float 、 double 、 long double）</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>复合类型<ul>
-<li>数组类型</li>
-<li>函数类型</li>
-<li>指针类型（包括对象指针，函数指针，成员函数指针，数据成员指针）</li>
-<li>引用类型</li>
-<li>枚举类型</li>
-<li>类类型</li>
-<li>联合体类型</li>
-</ul>
-</li>
-</ul>
-<h4 id="基本类型异同"><a href="#基本类型异同" class="headerlink" title="基本类型异同"></a>基本类型异同</h4><p><strong>空指针字面量</strong></p>
-<p>为什么需要空指针字面量？<br>空指针用于表示一个无效的指针，它的值为 0（早期 C 语言的实现中可能有非 0 空指针，现在已经不用）。对指针置 NULL 即标记指针无效，避免“野指针”的恶果</p>
-<p>c 语言空指针定义于&lt;stddef.h&gt;，它可以被定义为 ((void*)0), 0 或 0L，这取决于编译器供应商。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 兼容 C++ ：</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL 0</span></span><br><span class="line"><span class="comment">// 不兼容 C++ ：</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL ((void*)0)</span></span><br><span class="line"><span class="comment">// 允许void * 与任意其他对象指针的隐式类型转换</span></span><br><span class="line"><span class="keyword">int</span>* p = <span class="built_in">malloc</span>(<span class="number">10</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>)); <span class="comment">// malloc 返回 void*</span></span><br><span class="line"><span class="keyword">void</span> *pv = p; <span class="comment">// int * 转换为void *</span></span><br></pre></td></tr></table></figure>
-
-<p>c++中空指针定义如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL 0</span></span><br><span class="line"><span class="comment">// C++11 起</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL nullptr</span></span><br></pre></td></tr></table></figure>
-
-<p>问题一：为什么 c++把 NULL 定义为 0，而不是 void<em>？<br>因为 c++中不允许(void</em>)到其他类型指针的隐式类型转换</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL ((void*)0) <span class="comment">/* 如果在 C++ 语言中这么定义的话 */</span></span></span><br><span class="line"><span class="keyword">int</span>* a = <span class="literal">NULL</span>; <span class="comment">/* 隐式转换，编译错误 */</span></span><br><span class="line"><span class="keyword">int</span>* a = (<span class="keyword">int</span>*)<span class="literal">NULL</span>; <span class="comment">/* 显示转换，正确，但很麻烦*/</span></span><br><span class="line"><span class="keyword">int</span>* a = <span class="number">0</span>; <span class="comment">// 可以，字面量0可以隐式转换为指针类型</span></span><br></pre></td></tr></table></figure>
-
-<p>结论：c++中，NULL 只能被定义为 0</p>
-<p>问题二：有了 NULL 表示空指针，c++11 为什么增加 nullptr_t ?<br>当 NULL 被定义为 0 后，在函数重载时，会发生歧义，如下</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">char</span> *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Func</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Func(<span class="literal">NULL</span>);  <span class="comment">// NULL=0,所以不知道应该调用哪个</span></span><br><span class="line">    Func(<span class="literal">nullptr</span>); <span class="comment">// 调用Func(char *);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>c++11 的解决方案，定义个 std::nullptr_t 类型，该类型定义了转到任意指针类型的转换操作符，同时不允许该类型的对象转换到非指针类型</p>
-<p>结论：用 nullptr 类型表示无效指针后，既不需要初始化时显示转换的麻烦，又避免 NULL 定义为 0 时的函数重载问题，而保留 NULL 只是为了向后兼容。所以 c 中使用 NULL，c++11 中使用 nullptr。</p>
-<p><strong>bool 类型</strong><br>c99 开始，增加关键字_Bool 支持布尔类型</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> bool	_Bool</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> true	1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> false	0</span></span><br></pre></td></tr></table></figure>
-
-<p>c99 后，bool，true，false 为宏定义，在&lt;stdbool.h&gt;中<br>c++中，bool，true，false 均为关键字</p>
-<p><strong>字符类型</strong></p>
-<p>c++中，目前有以下内置字符类型(关键字)：<br>char<br>char8_t (C++20 起)：UTF-8 字符表示的类型，char8_t utf8[] = u8”我”<br>char16_t (C++11 起)：UTF-16 字符表示的类型，char16_t utf16[] = u”我”<br>char32_t (C++11 起)：UTF-32 字符表示的类型，char32_t utf32[] = U”我”<br>wchar_t: 实现定义，windows 为 16 位 short 类型，gcc 为 32 位 int 类型，定宽字符</p>
-<p>c 语言中，使用宏定义实现：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> short <span class="keyword">wchar_t</span>;  <span class="comment">// wctype.h</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint_least16_t</span> <span class="keyword">char16_t</span>; <span class="comment">// 定义于&lt;uchar.h&gt;</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">uint_least32_t</span> <span class="keyword">char32_t</span>; <span class="comment">// 定义于&lt;uchar.h&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>字符串使用原则：<br>程序内部使用 char8_t（UTF-8 编码）字符串，既可以表示所有字符，又不浪费空间<br>求字符串长度等操作时，转换为 wchar_t 宽字符串方便操作，char16_t 和 char32_t 存在字节序问题，不建议使用<br>注意：宽字符和窄字符相互转换，或者输出到控制台时，需要设定正确的 locale，才能正确解析窄字符串</p>
-<p><strong>引用类型</strong><br>c++增加引用类型，表示一个标识符的别名，故不占用存储空间<br>没有数组的引用，没有指针的引用，没有引用的引用</p>
-<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><p>通过 class 或者 struct 支持面向对象编程</p>
-<p>编译器默认会定义的成员函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line">	A() &#123;&#125; <span class="comment">// 默认构造函数</span></span><br><span class="line">	A( <span class="keyword">const</span> A &amp; ) &#123;&#125; <span class="comment">// 复制构造函数</span></span><br><span class="line">	<span class="comment">//移动构造函数 (C++11 起)</span></span><br><span class="line">	<span class="comment">//复制赋值运算符</span></span><br><span class="line">	<span class="comment">//移动赋值运算符 (C++11 起)</span></span><br><span class="line">	<span class="comment">//析构函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>c++中的多态：<br>函数重载：可以定义不同参数的相同名称的函数，编译期，原理是编译器会产生不同的符号<br>多态：基类中定义的虚函数，可以被子类覆盖，运行时调用不同的函数<br>多态原理：通过虚函数表和虚表指针实现，编译器为每个定义了虚函数的类分配一个虚函数表，表中存放的是这个类所有虚函数的指针，每个类对象的最前面存放的是虚函数表指针，</p>
-<h3 id="模板编程"><a href="#模板编程" class="headerlink" title="模板编程"></a>模板编程</h3><p>通过模板编程支持范型编程，让程序员编写与类型无关的通用代码，比如通用算法</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 函数模板</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> 形参名, <span class="title">class</span> 形参名, ...&gt; 返回类型 函数名(参数列表) &#123;</span> ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类模板</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> 形参名, <span class="title">class</span> 形参名, ...&gt; <span class="title">class</span> 类名&#123;</span> ... &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>模板有显式实例化，隐式实例化，特化（具体化）<br>隐式实例化：运行期间，根据参数动态生成模板实例<br>显式实例化：编译期间，生成对应的实例<br>特化：针对自定义参数，不能生成对应实例时，跟显示实例化一样，编写针对特定类型的模板</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/01/10/%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8E%E7%BC%96%E7%A0%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/10/%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8E%E7%BC%96%E7%A0%81/" class="post-title-link" itemprop="url">字符集与编码</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-10 17:25:18" itemprop="dateCreated datePublished" datetime="2020-01-10T17:25:18+08:00">2020-01-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-14 10:17:41" itemprop="dateModified" datetime="2020-01-14T10:17:41+08:00">2020-01-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
-                    <span itemprop="name">c语言</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/01/10/%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8E%E7%BC%96%E7%A0%81/" class="post-meta-item leancloud_visitors" data-flag-title="字符集与编码" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2020/01/10/%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8E%E7%BC%96%E7%A0%81/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/10/%E5%AD%97%E7%AC%A6%E9%9B%86%E4%B8%8E%E7%BC%96%E7%A0%81/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="字符集与编码"><a href="#字符集与编码" class="headerlink" title="字符集与编码"></a>字符集与编码</h3><p>字符集：字符集是字符与代码的映射关系，例如 ASCII 字符集的 ‘A’ = 65 = 0x41<br>编码：将字符集中的代码按一定规则存储于计算机中，例如 ASCII 规定用一字节存储所有 ASCII 字符</p>
-<h3 id="编码历史"><a href="#编码历史" class="headerlink" title="编码历史"></a>编码历史</h3><h4 id="第一阶段：ASCII-编码"><a href="#第一阶段：ASCII-编码" class="headerlink" title="第一阶段：ASCII 编码"></a>第一阶段：ASCII 编码</h4><p>计算机刚开始只支持英语，使用 ASCII 编码，一个字节存储</p>
-<h4 id="第二阶段：ANSI-编码，表示其他外文编码"><a href="#第二阶段：ANSI-编码，表示其他外文编码" class="headerlink" title="第二阶段：ANSI 编码，表示其他外文编码"></a>第二阶段：ANSI 编码，表示其他外文编码</h4><p>不同国家和地区的 ANSI 编码各不相同<br>linux 系统查看系统默认编码<br>locale 的命名规则为&lt;语言&gt;_&lt;地区&gt;.&lt;字符集编码&gt;</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@1-min huage]<span class="comment"># locale  //查看当前系统的语言环境</span></span><br><span class="line">LC_CTYPE=<span class="string">"zh_CN.UTF-8"</span>  // 中文linux系统默认UTF-8编码</span><br><span class="line">[root@1-min huage]<span class="comment"># locale -a //查看系统支持的所有语言</span></span><br><span class="line">en_US</span><br><span class="line">en_US.iso88591</span><br><span class="line">en_US.iso885915</span><br><span class="line">en_US.utf8</span><br><span class="line">zh_CN</span><br><span class="line">zh_CN.gb18030   // 2000年3月17日发布，对 GBK 的补充</span><br><span class="line">zh_CN.gb2312    // 1981年5月1日发布，双字节编码</span><br><span class="line">zh_CN.gbk       // 1995年12月发布，对 GB2312 补充，双字节编码</span><br><span class="line">zh_CN.utf8</span><br></pre></td></tr></table></figure>
-
-<p>linux 编码转换工具：iconv</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -f GBK -t UTF-8 file1 -o file2 // 将一个UTF-8 编码的文件转换成GBK编码</span><br></pre></td></tr></table></figure>
-
-<p>windows 系统可通过控制面板更改系统编码，<br>控制面板” =&gt;“时钟、语言和区域”=&gt;“区域和语言”=&gt;“管理”=&gt;“更改系统区域设置”<br>或者通过 chcp 命令查看当前代码页，通过 systeminfo 查看 local<br>System Locale: zh-cn;Chinese (China)</p>
-<p>windows 记事本另存为选择编码方式，ANSI 就是系统默认编码，简体中文是 gb2312，繁体中文是 big5 编码</p>
-<h3 id="第三阶段：Unicode-编码，万国码"><a href="#第三阶段：Unicode-编码，万国码" class="headerlink" title="第三阶段：Unicode 编码，万国码"></a>第三阶段：Unicode 编码，万国码</h3><p>ANSI 编码解决了非英语国家的编码显示问题，但不同国家使用不同编码，相互交流沟通就很麻烦，然后就出现 Unicode 字符集，将世界上所有字符统一编码</p>
-<p>Unicode 字符集，规定了世界上所有字符的二进制代码，字符串中存储字符在 Unicode 中的编号</p>
-<p>常见 Unicode 字符集的编码方式有 UTF-8，UTF-16，UTF-32 等</p>
-<p><strong>文件编码</strong><br>汉字编码如：gb2312、gbk、gb18030、big5，编码方式决定了字节顺序，跟 cpu 字节序无关，跟大端模式的顺序一致<br>Unicode 相关编码：<br>UTF-8，UTF-8 和 gb 系列编码一样，其编码某个汉字产生的字节顺序，由其编码方案决定，不受 CPU 字节序的影响<br>UTF-16、UTF-32：编码规则要求可以在文件头部的 BOM（Byte Order Mark）来标记字节顺序，FFFE 表示小端，FEFF 表示大端</p>
-<p><strong>程序中的编码</strong></p>
-<p>c 语言字符串常量有如下形式：<br>“ s-char-sequence “ (1) 系统默认编码，gcc 为 UTF-8，vs2017 为 gbk<br>u8 “ s-char-sequence “ (2) (C11 起) UTF-8 字符串字面量<br>u “ s-char-sequence “ (3) (C11 起) 16 位宽字符串字面量，通常为 UTF-16 编码，有字节序问题<br>U “ s-char-sequence “ (4) (C11 起) 32 位宽字符串字面量，通常为 UTF-32 编码，有字节序问题<br>L “ s-char-sequence “ (5) 宽字符串字面量，通常是 Unicode 码点（即 Unicode 顺序编号）</p>
-<p>使用 GCC 编译时可以使用如下参数：<br>-finput-charset 指定源文件（保存文件时选择）的编码方式（若不指定，编译器默认是 UTF-8）<br>-fexec-charset 指定可执行程序中的字符以什么编码方式来表示，默认是 UTF-8<br>-fwide-exec-charset 指定可执行程序中的宽字符以什么编码方式来表示，默认是 UTF-8</p>
-<p>字符串字面量 (1) 和宽字符串字面量 (5) 的编码是实现定义的。例如， gcc 用命令行选项 -fexec-charset 和 -fwide-exec-charset 选择不同编码</p>
-<p>字符串不同的编码到底有什么影响：<br>如果这个字符串只是程序内部使用，不管什么编码都没有关系<br>如果这个字符串要输出到控制台或者显示到 GUI 上，那么这个字符串的编码必须和接受方（如控制台）的编码方案一致才可显示，否则乱码</p>
-<p>参考：<br><a href="https://baike.baidu.com/item/%E6%A0%87%E5%87%86%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F/20868617" target="_blank" rel="noopener">标准编码百度百科</a><br><a href="http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html" target="_blank" rel="noopener">阮一峰字符编码</a><br><a href="https://zhuanlan.zhihu.com/p/87148253" target="_blank" rel="noopener">c++编码</a><br><a href="https://www.cnblogs.com/gatsby123/p/11150472.html#locale" target="_blank" rel="noopener">彻底弄懂 UTF-8、Unicode、宽字符、locale</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/01/09/c%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="翟云云">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翟云云的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/09/c%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/" class="post-title-link" itemprop="url">c语言核心</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-01-09 10:22:20" itemprop="dateCreated datePublished" datetime="2020-01-09T10:22:20+08:00">2020-01-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-15 16:05:53" itemprop="dateModified" datetime="2020-01-15T16:05:53+08:00">2020-01-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/c%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
-                    <span itemprop="name">c语言</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/01/09/c%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/" class="post-meta-item leancloud_visitors" data-flag-title="c语言核心" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">评论次数：</span>
-    
-    <a title="valine" href="/2020/01/09/c%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/09/c%E8%AF%AD%E8%A8%80%E6%A0%B8%E5%BF%83/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>c 程序由一系列文本文件组成，以文件为单位，经过预处理、编译链接生成可执行程序，由系统调用执行</p>
-<h3 id="c-语言中的实体"><a href="#c-语言中的实体" class="headerlink" title="c 语言中的实体"></a>c 语言中的实体</h3><p>c 语言有如下实体：对象、函数、标签（ struct 、 union 或枚举）、结构体或联合体成员、枚举常量、 typedef 类型别名、标号名、宏名、宏形参名。</p>
-<p>实体是由声明所引入的，使其与名字对应起来，并定义了其属性。为一个实体定义其使用所需的所有性质的声明是一个定义。</p>
-<p>什么是对象？<br>一个对象是<strong>执行环境</strong>中<strong>数据存储</strong>的一个区域，其内容可以表示值（值是对象的内容转译为特定类型时的含义）。<br>简单说，就是程序执行时，除了代码段，其他堆栈段、bss 段、数据段里面的都是对象</p>
-<p>所以，以下实体都不是对象：值，引用，函数，枚举项</p>
-<p>原因是以上这些实体只是在编译阶段使用，说白了就是写给编译器看的，函数直接生成进代码段，值会以二进制嵌入到代码中</p>
-<p>如何判断？<br>对象类型：所有不是函数类型的类型</p>
-<h3 id="标识符声明和定义"><a href="#标识符声明和定义" class="headerlink" title="标识符声明和定义"></a>标识符声明和定义</h3><p>声明是向程序中引入一个名字<br>定义是足以使用该名字所标识的实体</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对于对象，分配存储的声明为定义</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> a; <span class="comment">// 声明a，未分配存储</span></span><br><span class="line"><span class="keyword">int</span> a; <span class="comment">// 定义a</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于函数，包含函数体的声明为定义</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">b</span><span class="params">()</span></span>; <span class="comment">// 声明函数b</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">b</span><span class="params">()</span></span>&#123;;&#125;; <span class="comment">// 定义函数b</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于结构体，包含结构体成员列表的为定义</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">c</span>;</span> <span class="comment">// 声明结构体c</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">c</span> &#123;</span><span class="keyword">int</span> c;&#125;; <span class="comment">// 定义结构体c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 所有的typedef 都是定义，定义的名称属于通常命名空间</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> A[]; <span class="comment">// A 是 int[]</span></span><br><span class="line">A a = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;; <span class="comment">// a 的类型是 int[2]</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span> <span class="keyword">double</span> hi, lo; &#125; range;</span><br><span class="line">range z, *zp;</span><br></pre></td></tr></table></figure>
-
-<p>include 预处理指令，会将包含的头文件插入到当前行<br>所以，头文件如果定义了全局变量，如果重复包含此头文件，会出现重定义，可使用#pragma once 或者宏定义避免一个头文件被多次包含<br>但，即使每个编译单元编译通过，链接时也会出现重复定义，原因是全局变量有外部链接<br>所以头文件可以放所有声明和内部链接的定义</p>
-<h3 id="标识符查找和命名空间"><a href="#标识符查找和命名空间" class="headerlink" title="标识符查找和命名空间"></a>标识符查找和命名空间</h3><p>c 语言有 4 个独立的命名空间：<br>标号命名空间：跟在 goto 后的标识符，在标号命名空间查找<br>标签命名空间：跟在 struct、union、enum 后的标识符，在标签命名空间查找<br>类型成员命名空间：跟在成员访问运算符后的标识符，在类型成员命名空间查找<br>通常命名空间：函数名称，对象名，以 typedef 声明的标识符，枚举常量，所有其他标识符</p>
-<p>4 个作用域：<br>文件作用域：任何在代码块之外声明的标识符都具有文件作用域<br>块作用域：任何位于一对花括号声明的标识符具有块作用域<br>函数作用域：只适用于函数内部的标号<br>函数原型作用域：只适用于在函数原型中声明的参数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> a;  <span class="comment">// 类型成员命名空间/文件作用域</span></span><br><span class="line">  <span class="keyword">enum</span> &#123; INT, FLOAT, STRING&#125; B;  <span class="comment">// B属于标签命名空间文件作用域，INT属于通常命名空间，文件作用域</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">C</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> c;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ABCD 都属于标签命名空间，文件作用域</span></span><br><span class="line"><span class="keyword">union</span> D d;  <span class="comment">// ok</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">INT</span><span class="params">()</span></span>; <span class="comment">// false 通常命名空间文件作用域已经有INT标识符</span></span><br></pre></td></tr></table></figure>
-
-<p>当 c 程序遇到标识符时，会在当前作用域查找定位引入该标识符，</p>
-<h3 id="对象类型"><a href="#对象类型" class="headerlink" title="对象类型"></a>对象类型</h3><p>每个对象有如下属性：<br><img src="/images/%E6%A0%87%E8%AF%86%E7%AC%A6.png" alt="标识符属性"></p>
-<p><strong>作用域</strong>：标识符在某一范围内可见<br><strong>命名空间</strong>：同一作用域同名标识符可属于不同命名空间，指代不同对象<br><strong>链接</strong>：跨作用域指代同一对象的能力<br><strong>存储期</strong>：用于限定对象的生存期</p>
-<p>链接分为：<br>无链接：只能在其所在的作用域使用，函数形参和所有非 extern 的块作用域对象<br>内部链接：当前翻译单元的任何作用域都可使用，所有 static 的函数和对象<br>外部链接：在其他翻译单元可以使用的标识符，文件作用域下的非 static 函数和对象、extern 对象</p>
-<p>存储类指定符：指定对象和函数的存储期和链接<br>auto - 自动存储期与无链接<br>register - 自动存储期与无链接；不能取这种对象的地址<br>static - 静态存储期与内部链接（除非在块作用域）<br>extern - 静态存储期与外部链接（除非已声明带内部链接）<br>_Thread_local - 线程存储期</p>
-<p>若不提供存储类指定符，则默认为：<br>对所有函数为 extern<br>对在文件作用域的对象为 extern<br>对在块作用域的对象为 auto</p>
-<p>结论：默认情况下<br>文件作用域定义得对象和函数：都是外部链接</p>
-<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><p>对象、函数和表达式拥有称为类型的属性，它确定存储于对象或表达式求值所得的二进制值的转译方式。<br>c 语言类型分为：</p>
-<ol>
-<li>void 类型</li>
-<li>基本类型：char、int、long、double、float 等</li>
-<li>派生类型：数组、结构体、联合体、函数、指针、原子类型</li>
-<li>枚举类型</li>
-</ol>
-<h3 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h3><p>表达式是运算符及其运算数的序列，它指定一个运算<br>表达式求值可得到一个结果，分为：左值、右值和函数指代器</p>
-<p>某些类型的常量值可常量或字面量，直接嵌入程序中</p>
-<ol>
-<li>整数常量</li>
-<li>浮点常量</li>
-<li>字符常量</li>
-<li>字符串字面量：</li>
-<li>复合字面量：结构体、联合体或数组的无名对象，( type ) { initializer-list }</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int *p &#x3D; (int[])&#123;2, 4&#125;; &#x2F;&#x2F; 创建一个无名的 int[2] 类型静态存储数组</span><br><span class="line">                        &#x2F;&#x2F; 初始数组为值 &#123;2, 4&#125;</span><br><span class="line">                        &#x2F;&#x2F; 创建指向数组首元素的指针 p</span><br></pre></td></tr></table></figure>
-
-<h3 id="声明和定义"><a href="#声明和定义" class="headerlink" title="声明和定义"></a>声明和定义</h3><p>声明是引入一个标识符到程序中，并指定其属性<br>格式：specifiers-and-qualifiers declarators-and-initializers ;<br>specifiers-and-qualifiers：空白符分割，类型指定符，类型限定符，存储类指定符，对齐指定符，函数指定符<br>declarators-and-initializers：逗号分割，声明器和初始化器<br><strong>声明器格式</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1. 标识符：identifier</span><br><span class="line">int i; &#x2F;&#x2F; i是标识符</span><br><span class="line"></span><br><span class="line">2. 指针声明器格式：* qualifiers(可选) declarator</span><br><span class="line">int *p; &#x2F;&#x2F; p是指向int类型的指针</span><br><span class="line">int (*p)(int); &#x2F;&#x2F; 函数指针</span><br><span class="line">int (*p)[5]; &#x2F;&#x2F;数组指针</span><br><span class="line"></span><br><span class="line">3. 数组声明器格式：</span><br><span class="line">noptr-declarator [ static(可选) qualifiers(可选) expression ]</span><br><span class="line">noptr-declarator [ qualifiers(可选) * ]</span><br><span class="line">int n &#x3D; 1;</span><br><span class="line">int a[5]; &#x2F;&#x2F; 常量大小的数组</span><br><span class="line">int b[n]; &#x2F;&#x2F; 变长度数组(VLA)</span><br><span class="line">int c[]; &#x2F;&#x2F; 位置大小数组</span><br><span class="line"></span><br><span class="line">4. noptr-declarator ( parameters-or-identifiers )：函数声明器</span><br><span class="line">int max(int a, int b);</span><br><span class="line"></span><br><span class="line">5. ( declarator )：任何可放入括号中的声明器，引入指向数组或指向函数指针时要求这么做</span><br></pre></td></tr></table></figure>
-
-<p><strong>初始化器格式</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. &#x3D; expression</span><br><span class="line">2. &#x3D; &#123; initializer-list &#125;</span><br></pre></td></tr></table></figure>
-
-<p>三种显示初始化器：<br>标量类型初始化：包括整型类型，浮点类型，指针类型等<br>数组初始化：2 种形式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. &#x3D; string_literal 字符串字面量，初始化字符数组</span><br><span class="line">int c[] &#x3D; &quot;abc&quot;;</span><br><span class="line">2. &#x3D; &#123; expression , ... &#125; 被初始化数组成员列表</span><br><span class="line">int y[5] &#x3D; &#123;1,2,3&#125;; &#x2F;&#x2F; y 拥有类型 int[5] 并保有 1,2,3,0,0</span><br><span class="line">int y[4][3] &#x3D; &#123; &#x2F;&#x2F; 4 个 3 个 int 的数组的数组（ 4*3 矩阵）</span><br><span class="line">    &#123; 1 &#125;,      &#x2F;&#x2F; 0 行初始化到 &#123;1, 0, 0&#125;</span><br><span class="line">    &#123; 0, 1 &#125;,   &#x2F;&#x2F; 1 行初始化到 &#123;0, 1, 0&#125;</span><br><span class="line">    &#123; [2]&#x3D;1 &#125;,  &#x2F;&#x2F; 2 行初始化到 &#123;0, 0, 1&#125;</span><br><span class="line">&#125;;              &#x2F;&#x2F; 3 行初始化到 &#123;0, 0, 0&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结构体及联合体类型初始化:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; . member 形式的单独成员指代器，和 [ index ] 形式的数组指代器。</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 初始化 w （二个结构体的数组）为</span><br><span class="line">&#x2F;&#x2F; &#123; &#123; &#123;1,0,0&#125;, 0&#125;, &#123; &#123;2,0,0&#125;, 0&#125; &#125;</span><br><span class="line">struct &#123;int a[3], b;&#125; w[] &#x3D; &#123;[0].a &#x3D; &#123;1&#125;, [1].a[0] &#x3D; 2&#125;;</span><br><span class="line"></span><br><span class="line">union &#123; int x; char c[4]; &#125;</span><br><span class="line">u &#x3D; &#123;1&#125;,           &#x2F;&#x2F; 令 u.x 活跃，拥有值 1</span><br><span class="line">u2 &#x3D; &#123; .c&#x3D;&#123;&#39;\1&#39;&#125; &#125;; &#x2F;&#x2F; 令 u2.c 活跃，拥有值 &#123;&#39;\1&#39;,&#39;\0&#39;,&#39;\0&#39;,&#39;\0&#39;&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1617,20 +1807,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

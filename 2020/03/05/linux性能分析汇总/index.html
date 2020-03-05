@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://yunyunzhai.github.io').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="一、分析工具 1、CPU 性能分析工具：vmstatpssartimestracepstreetop2、Memory 性能分析工具：vmstatstracetopipcsipcrmcat &#x2F;proc&#x2F;meminfocat &#x2F;proc&#x2F;slabinfocat &#x2F;proc&#x2F;&#x2F;maps3、I&#x2F;O 性能分析工具：vmstatipstatrepquotaquotacheck4、Network 性能分析工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux性能分析汇总">
+<meta property="og:url" content="https://yunyunzhai.github.io/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="翟云云的博客">
+<meta property="og:description" content="一、分析工具 1、CPU 性能分析工具：vmstatpssartimestracepstreetop2、Memory 性能分析工具：vmstatstracetopipcsipcrmcat &#x2F;proc&#x2F;meminfocat &#x2F;proc&#x2F;slabinfocat &#x2F;proc&#x2F;&#x2F;maps3、I&#x2F;O 性能分析工具：vmstatipstatrepquotaquotacheck4、Network 性能分析工具">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yunyunzhai.github.io/images/linux%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7.jpg">
+<meta property="article:published_time" content="2020-03-05T01:47:37.000Z">
+<meta property="article:modified_time" content="2020-03-05T01:50:43.479Z">
+<meta property="article:author" content="翟云云">
+<meta property="article:tag" content="linux性能分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yunyunzhai.github.io/images/linux%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7.jpg">
+
+<link rel="canonical" href="https://yunyunzhai.github.io/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>linux性能分析汇总 | 翟云云的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">翟云云的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yunyunzhai.github.io/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="翟云云">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翟云云的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux性能分析汇总
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 09:47:37 / 修改时间：09:50:43" itemprop="dateCreated datePublished" datetime="2020-03-05T09:47:37+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux%E5%86%85%E6%A0%B8/" itemprop="url" rel="index">
+                    <span itemprop="name">linux内核</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/" class="post-meta-item leancloud_visitors" data-flag-title="linux性能分析汇总" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">评论次数：</span>
+    
+    <a title="valine" href="/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/05/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/linux%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7.jpg" alt="性能分析工具汇总"></p>
+<p>一、分析工具</p>
+<p>1、CPU 性能分析工具：<br>vmstat<br>ps<br>sar<br>time<br>strace<br>pstree<br>top<br>2、Memory 性能分析工具：<br>vmstat<br>strace<br>top<br>ipcs<br>ipcrm<br>cat /proc/meminfo<br>cat /proc/slabinfo<br>cat /proc//maps<br>3、I/O 性能分析工具：<br>vmstat<br>ipstat<br>repquota<br>quotacheck<br>4、Network 性能分析工具：<br>ifconfig<br>ethereal<br>tethereal<br>iptraf<br>iwconfig<br>nfsstat<br>mrtg<br>ntop<br>netstat<br>cat /proc/sys/net<br>二、Linux 性能调优工具</p>
+<p>当通过上述工具及命令，我们发现了应用的性能瓶颈以后，我们可以通过以下工具或者命令来进行性能的调整<br>1、CPU 性能调优工具：<br>nice / renic<br>sysctl<br>2、Memory 性能调优工具：<br>swapon<br>ulimit<br>sysctl<br>3、I/O 性能调优工具：<br>edquota<br>quoton<br>sysctl<br>boot line:elevator=<br>4、Network 性能调优工具：<br>ifconfig<br>iwconfig<br>sysctl<br>三、性能调整</p>
+<p>1、CPU 性能调整</p>
+<p>当一个系统的 CPU 空闲时间或者等待时间小于 5%时，我们就可以认为系统的 CPU 资源耗尽，我们应该对 CPU 进行性能调整。</p>
+<p>CPU 性能调整方法：<br>编辑/proc/sys/kernel/中的文件，修改内核参数。<br>#cd /proc/sys/kernel/</p>
+<h1 id="ls-proc-sys-kernel"><a href="#ls-proc-sys-kernel" class="headerlink" title="ls /proc/sys/kernel/"></a>ls /proc/sys/kernel/</h1><p>acct hotplug panic real-root-dev<br>cad_pid modprobe panic_on_oops sem<br>cap-bound msgmax pid_max shmall<br>core_pattern msgmnb powersave-nap shmmax<br>core_uses_pid msgmni print-fatal-signals shmmni<br>ctrl-alt-del ngroups_max printk suid_dumpable<br>domainname osrelease printk_ratelimit sysrq<br>exec-shield ostype printk_ratelimit_burst tainted<br>exec-shield-randomize overflowgid pty threads-max<br>hostname overflowuid random version<br>一般可能需要编辑的是 pid_max 和 threads-max，如下：</p>
+<h1 id="sysctl-kernel-threads-max"><a href="#sysctl-kernel-threads-max" class="headerlink" title="sysctl kernel.threads-max"></a>sysctl kernel.threads-max</h1><p>kernel.threads-max = 8192</p>
+<h1 id="sysctl-kernel-threads-max-10000"><a href="#sysctl-kernel-threads-max-10000" class="headerlink" title="sysctl kernel.threads-max=10000"></a>sysctl kernel.threads-max=10000</h1><p>kernel.threads-max = 10000<br>2、Memory 性能调整</p>
+<p>当一个应用系统的内存资源出现下面的情况时，我们认为需要进行 Memory 性能调整：<br>页面频繁换进换出；<br>缺少非活动页。<br>例如在使用 vmstat 命令时发现，memory 的 cache 使用率非常低，而 swap 的 si 或者 so 则有比较高的数据值时，应该警惕内存的性能问题。<br>Memory 性能调整方法： 1)关闭非核心的服务进程。<br>相关的方法请见 CPU 性能调整部分。 2)修改/proc/sys/vm/下的系统参数。</p>
+<h1 id="ls-proc-sys-vm"><a href="#ls-proc-sys-vm" class="headerlink" title="ls /proc/sys/vm/"></a>ls /proc/sys/vm/</h1><p>block_dump laptop_mode nr_pdflush_threads<br>dirty_background_ratio legacy_va_layout overcommit_memory<br>dirty_expire_centisecs lower_zone_protection overcommit_ratio<br>dirty_ratio max_map_count page-cluster<br>dirty_writeback_centisecs min_free_kbytes swappiness<br>hugetlb_shm_group nr_hugepages vfs_cache_pressure</p>
+<h1 id="sysctl-vm-min-free-kbytes"><a href="#sysctl-vm-min-free-kbytes" class="headerlink" title="sysctl vm.min_free_kbytes"></a>sysctl vm.min_free_kbytes</h1><p>vm.min_free_kbytes = 1024</p>
+<h1 id="sysctl-w-vm-min-free-kbytes-2508"><a href="#sysctl-w-vm-min-free-kbytes-2508" class="headerlink" title="sysctl -w vm.min_free_kbytes=2508"></a>sysctl -w vm.min_free_kbytes=2508</h1><p>vm.min_free_kbytes = 2508</p>
+<h1 id="cat-etc-sysctl-conf"><a href="#cat-etc-sysctl-conf" class="headerlink" title="cat /etc/sysctl.conf"></a>cat /etc/sysctl.conf</h1><p>…<br>vm.min_free_kbytes=2058<br>… 3)配置系统的 swap 交换分区等于或者 2 倍于物理内存。</p>
+<h1 id="free"><a href="#free" class="headerlink" title="free"></a>free</h1><p>total used free shared buffers cached<br>Mem: 987656 970240 17416 0 63324 742400<br>-/+ buffers/cache: 164516 823140<br>Swap: 1998840 150272 1848568<br>3、I/O 性能调整<br>系统出现以下情况时，我们认为该系统存在 I/O 性能问题：<br>系统等待 I/O 的时间超过 50%；<br>一个设备的平均队列长度大于 5。<br>我们可以通过诸如 vmstat 等命令，查看 CPU 的 wa 等待时间，以得到系统是否存在 I/O 性能问题的准确信息。<br>I/O 性能调整方法： 1)修改 I/O 调度算法。<br>Linux 已知的 I/O 调试算法有 4 种：<br>deadline - Deadline I/O scheduler<br>as - Anticipatory I/O scheduler<br>cfq - Complete Fair Queuing scheduler<br>noop - Noop I/O scheduler<br>可以编辑/etc/yaboot.conf 文件修改参数 elevator 得到。</p>
+<h1 id="vi-etc-yaboot-conf"><a href="#vi-etc-yaboot-conf" class="headerlink" title="vi /etc/yaboot.conf"></a>vi /etc/yaboot.conf</h1><p>image=/vmlinuz-2.6.9-11.EL<br>label=linux<br>read-only<br>initrd=/initrd-2.6.9-11.EL.img<br>root=/dev/VolGroup00/LogVol00<br>append=”elevator=cfq rhgb quiet” 2)文件系统调整。<br>对于文件系统的调整，有几个公认的准则：<br>将 I/O 负载相对平均的分配到所有可用的磁盘上；<br>选择合适的文件系统，Linux 内核支持 reiserfs、ext2、ext3、jfs、xfs 等文件系统；</p>
+<h1 id="mkfs-t-reiserfs-j-dev-sdc1"><a href="#mkfs-t-reiserfs-j-dev-sdc1" class="headerlink" title="mkfs -t reiserfs -j /dev/sdc1"></a>mkfs -t reiserfs -j /dev/sdc1</h1><p>文件系统即使在建立后，本身也可以通过命令调优；<br>tune2fs (ext2/ext3)<br>reiserfstune (reiserfs)<br>jfs_tune (jfs) 3)文件系统 Mount 时可加入选项 noatime、nodiratime。</p>
+<h1 id="vi-etc-fstab"><a href="#vi-etc-fstab" class="headerlink" title="vi /etc/fstab"></a>vi /etc/fstab</h1><p>…<br>/dev/sdb1 /backup reiserfs acl, user_xattr, noatime, nodiratime 1 1 4)调整块设备的 READAHEAD，调大 RA 值。<br>[root@overflowuid ~]# blockdev –report<br>RO RA SSZ BSZ StartSec Size Device<br>…<br>rw 256 512 4096 0 71096640 /dev/sdb<br>rw 256 512 4096 32 71094240 /dev/sdb1<br>[root@overflowuid ~]# blockdev –setra 2048 /dev/sdb1<br>[root@overflowuid ~]# blockdev –report<br>RO RA SSZ BSZ StartSec Size Device<br>…<br>rw 2048 512 4096 0 71096640 /dev/sdb<br>rw 2048 512 4096 32 71094240 /dev/sdb1<br>4、Network 性能调整</p>
+<p>一个应用系统出现如下情况时，我们认为该系统存在网络性能问题：<br>网络接口的吞吐量小于期望值；<br>出现大量的丢包现象；<br>出现大量的冲突现象。<br>Network 性能调整方法： 1)调整网卡的参数。</p>
+<h1 id="ethtool-eth0"><a href="#ethtool-eth0" class="headerlink" title="ethtool eth0"></a>ethtool eth0</h1><p>Settings for eth0:<br>Supported ports: [ TP ]<br>Supported link modes: 10baseT/Half 10baseT/Full<br>100baseT/Half 100baseT/Full<br>1000baseT/Full<br>Supports auto-negotiation: Yes<br>Advertised link modes: 10baseT/Half 10baseT/Full<br>100baseT/Half 100baseT/Full<br>1000baseT/Full<br>Advertised auto-negotiation: Yes<br>Speed: 100Mb/s<br>Duplex: Half<br>Port: Twisted Pair<br>PHYAD: 0<br>Transceiver: internal<br>Auto-negotiation: on<br>Supports Wake-on: d<br>Wake-on: d<br>Current message level: 0×00000007 (7)<br>Link detected: yes<br>#ethtool -s eth0 duplex full<br>#ifconfig eth0 mtu 9000 up 2)增加网络缓冲区和包的队列。</p>
+<h1 id="cat-proc-sys-net-ipv4-tcp-mem"><a href="#cat-proc-sys-net-ipv4-tcp-mem" class="headerlink" title="cat /proc/sys/net/ipv4/tcp_mem"></a>cat /proc/sys/net/ipv4/tcp_mem</h1><p>196608 262144 393216</p>
+<h1 id="cat-proc-sys-net-core-rmem-default"><a href="#cat-proc-sys-net-core-rmem-default" class="headerlink" title="cat /proc/sys/net/core/rmem_default"></a>cat /proc/sys/net/core/rmem_default</h1><p>135168</p>
+<h1 id="cat-proc-sys-net-core-rmem-max"><a href="#cat-proc-sys-net-core-rmem-max" class="headerlink" title="cat /proc/sys/net/core/rmem_max"></a>cat /proc/sys/net/core/rmem_max</h1><p>131071</p>
+<h1 id="cat-proc-sys-net-core-wmem-default"><a href="#cat-proc-sys-net-core-wmem-default" class="headerlink" title="cat /proc/sys/net/core/wmem_default"></a>cat /proc/sys/net/core/wmem_default</h1><p>135168</p>
+<h1 id="cat-proc-sys-net-core-wmem-max"><a href="#cat-proc-sys-net-core-wmem-max" class="headerlink" title="cat /proc/sys/net/core/wmem_max"></a>cat /proc/sys/net/core/wmem_max</h1><p>131071</p>
+<h1 id="cat-proc-sys-net-core-optmem-max"><a href="#cat-proc-sys-net-core-optmem-max" class="headerlink" title="cat /proc/sys/net/core/optmem_max"></a>cat /proc/sys/net/core/optmem_max</h1><p>20480</p>
+<h1 id="cat-proc-sys-net-core-netdev-max-backlog"><a href="#cat-proc-sys-net-core-netdev-max-backlog" class="headerlink" title="cat /proc/sys/net/core/netdev_max_backlog"></a>cat /proc/sys/net/core/netdev_max_backlog</h1><p>300</p>
+<h1 id="sysctl-net-core-rmem-max"><a href="#sysctl-net-core-rmem-max" class="headerlink" title="sysctl net.core.rmem_max"></a>sysctl net.core.rmem_max</h1><p>net.core.rmem_max = 131071</p>
+<h1 id="sysctl-w-net-core-rmem-max-135168"><a href="#sysctl-w-net-core-rmem-max-135168" class="headerlink" title="sysctl -w net.core.rmem_max=135168"></a>sysctl -w net.core.rmem_max=135168</h1><p>net.core.rmem_max = 135168 3)调整 Webserving。</p>
+<h1 id="sysctl-net-ipv4-tcp-tw-reuse"><a href="#sysctl-net-ipv4-tcp-tw-reuse" class="headerlink" title="sysctl net.ipv4.tcp_tw_reuse"></a>sysctl net.ipv4.tcp_tw_reuse</h1><p>net.ipv4.tcp_tw_reuse = 0</p>
+<h1 id="sysctl-w-net-ipv4-tcp-tw-reuse-1"><a href="#sysctl-w-net-ipv4-tcp-tw-reuse-1" class="headerlink" title="sysctl -w net.ipv4.tcp_tw_reuse=1"></a>sysctl -w net.ipv4.tcp_tw_reuse=1</h1><p>net.ipv4.tcp_tw_reuse = 1</p>
+<h1 id="sysctl-net-ipv4-tcp-tw-recycle"><a href="#sysctl-net-ipv4-tcp-tw-recycle" class="headerlink" title="sysctl net.ipv4.tcp_tw_recycle"></a>sysctl net.ipv4.tcp_tw_recycle</h1><p>net.ipv4.tcp_tw_recycle = 0</p>
+<h1 id="sysctl-w-net-ipv4-tcp-tw-recycle-1"><a href="#sysctl-w-net-ipv4-tcp-tw-recycle-1" class="headerlink" title="sysctl -w net.ipv4.tcp_tw_recycle=1"></a>sysctl -w net.ipv4.tcp_tw_recycle=1</h1><p>net.ipv4.tcp_tw_recycle = 1</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/" rel="tag"># linux性能分析</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/05/linux%E4%B8%8Btrace%E6%9C%BA%E5%88%B6/" rel="prev" title="linux下trace机制">
+      <i class="fa fa-chevron-left"></i> linux下trace机制
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/05/web%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8/" rel="next" title="web富文本编辑器">
+      web富文本编辑器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ls-proc-sys-kernel"><span class="nav-number">1.</span> <span class="nav-text">ls &#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-kernel-threads-max"><span class="nav-number">2.</span> <span class="nav-text">sysctl kernel.threads-max</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-kernel-threads-max-10000"><span class="nav-number">3.</span> <span class="nav-text">sysctl kernel.threads-max&#x3D;10000</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ls-proc-sys-vm"><span class="nav-number">4.</span> <span class="nav-text">ls &#x2F;proc&#x2F;sys&#x2F;vm&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-vm-min-free-kbytes"><span class="nav-number">5.</span> <span class="nav-text">sysctl vm.min_free_kbytes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-w-vm-min-free-kbytes-2508"><span class="nav-number">6.</span> <span class="nav-text">sysctl -w vm.min_free_kbytes&#x3D;2508</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cat-etc-sysctl-conf"><span class="nav-number">7.</span> <span class="nav-text">cat &#x2F;etc&#x2F;sysctl.conf</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#free"><span class="nav-number">8.</span> <span class="nav-text">free</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vi-etc-yaboot-conf"><span class="nav-number">9.</span> <span class="nav-text">vi &#x2F;etc&#x2F;yaboot.conf</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mkfs-t-reiserfs-j-dev-sdc1"><span class="nav-number">10.</span> <span class="nav-text">mkfs -t reiserfs -j &#x2F;dev&#x2F;sdc1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vi-etc-fstab"><span class="nav-number">11.</span> <span class="nav-text">vi &#x2F;etc&#x2F;fstab</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ethtool-eth0"><span class="nav-number">12.</span> <span class="nav-text">ethtool eth0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cat-proc-sys-net-ipv4-tcp-mem"><span class="nav-number">13.</span> <span class="nav-text">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;tcp_mem</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cat-proc-sys-net-core-rmem-default"><span class="nav-number">14.</span> <span class="nav-text">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;core&#x2F;rmem_default</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cat-proc-sys-net-core-rmem-max"><span class="nav-number">15.</span> <span class="nav-text">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;core&#x2F;rmem_max</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cat-proc-sys-net-core-wmem-default"><span class="nav-number">16.</span> <span class="nav-text">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;core&#x2F;wmem_default</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cat-proc-sys-net-core-wmem-max"><span class="nav-number">17.</span> <span class="nav-text">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;core&#x2F;wmem_max</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cat-proc-sys-net-core-optmem-max"><span class="nav-number">18.</span> <span class="nav-text">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;core&#x2F;optmem_max</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cat-proc-sys-net-core-netdev-max-backlog"><span class="nav-number">19.</span> <span class="nav-text">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;core&#x2F;netdev_max_backlog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-net-core-rmem-max"><span class="nav-number">20.</span> <span class="nav-text">sysctl net.core.rmem_max</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-w-net-core-rmem-max-135168"><span class="nav-number">21.</span> <span class="nav-text">sysctl -w net.core.rmem_max&#x3D;135168</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-net-ipv4-tcp-tw-reuse"><span class="nav-number">22.</span> <span class="nav-text">sysctl net.ipv4.tcp_tw_reuse</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-w-net-ipv4-tcp-tw-reuse-1"><span class="nav-number">23.</span> <span class="nav-text">sysctl -w net.ipv4.tcp_tw_reuse&#x3D;1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-net-ipv4-tcp-tw-recycle"><span class="nav-number">24.</span> <span class="nav-text">sysctl net.ipv4.tcp_tw_recycle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sysctl-w-net-ipv4-tcp-tw-recycle-1"><span class="nav-number">25.</span> <span class="nav-text">sysctl -w net.ipv4.tcp_tw_recycle&#x3D;1</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="翟云云"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">翟云云</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/YunyunZhai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;YunyunZhai" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:770833723@qq.com" title="E-Mail → mailto:770833723@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">翟云云</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: '7SicDyyuRHAKEFrTgfmyJo4n-gzGzoHsz',
+      appKey: 'SQLhyGf3GSnW4rPFJoQ63j52',
+      placeholder: "点评一下",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
